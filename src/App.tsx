@@ -1,11 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Footer from "./Footer";
-
-const Intro = styled.div`
-    height: 100vh;
-    background-color: #949494;
-`;
+import Footer from "./components/Footer";
+import Intro from "./components/Intro";
 
 const Lock = styled.div`
     height: 100vh;
@@ -24,9 +20,8 @@ function App() {
     };
     return (
         <>
-            <Intro>
-                Hi, I am Daniel<button onClick={onMouseClick}>Click me</button>
-            </Intro>
+            <Intro />
+            <button onClick={onMouseClick}>Click me</button>
             {isLocked ? <Lock></Lock> : <Unlock></Unlock>}
             <Footer></Footer>
         </>
