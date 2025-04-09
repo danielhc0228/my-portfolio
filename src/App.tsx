@@ -1,28 +1,14 @@
-import styled from "styled-components";
 import { useState } from "react";
 import Footer from "./components/Footer";
 import Intro from "./components/Intro";
-
-const Lock = styled.div`
-    height: 100vh;
-    background-color: black;
-`;
-
-const Unlock = styled.div`
-    height: 100vh;
-    background-color: #dddd8d;
-`;
+import Me from "./components/Me";
 
 function App() {
-    const [isLocked, setIsLocked] = useState(true);
-    const onMouseClick = () => {
-        setIsLocked(!isLocked);
-    };
+    const [isUnlocked, setIsUnlocked] = useState(true);
     return (
         <>
-            <Intro />
-            <button onClick={onMouseClick}>Click me</button>
-            {isLocked ? <Lock></Lock> : <Unlock></Unlock>}
+            <Intro isUnlocked={isUnlocked} setIsUnlocked={setIsUnlocked} />
+            {isUnlocked ? <Me /> : null}
             <Footer></Footer>
         </>
     );

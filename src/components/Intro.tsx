@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Container = styled.div`
@@ -58,9 +57,12 @@ const Lock = styled.div`
     gap: 200px;
 `;
 
-const HeroSection = () => {
-    const [isUnlocked, setIsUnlocked] = useState(false);
+type IntroProps = {
+    isUnlocked: boolean;
+    setIsUnlocked: (value: boolean) => void;
+};
 
+const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleDragEnd = (result: any) => {
         const { destination, draggableId } = result;
@@ -222,4 +224,4 @@ const HeroSection = () => {
     );
 };
 
-export default HeroSection;
+export default Intro;

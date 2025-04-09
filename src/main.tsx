@@ -59,7 +59,7 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   color:white;
   line-height: 1.2;
-  background-color: black;
+  background-color: #0d0d0d;
 }
 a {
   text-decoration:none;
