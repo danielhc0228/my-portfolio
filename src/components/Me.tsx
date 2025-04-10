@@ -22,7 +22,7 @@ const fadeInUp = keyframes`
 `;
 
 const Image = styled.img<{ isVisible: boolean }>`
-    height: 65vh;
+    height: 60vh;
     border-radius: 25%;
     opacity: 0;
     transform: translateY(50px);
@@ -143,7 +143,8 @@ export default function Me() {
                     </SectionTitle>
                     <Divider />
                     <SubTitle>
-                        University of Queensland - Programming Languages
+                        University of Queensland - Bachelor of Computer Science
+                        (Programming Languages)
                     </SubTitle>
 
                     <SectionTitle isVisible={isImageVisible}>
