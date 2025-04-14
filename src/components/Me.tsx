@@ -92,6 +92,39 @@ const Divider = styled.hr`
     margin: 10px auto;
 `;
 
+const SkillsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    padding: 50px 0;
+    width: 100%;
+`;
+
+const SkillItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+`;
+
+const SkillIcon = styled.img`
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+`;
+
+const SkillLabel = styled.span`
+    color: #fff;
+    font-size: 0.9rem;
+    margin-top: 5px;
+`;
+
 export default function Me() {
     const [isImageVisible, setIsImageVisible] = useState(false);
     const imageRef = useRef<HTMLImageElement | null>(null);
@@ -129,41 +162,72 @@ export default function Me() {
     }, []);
 
     return (
-        <Container>
-            <Image
-                ref={imageRef}
-                src='src\components\MyEmoji.png'
-                isVisible={isImageVisible}
-            />
-            <VerticalLine />
-            <InfoContainer>
-                <ContentWrapper>
-                    <SectionTitle ref={titleRef} isVisible={isImageVisible}>
-                        <span>Education</span>
-                    </SectionTitle>
-                    <Divider />
-                    <SubTitle>
-                        University of Queensland - Bachelor of Computer Science
-                        (Programming Languages)
-                    </SubTitle>
+        <div>
+            <Container>
+                <Image
+                    ref={imageRef}
+                    src='src\components\Images\MyEmoji.png'
+                    isVisible={isImageVisible}
+                />
+                <VerticalLine />
+                <InfoContainer>
+                    <ContentWrapper>
+                        <SectionTitle ref={titleRef} isVisible={isImageVisible}>
+                            <span>Education</span>
+                        </SectionTitle>
+                        <Divider />
+                        <SubTitle>
+                            University of Queensland - Bachelor of Computer
+                            Science (Programming Languages)
+                        </SubTitle>
 
-                    <SectionTitle isVisible={isImageVisible}>
-                        <span>Experience</span>
-                    </SectionTitle>
-                    <Divider />
-                    <SubTitle>Bus Sanitiser - Multhana</SubTitle>
-                    <SubTitle>Cashier - Alien Night Market</SubTitle>
+                        <SectionTitle isVisible={isImageVisible}>
+                            <span>Experience</span>
+                        </SectionTitle>
+                        <Divider />
+                        <SubTitle>Bus Sanitiser - Multhana</SubTitle>
+                        <SubTitle>Cashier - Alien Night Market</SubTitle>
 
-                    <SectionTitle isVisible={isImageVisible}>
-                        <span>Career Goal</span>
-                    </SectionTitle>
-                    <Divider />
-                    <SubTitle>
-                        Build and get involved in a Project that anyone would
-                        know.
-                    </SubTitle>
-                </ContentWrapper>
-            </InfoContainer>
-        </Container>
+                        <SectionTitle isVisible={isImageVisible}>
+                            <span>Career Goal</span>
+                        </SectionTitle>
+                        <Divider />
+                        <SubTitle>
+                            Build and get involved in a Project that anyone
+                            would know.
+                        </SubTitle>
+                    </ContentWrapper>
+                </InfoContainer>
+            </Container>
+            <SectionTitle ref={titleRef} isVisible={isImageVisible}>
+                <span>Skills</span>
+            </SectionTitle>
+            <SkillsContainer>
+                <SkillItem>
+                    <SkillIcon src='/html.svg' alt='HTML' />
+                    <SkillLabel>HTML</SkillLabel>
+                </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/css.svg' alt='CSS' />
+                    <SkillLabel>CSS</SkillLabel>
+                </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/javascript.svg' alt='JavaScript' />
+                    <SkillLabel>JavaScript</SkillLabel>
+                </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/typescript.svg' alt='TypeScript' />
+                    <SkillLabel>TypeScript</SkillLabel>
+                </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/react.svg' alt='React' />
+                    <SkillLabel>React</SkillLabel>
+                </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/firebase.svg' alt='Firebase' />
+                    <SkillLabel>Firebase</SkillLabel>
+                </SkillItem>
+            </SkillsContainer>
+        </div>
     );
 }
