@@ -113,11 +113,8 @@ const Row = styled(motion.div)`
 const SliderBtnLeft = styled.div`
     width: 50px;
     height: 50px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%; /* Makes it a circle */
     position: absolute;
-    left: 10px; /* Adjust for positioning */
-    top: 195px;
+    top: 170px;
     transform: translateY(-50%);
     font-size: 24px;
     display: flex;
@@ -128,12 +125,11 @@ const SliderBtnLeft = styled.div`
     transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 
     &:hover {
-        background-color: rgba(0, 0, 0, 0.8);
-        transform: translateY(-50%) scale(1.1); /* Slight scale effect */
+        transform: translateY(-55%) scale(1.1); /* Slight scale effect */
     }
 
     &:active {
-        transform: translateY(-50%) scale(0.9); /* Shrinks when clicked */
+        transform: scale(0.9); /* Shrinks when clicked */
     }
 `;
 
@@ -502,7 +498,20 @@ export default function Projects() {
             <SubProjects>
                 <Slider>
                     <SliderBtnLeft onClick={() => decreaseIndex()}>
-                        <p>{"<"}</p>
+                        <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='size-6'
+                        >
+                            <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M15.75 19.5 8.25 12l7.5-7.5'
+                            />
+                        </svg>
                     </SliderBtnLeft>
                     <AnimatePresence
                         initial={false}
@@ -538,7 +547,20 @@ export default function Projects() {
                     </AnimatePresence>
 
                     <SliderBtnRight onClick={() => incraseIndex()}>
-                        <p>{">"}</p>
+                        <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='size-6'
+                        >
+                            <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='m8.25 4.5 7.5 7.5-7.5 7.5'
+                            />
+                        </svg>
                     </SliderBtnRight>
                 </Slider>
             </SubProjects>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa"; // Using Lucide icons
+import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa"; // Using Lucide icons
 
 const FooterContainer = styled.footer`
     background-color: "rgba(0, 0, 0, 1)";
@@ -61,37 +61,32 @@ function Footer() {
             <FooterContent>
                 <SocialIcons>
                     <a
-                        href='https://facebook.com'
+                        href='https://www.facebook.com/daniel.chung.7509836/'
                         target='_blank'
-                        rel='noopener noreferrer'
                     >
                         <FaFacebook size={20} />
                     </a>
-                    <a
-                        href='https://twitter.com'
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <FaTwitter size={20} />
+                    <a href='https://github.com/danielhc0228' target='_blank'>
+                        <FaGithub size={20} />
                     </a>
                     <a
-                        href='https://instagram.com'
+                        href='https://www.instagram.com/danielchung2802/'
                         target='_blank'
-                        rel='noopener noreferrer'
                     >
                         <FaInstagram size={20} />
                     </a>
                     <a
-                        href='https://youtube.com'
+                        href='https://www.linkedin.com/in/daniel-chung-83451522b/'
                         target='_blank'
-                        rel='noopener noreferrer'
                     >
-                        <FaYoutube size={20} />
+                        <FaLinkedin size={20} />
                     </a>
                 </SocialIcons>
 
                 <FooterLinks>
-                    <a href='/'>About</a>
+                    <a href='https://github.com/danielhc0228/my-portfolio'>
+                        Github
+                    </a>
                     <a href='/'>Contact</a>
                 </FooterLinks>
 
