@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Card from "./Card";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
+import { useState } from "react";
 
 const Container = styled.div`
     min-height: 100vh;
@@ -18,9 +19,7 @@ const Title = styled.h1`
 `;
 
 const SubProjects = styled.div`
-    display: flex;
-    gap: 50px;
-    flex-wrap: wrap;
+    min-height: 50vh;
 `;
 
 const SemiTitle = styled.h1`
@@ -90,6 +89,50 @@ const Notes = styled.h2`
     margin-bottom: 10px;
 `;
 
+const Slider = styled.div`
+    position: relative;
+`;
+const Row = styled(motion.div)`
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+`;
+
+const SliderBtnLeft = styled.div`
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%; /* Makes it a circle */
+    position: absolute;
+    left: 10px; /* Adjust for positioning */
+    top: 195px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+        transform: translateY(-50%) scale(1.1); /* Slight scale effect */
+    }
+
+    &:active {
+        transform: translateY(-50%) scale(0.9); /* Shrinks when clicked */
+    }
+`;
+
+const SliderBtnRight = styled(SliderBtnLeft)`
+    right: 0;
+    left: auto;
+`;
+
 const logoVariants = {
     normal: {
         opacity: 1,
@@ -105,7 +148,23 @@ const logoVariants = {
     },
 };
 
+const getRowVariants = {
+    hidden: (custom: number) => ({
+        x: custom === 1 ? window.outerWidth - 5 : -window.outerWidth + 5,
+    }),
+    visible: {
+        x: 0,
+    },
+    exit: (custom: number) => ({
+        x: custom === 1 ? -window.outerWidth + 5 : window.outerWidth - 5,
+    }),
+};
+
 export default function Projects() {
+    const [leaving, setLeaving] = useState(false);
+    const [index, setIndex] = useState(0);
+    const [rowState, setRowState] = useState(1);
+
     const teamMainProjects = [
         {
             title: "Olympic Planner & Translator - UQ Project",
@@ -258,7 +317,78 @@ export default function Projects() {
             githubLink: "https://github.com/danielhc0228/netflix-clone",
             demoLink: "https://hojinflix.netlify.app/",
         },
+        {
+            title: "Weather App",
+            description: "Live weather updates using OpenWeather API.",
+            tags: ["typescript", "React"],
+            githubLink: "https://github.com/danielhc0228/netflix-clone",
+            demoLink: "https://hojinflix.netlify.app/",
+        },
+        {
+            title: "Weather App",
+            description: "Live weather updates using OpenWeather API.",
+            tags: ["typescript", "React"],
+            githubLink: "https://github.com/danielhc0228/netflix-clone",
+            demoLink: "https://hojinflix.netlify.app/",
+        },
+        {
+            title: "Weather App",
+            description: "Live weather updates using OpenWeather API.",
+            tags: ["typescript", "React"],
+            githubLink: "https://github.com/danielhc0228/netflix-clone",
+            demoLink: "https://hojinflix.netlify.app/",
+        },
+        {
+            title: "Weather App",
+            description: "Live weather updates using OpenWeather API.",
+            tags: ["typescript", "React"],
+            githubLink: "https://github.com/danielhc0228/netflix-clone",
+            demoLink: "https://hojinflix.netlify.app/",
+        },
+        {
+            title: "Weather App",
+            description: "Live weather updates using OpenWeather API.",
+            tags: ["typescript", "React"],
+            githubLink: "https://github.com/danielhc0228/netflix-clone",
+            demoLink: "https://hojinflix.netlify.app/",
+        },
+        {
+            title: "Weather App",
+            description: "Live weather updates using OpenWeather API.",
+            tags: ["typescript", "React"],
+            githubLink: "https://github.com/danielhc0228/netflix-clone",
+            demoLink: "https://hojinflix.netlify.app/",
+        },
     ];
+
+    const toggleLeaving = () => {
+        setLeaving((prev) => !prev);
+    };
+
+    const offset = 4;
+
+    const incraseIndex = () => {
+        if (leaving) return;
+
+        if (subProjects) {
+            const maxIndex = Math.floor(subProjects.length! / offset) - 1;
+            toggleLeaving();
+            setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+            setRowState(1);
+        }
+    };
+
+    const decreaseIndex = () => {
+        if (leaving) return;
+
+        if (subProjects) {
+            const maxIndex = Math.floor(subProjects.length! / offset) - 1;
+            toggleLeaving();
+            setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+            setRowState(-1);
+        }
+    };
+
     return (
         <Container>
             <Title>Projects</Title>
@@ -366,16 +496,47 @@ export default function Projects() {
                     />
                 </MainProject>
             ))}
-            <SemiTitle>Other Projects</SemiTitle>
+            <SemiTitle>Personal Sub Projects</SemiTitle>
             <SubProjects>
-                {subProjects.map((project, idx) => (
-                    <Card
-                        key={idx}
-                        title={project.title}
-                        description={project.description}
-                        tags={project.tags}
-                    />
-                ))}
+                <Slider>
+                    <SliderBtnLeft onClick={() => decreaseIndex()}>
+                        <p>{"<"}</p>
+                    </SliderBtnLeft>
+                    <AnimatePresence
+                        initial={false}
+                        onExitComplete={toggleLeaving}
+                    >
+                        {[index].map((i) => (
+                            <Row
+                                key={i}
+                                variants={getRowVariants}
+                                initial='hidden'
+                                animate='visible'
+                                exit='exit'
+                                custom={rowState}
+                                transition={{
+                                    type: "tween",
+                                    duration: 1.5,
+                                }}
+                            >
+                                {subProjects
+                                    .slice(offset * i, offset * i + offset)
+                                    .map((project, idx) => (
+                                        <Card
+                                            key={idx}
+                                            title={project.title}
+                                            description={project.description}
+                                            tags={project.tags}
+                                        />
+                                    ))}
+                            </Row>
+                        ))}
+                    </AnimatePresence>
+
+                    <SliderBtnRight onClick={() => incraseIndex()}>
+                        <p>{">"}</p>
+                    </SliderBtnRight>
+                </Slider>
             </SubProjects>
         </Container>
     );
