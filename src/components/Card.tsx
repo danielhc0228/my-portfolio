@@ -66,9 +66,17 @@ type CardProps = {
     title: string;
     description: string;
     tags: string[];
+    gitLink: string;
+    demoLink: string;
 };
 
-export default function Card({ title, description, tags }: CardProps) {
+export default function Card({
+    title,
+    description,
+    tags,
+    gitLink,
+    demoLink,
+}: CardProps) {
     return (
         <>
             <Project>
@@ -83,12 +91,12 @@ export default function Card({ title, description, tags }: CardProps) {
 
                 <LinkGroup>
                     {
-                        <LinkButton href={"/"} target='_blank'>
+                        <LinkButton href={gitLink} target='_blank'>
                             GitHub
                         </LinkButton>
                     }
                     {
-                        <LinkButton href={"/"} target='_blank'>
+                        <LinkButton href={demoLink} target='_blank'>
                             Live Demo
                         </LinkButton>
                     }

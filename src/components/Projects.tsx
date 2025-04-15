@@ -22,6 +22,15 @@ const SubProjects = styled.div`
     min-height: 50vh;
 `;
 
+const AllSubProjects = styled.div`
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 30px;
+`;
+
 const SemiTitle = styled.h1`
     font-size: 1.5rem;
     font-weight: bold;
@@ -133,6 +142,30 @@ const SliderBtnRight = styled(SliderBtnLeft)`
     left: auto;
 `;
 
+const ToggleButton = styled.button`
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 24px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    letter-spacing: 0.5px;
+
+    &:hover {
+        background-color: white;
+        color: black;
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        transform: scale(0.97);
+    }
+`;
+
 const logoVariants = {
     normal: {
         opacity: 1,
@@ -164,6 +197,7 @@ export default function Projects() {
     const [leaving, setLeaving] = useState(false);
     const [index, setIndex] = useState(0);
     const [rowState, setRowState] = useState(1);
+    const [isSeeAll, setSeeAll] = useState(false);
 
     const teamMainProjects = [
         {
@@ -276,88 +310,52 @@ export default function Projects() {
 
     const subProjects = [
         {
-            title: "Notion Clone",
-            description: "Fullstack productivity app with React and Firebase.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
+            title: "Trello Clone",
+            description:
+                "Trello Clone built using React and hello-pangea/dnd library. Users can create boards and cards for various purposes like todo-list etc.",
+            tags: ["Typescript", "React", "HTML"],
+            githubLink: "https://github.com/danielhc0228/trello-clone",
+            demoLink: "https://trello-clone-dc.netlify.app/",
         },
         {
-            title: "Portfolio Site",
-            description: "Responsive portfolio built with styled-components.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
-        },
-        {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
+            title: "My Portfolio",
+            description:
+                "My portfolio website built using all my current skills such as React, TypeScript, and libraries like Framer Motion, styled-component, hello-pangea/dnd.",
+            tags: ["TypeScript", "React", "HTML"],
+            githubLink: "https://github.com/danielhc0228/my-portfolio",
+            demoLink: "/",
         },
         {
             title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
+            description:
+                "Live weather updates using Weatherbit.io API. Backend written by ChatGPT and its server running by Render.",
+            tags: ["JavaScript", "React", "HTML", "CSS"],
+            githubLink: "https://github.com/danielhc0228/Weather-App-Frontend",
+            demoLink: "https://weatherappdchung.netlify.app/",
         },
         {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
+            title: "Todo App",
+            description:
+                "A website that allows users to create and orgainise their own todo-list.",
+            tags: ["TypeScript", "JavaScript", "HTML", "React"],
+            githubLink: "https://github.com/danielhc0228/todo-app",
+            demoLink: "https://todo-app-dc.netlify.app/",
         },
         {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
+            title: "Crypto Tracker",
+            description:
+                "A website that shows live crypto coin currencies such as Bitcoin using API.",
+            tags: ["TypeScript", "React", "HTML"],
+            githubLink: "https://github.com/danielhc0228/crypto-tracker",
+            demoLink: "https://danielhc0228.github.io/crypto-tracker/",
         },
         {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
-        },
-        {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
-        },
-        {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
-        },
-        {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
-        },
-        {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
-        },
-        {
-            title: "Weather App",
-            description: "Live weather updates using OpenWeather API.",
-            tags: ["typescript", "React"],
-            githubLink: "https://github.com/danielhc0228/netflix-clone",
-            demoLink: "https://hojinflix.netlify.app/",
+            title: "Wordle Game",
+            description:
+                "A Wordle Game website built from watching YouTube. JavaScript, HTML and CSS were used.",
+            tags: ["JavaScript", "React", "HTML", "CSS"],
+            githubLink: "https://github.com/danielhc0228/Wordle-Game",
+            demoLink: "https://wordlebydchung.netlify.app/",
         },
     ];
 
@@ -371,7 +369,7 @@ export default function Projects() {
         if (leaving) return;
 
         if (subProjects) {
-            const maxIndex = Math.floor(subProjects.length! / offset) - 1;
+            const maxIndex = Math.ceil(subProjects.length / offset) - 1;
             toggleLeaving();
             setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
             setRowState(1);
@@ -382,11 +380,15 @@ export default function Projects() {
         if (leaving) return;
 
         if (subProjects) {
-            const maxIndex = Math.floor(subProjects.length! / offset) - 1;
+            const maxIndex = Math.ceil(subProjects.length / offset) - 1;
             toggleLeaving();
             setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
             setRowState(-1);
         }
+    };
+
+    const toggleSeeAll = () => {
+        setSeeAll(!isSeeAll);
     };
 
     return (
@@ -527,6 +529,8 @@ export default function Projects() {
                                             title={project.title}
                                             description={project.description}
                                             tags={project.tags}
+                                            gitLink={project.githubLink}
+                                            demoLink={project.demoLink}
                                         />
                                     ))}
                             </Row>
@@ -538,6 +542,25 @@ export default function Projects() {
                     </SliderBtnRight>
                 </Slider>
             </SubProjects>
+            {isSeeAll ? (
+                <ToggleButton onClick={toggleSeeAll}>Collapse</ToggleButton>
+            ) : (
+                <ToggleButton onClick={toggleSeeAll}>See All</ToggleButton>
+            )}
+            {isSeeAll ? (
+                <AllSubProjects>
+                    {subProjects.map((project, idx) => (
+                        <Card
+                            key={idx}
+                            title={project.title}
+                            description={project.description}
+                            tags={project.tags}
+                            gitLink={project.githubLink}
+                            demoLink={project.demoLink}
+                        />
+                    ))}
+                </AllSubProjects>
+            ) : null}
         </Container>
     );
 }
