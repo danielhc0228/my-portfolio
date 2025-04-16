@@ -15,7 +15,7 @@ const HeaderLinks = styled.div`
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
-        transform: translateY(-8px);
+        transform: translateY(-4px);
         box-shadow: 0px 5px 10px rgba(54, 54, 54, 0.6);
         cursor: pointer;
     }
