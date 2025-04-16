@@ -21,14 +21,14 @@ const fadeInUp = keyframes`
   }
 `;
 
-const Image = styled.img<{ isVisible: boolean }>`
+const Image = styled.img<{ $isVisible: boolean }>`
     height: 60vh;
     border-radius: 25%;
     opacity: 0;
     transform: translateY(50px);
 
     ${(props) =>
-        props.isVisible &&
+        props.$isVisible &&
         css`
             animation: ${fadeInUp} 1s ease-out forwards;
         `}
@@ -58,7 +58,7 @@ const typing = keyframes`
   to { width: 100% }
 `;
 
-const SectionTitle = styled.h1<{ isVisible: boolean }>`
+const SectionTitle = styled.h1<{ $isVisible: boolean }>`
     font-size: 2rem;
     font-weight: bold;
     color: white;
@@ -70,9 +70,9 @@ const SectionTitle = styled.h1<{ isVisible: boolean }>`
         display: inline-block;
         overflow: hidden;
         white-space: nowrap;
-        width: ${(props) => (props.isVisible ? "100%" : "0")};
+        width: ${(props) => (props.$isVisible ? "100%" : "0")};
         animation: ${(props) =>
-            props.isVisible
+            props.$isVisible
                 ? css`
                       ${typing} 1s steps(22, end) forwards
                   `
@@ -97,7 +97,8 @@ const SkillsContainer = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
-    padding: 50px 0;
+    padding-top: 20px;
+    padding-bottom: 130px;
     width: 100%;
 `;
 
@@ -167,12 +168,15 @@ export default function Me() {
                 <Image
                     ref={imageRef}
                     src='src\components\Images\MyEmoji.png'
-                    isVisible={isImageVisible}
+                    $isVisible={isImageVisible}
                 />
                 <VerticalLine />
                 <InfoContainer>
                     <ContentWrapper>
-                        <SectionTitle ref={titleRef} isVisible={isImageVisible}>
+                        <SectionTitle
+                            ref={titleRef}
+                            $isVisible={isImageVisible}
+                        >
                             <span>Education</span>
                         </SectionTitle>
                         <Divider />
@@ -181,7 +185,7 @@ export default function Me() {
                             of Computer Science)
                         </SubTitle>
 
-                        <SectionTitle isVisible={isImageVisible}>
+                        <SectionTitle $isVisible={isImageVisible}>
                             <span>Experience</span>
                         </SectionTitle>
                         <Divider />
@@ -190,7 +194,7 @@ export default function Me() {
                         </SubTitle>
                         <SubTitle>Cashier - Alien Night Market</SubTitle>
 
-                        <SectionTitle isVisible={isImageVisible}>
+                        <SectionTitle $isVisible={isImageVisible}>
                             <span>Career Goal</span>
                         </SectionTitle>
                         <Divider />
@@ -201,7 +205,7 @@ export default function Me() {
                     </ContentWrapper>
                 </InfoContainer>
             </Container>
-            <SectionTitle ref={titleRef} isVisible={isImageVisible}>
+            <SectionTitle ref={titleRef} $isVisible={isImageVisible}>
                 <span>Skills</span>
             </SectionTitle>
             <SkillsContainer>

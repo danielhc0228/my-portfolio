@@ -1,19 +1,22 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { FaFacebook, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa"; // Using Lucide icons
 
 const FooterContainer = styled.footer`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 50vh;
+    gap: 20px;
     background-color: "rgba(0, 0, 0, 1)";
     color: #fff;
     padding: 80px 0;
-    text-align: center;
-    position: relative;
-    bottom: 0;
-    width: 100%;
     margin-top: 50px;
 `;
 
 const FooterContent = styled.div`
     max-width: 1200px;
+    padding-top: 50px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -55,9 +58,52 @@ const Copyright = styled.p`
     opacity: 0.6;
 `;
 
+const TextWrapper = styled.div`
+    text-align: center;
+`;
+
+const typing = keyframes`
+  from { width: 0% }
+  to { width: 100% }
+`;
+
+const blink = keyframes`
+  0%, 100% { border-color: transparent }
+  50% { border-color: white }
+`;
+
+const TypingText = styled.h1`
+    font-size: 3rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid white;
+    width: 0%;
+    animation: ${typing} 1s steps(22, end) forwards,
+        ${blink} 0.75s step-end infinite;
+`;
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const FadeInText = styled.h2`
+    font-size: 2rem;
+    opacity: 0;
+    animation: ${fadeIn} 0.5s ease-in forwards;
+    animation-delay: 1s;
+`;
+
 function Footer() {
     return (
         <FooterContainer>
+            <TextWrapper>
+                <TypingText>Contact</TypingText>
+            </TextWrapper>
+            <FadeInText>
+                Please give me a message if you want to work with me!
+            </FadeInText>
             <FooterContent>
                 <SocialIcons>
                     <a
@@ -87,7 +133,7 @@ function Footer() {
                     <a href='https://github.com/danielhc0228/my-portfolio'>
                         Github
                     </a>
-                    <a href='/'>Contact</a>
+                    <a href='mailto:daniel20020228@gmail.com'>Contact</a>
                 </FooterLinks>
 
                 <Copyright>

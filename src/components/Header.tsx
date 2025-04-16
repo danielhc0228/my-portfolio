@@ -10,7 +10,7 @@ const Container = styled.div`
     gap: 20px;
 `;
 
-const HeaderLinks = styled.a`
+const HeaderLinks = styled.div`
     border-bottom: 2px solid white;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -27,14 +27,16 @@ export default function Header() {
             <HeaderLinks>
                 <Link to='/'>Home</Link>
             </HeaderLinks>
-            <HeaderLinks
-                href='https://github.com/danielhc0228/my-portfolio'
-                target='_blank'
-            >
-                Github
+            <HeaderLinks>
+                <a
+                    href='https://github.com/danielhc0228/my-portfolio'
+                    target='_blank'
+                >
+                    Github
+                </a>
             </HeaderLinks>
             <HeaderLinks>
-                <Link to='/board'>Contact</Link>
+                <Link to='/board'>Board</Link>
             </HeaderLinks>
         </Container>
     );
