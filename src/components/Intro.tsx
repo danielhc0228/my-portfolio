@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { AnimatePresence, motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
     height: 100vh;
@@ -57,6 +58,26 @@ const Lock = styled.div`
     gap: 200px;
 `;
 
+const Header = styled.div`
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+`;
+
+const HeaderLinks = styled.a`
+    border-bottom: 2px solid white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0px 5px 10px rgba(54, 54, 54, 0.6);
+        cursor: pointer;
+    }
+`;
+
 type IntroProps = {
     isUnlocked: boolean;
     setIsUnlocked: (value: boolean) => void;
@@ -80,6 +101,17 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
 
     return (
         <Container>
+            <Header>
+                <HeaderLinks
+                    href='https://github.com/danielhc0228/my-portfolio'
+                    target='_blank'
+                >
+                    Github
+                </HeaderLinks>
+                <Link to='/contact'>
+                    <HeaderLinks>Contact</HeaderLinks>
+                </Link>
+            </Header>
             <TextWrapper>
                 <TypingText>Hi, I'm Daniel.</TypingText>
                 <FadeInText>A Front-end Developer.</FadeInText>

@@ -171,7 +171,6 @@ const logoVariants = {
         opacity: [1, 0.5, 1],
         y: [0, -20, 0], // replicating transform: translateY(-20px)
         transition: {
-            repeat: Infinity,
             duration: 1.5,
         },
     },
