@@ -167,7 +167,7 @@ export default function Me() {
             <Container>
                 <Image
                     ref={imageRef}
-                    src='src\components\Images\MyEmoji.png'
+                    src='\MyEmoji.png'
                     $isVisible={isImageVisible}
                 />
                 <VerticalLine />

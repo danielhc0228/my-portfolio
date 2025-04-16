@@ -2,11 +2,11 @@ import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { styled } from "styled-components";
 import { db } from "../firebase";
+import Timeline from "./timeline";
 
 const Container = styled.div`
     height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: #0d0d0d;
@@ -17,6 +17,7 @@ const Container = styled.div`
 const Form = styled.form`
     display: flex;
     flex-direction: column;
+    width: 30%;
     gap: 10px;
 `;
 
@@ -41,19 +42,8 @@ const TextArea = styled.textarea`
     }
 `;
 
-const AttachFileButton = styled.label`
-    padding: 10px 0px;
-    color: #1d9bf0;
-    text-align: center;
-    border-radius: 20px;
-    border: 1px solid #1d9bf0;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-`;
-
-const AttachFileInput = styled.input`
-    display: none;
+const NameTextArea = styled(TextArea)`
+    padding: 10px;
 `;
 
 const SubmitBtn = styled.input`
@@ -72,37 +62,26 @@ const SubmitBtn = styled.input`
 
 export default function Board() {
     const [isLoading, setLoading] = useState(false);
-    const [tweet, setTweet] = useState("");
-    const [file, setFile] = useState<string | null>(null);
+    const [post, setPosts] = useState("");
+    const [username, setUsername] = useState("");
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setTweet(e.target.value);
+        setPosts(e.target.value);
     };
-    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { files } = e.target;
-        if (files && files.length === 1) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const result = reader.result as string;
-                console.log("File data encoded:", result);
-                setFile(result);
-            };
-            reader.readAsDataURL(files[0]);
-        }
+    const onChangeName = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setUsername(e.target.value);
     };
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (isLoading || tweet === "" || tweet.length > 180) return;
+        if (isLoading || post === "" || post.length > 180) return;
         try {
             setLoading(true);
-            await addDoc(collection(db, "tweets"), {
-                tweet,
+            await addDoc(collection(db, "posts"), {
+                post,
                 createdAt: Date.now(),
-                username: "Anonymous",
-                fileData: file,
+                username: username || "Anonymous",
             });
-            setTweet("");
-            setFile(null);
+            setPosts("");
         } catch (e) {
             console.log(e);
         } finally {
@@ -113,28 +92,28 @@ export default function Board() {
     return (
         <Container>
             <Form onSubmit={onSubmit}>
+                <NameTextArea
+                    required
+                    rows={1}
+                    maxLength={20}
+                    onChange={onChangeName}
+                    value={username}
+                    placeholder='What is your nickname?'
+                />
                 <TextArea
                     required
                     rows={5}
-                    maxLength={180}
+                    maxLength={500}
                     onChange={onChange}
-                    value={tweet}
+                    value={post}
                     placeholder='What is happening?!'
-                />
-                <AttachFileButton htmlFor='file'>
-                    {file ? "Photo added ✅" : "Add photo (1MB)"}
-                </AttachFileButton>
-                <AttachFileInput
-                    onChange={onFileChange}
-                    type='file'
-                    id='file'
-                    accept='image/*'
                 />
                 <SubmitBtn
                     type='submit'
-                    value={isLoading ? "Posting..." : "Post Tweet"}
+                    value={isLoading ? "Posting..." : "Post your thoughts"}
                 />
             </Form>
+            <Timeline />
         </Container>
     );
 }

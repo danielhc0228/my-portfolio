@@ -131,7 +131,7 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                     {isUnlocked ? (
                         <h1>Scroll Down</h1>
                     ) : (
-                        <h1>Drag the key to the lock to proceed</h1>
+                        <h1>Drag the "key" to the "lock" to proceed</h1>
                     )}
                     {/* Drop Target */}
                     <Droppable droppableId='drop-zone'>

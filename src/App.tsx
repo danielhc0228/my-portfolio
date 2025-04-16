@@ -27,7 +27,7 @@ const TopBtn = styled.button`
 `;
 
 function App() {
-    const [isUnlocked, setIsUnlocked] = useState(true);
+    const [isUnlocked, setIsUnlocked] = useState(false);
     const goUp = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };

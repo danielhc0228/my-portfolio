@@ -30,7 +30,7 @@ export const teamMainProjects = [
         ),
 
         tags: ["JavaScript", "HTML", "CSS"],
-        sampleImg: `src/components/Images/uq-project.png`,
+        sampleImg: `/uq-project.png`,
         githubLink:
             "https://github.com/danielhc0228/UQ-CompSci-Project-Olympic-App-FrontEnd",
         demoLink: "https://youtu.be/IL9nFx0_cxk",
@@ -63,7 +63,7 @@ export const mainProjects = [
             </>
         ),
         tags: ["TypeScript", "React", "HTML"],
-        sampleImg: `src/components/Images/netflix.png`,
+        sampleImg: `/netflix.png`,
         githubLink: "https://github.com/danielhc0228/netflix-clone",
         demoLink: "https://hojinflix.netlify.app/",
     },
@@ -102,7 +102,7 @@ export const mainProjects = [
             </>
         ),
         tags: ["TypeScript", "React", "Firebase", "HTML"],
-        sampleImg: `src/components/Images/twitter.png`,
+        sampleImg: `/twitter.png`,
         githubLink: "https://github.com/danielhc0228/twitter-clone",
         demoLink: "https://twitter-clone-15a8b.web.app/",
     },
