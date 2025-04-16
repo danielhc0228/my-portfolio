@@ -108,9 +108,9 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                 >
                     Github
                 </HeaderLinks>
-                <Link to='/contact'>
-                    <HeaderLinks>Contact</HeaderLinks>
-                </Link>
+                <HeaderLinks>
+                    <Link to='/contact'>Contact</Link>
+                </HeaderLinks>
             </Header>
             <TextWrapper>
                 <TypingText>Hi, I'm Daniel.</TypingText>
