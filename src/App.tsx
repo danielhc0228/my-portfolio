@@ -4,12 +4,15 @@ import Footer from "./components/Footer";
 import Intro from "./components/Intro";
 import Me from "./components/Me";
 import Projects from "./components/Projects";
-import Contact from "./components/Contact";
+import Board from "./components/Board";
+import NotFound from "./components/NotFound";
+import Header from "./components/Header";
 
 function App() {
     const [isUnlocked, setIsUnlocked] = useState(true);
     return (
         <Router>
+            <Header />
             <Routes>
                 <Route
                     path='/'
@@ -28,7 +31,8 @@ function App() {
                         </>
                     }
                 />
-                <Route path='/contact' element={<Contact />} />
+                <Route path='/board' element={<Board />} />
+                <Route path='*' element={<NotFound />} />
             </Routes>
 
             <Footer></Footer>

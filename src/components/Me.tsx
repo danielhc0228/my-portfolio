@@ -59,7 +59,7 @@ const typing = keyframes`
 `;
 
 const SectionTitle = styled.h1<{ isVisible: boolean }>`
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: bold;
     color: white;
     text-align: center; // Always keep centered
@@ -177,15 +177,17 @@ export default function Me() {
                         </SectionTitle>
                         <Divider />
                         <SubTitle>
-                            University of Queensland - Bachelor of Computer
-                            Science (Programming Languages)
+                            2021/03 ~ 2024/07 University of Queensland (Bachelor
+                            of Computer Science)
                         </SubTitle>
 
                         <SectionTitle isVisible={isImageVisible}>
                             <span>Experience</span>
                         </SectionTitle>
                         <Divider />
-                        <SubTitle>Bus Sanitiser - Multhana</SubTitle>
+                        <SubTitle>
+                            Bus Sanitiser, Waterless Car Wash - Multhana
+                        </SubTitle>
                         <SubTitle>Cashier - Alien Night Market</SubTitle>
 
                         <SectionTitle isVisible={isImageVisible}>

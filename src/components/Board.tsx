@@ -11,8 +11,8 @@ const Container = styled.div`
     gap: 40px;
 `;
 
-const Contact = () => {
+const Board = () => {
     return <Container>hi</Container>;
 };
 
-export default Contact;
+export default Board;
