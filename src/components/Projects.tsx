@@ -21,6 +21,7 @@ const Title = styled.h1`
 
 const SubProjects = styled.div`
     min-height: 50vh;
+    margin-bottom: 40px;
 `;
 
 const AllSubProjects = styled.div`
@@ -378,6 +379,7 @@ export default function Projects() {
                                             title={project.title}
                                             description={project.description}
                                             tags={project.tags}
+                                            sampleImg={project.sampleImg}
                                             gitLink={project.githubLink}
                                             demoLink={project.demoLink}
                                         />
@@ -417,6 +419,7 @@ export default function Projects() {
                             title={project.title}
                             description={project.description}
                             tags={project.tags}
+                            sampleImg={project.sampleImg}
                             gitLink={project.githubLink}
                             demoLink={project.demoLink}
                         />

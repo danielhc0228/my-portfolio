@@ -29,7 +29,7 @@ export const teamMainProjects = [
             </>
         ),
 
-        tags: ["JavaScript", "HTML", "CSS"],
+        tags: ["JavaScript", "CSS"],
         sampleImg: `/uq-project.png`,
         githubLink:
             "https://github.com/danielhc0228/UQ-CompSci-Project-Olympic-App-FrontEnd",
@@ -62,7 +62,7 @@ export const mainProjects = [
                 development time to a large extent.
             </>
         ),
-        tags: ["TypeScript", "React", "HTML"],
+        tags: ["TypeScript", "React"],
         sampleImg: `/netflix.png`,
         githubLink: "https://github.com/danielhc0228/netflix-clone",
         demoLink: "https://hojinflix.netlify.app/",
@@ -101,7 +101,7 @@ export const mainProjects = [
                 <br />
             </>
         ),
-        tags: ["TypeScript", "React", "Firebase", "HTML"],
+        tags: ["TypeScript", "React", "Firebase"],
         sampleImg: `/twitter.png`,
         githubLink: "https://github.com/danielhc0228/twitter-clone",
         demoLink: "https://twitter-clone-15a8b.web.app/",
@@ -113,7 +113,8 @@ export const subProjects = [
         title: "Trello Clone",
         description:
             "Trello Clone built using React and hello-pangea/dnd library. Users can create boards and cards for various purposes like todo-list etc.",
-        tags: ["Typescript", "React", "HTML"],
+        tags: ["Typescript", "React"],
+        sampleImg: `/trello.png`,
         githubLink: "https://github.com/danielhc0228/trello-clone",
         demoLink: "https://trello-clone-dc.netlify.app/",
     },
@@ -121,7 +122,8 @@ export const subProjects = [
         title: "My Portfolio",
         description:
             "My portfolio website built using all my current skills such as React, TypeScript, and libraries like Framer Motion, styled-component, hello-pangea/dnd.",
-        tags: ["TypeScript", "React", "HTML"],
+        tags: ["TypeScript", "React", "Firebase"],
+        sampleImg: `/portfolio.png`,
         githubLink: "https://github.com/danielhc0228/my-portfolio",
         demoLink: "/",
     },
@@ -129,7 +131,8 @@ export const subProjects = [
         title: "Weather App",
         description:
             "Live weather updates using Weatherbit.io API. Backend written by ChatGPT and its server running by Render.",
-        tags: ["JavaScript", "React", "HTML", "CSS"],
+        tags: ["JavaScript", "React", "CSS"],
+        sampleImg: `/weather.png`,
         githubLink: "https://github.com/danielhc0228/Weather-App-Frontend",
         demoLink: "https://weatherappdchung.netlify.app/",
     },
@@ -137,7 +140,8 @@ export const subProjects = [
         title: "Todo App",
         description:
             "A website that allows users to create and orgainise their own todo-list.",
-        tags: ["TypeScript", "JavaScript", "HTML", "React"],
+        tags: ["TypeScript", "JavaScript", "React"],
+        sampleImg: `/todo.png`,
         githubLink: "https://github.com/danielhc0228/todo-app",
         demoLink: "https://todo-app-dc.netlify.app/",
     },
@@ -145,7 +149,8 @@ export const subProjects = [
         title: "Crypto Tracker",
         description:
             "A website that shows live crypto coin currencies such as Bitcoin using API.",
-        tags: ["TypeScript", "React", "HTML"],
+        tags: ["TypeScript", "React"],
+        sampleImg: `/crypto.png`,
         githubLink: "https://github.com/danielhc0228/crypto-tracker",
         demoLink: "https://danielhc0228.github.io/crypto-tracker/",
     },
@@ -153,7 +158,8 @@ export const subProjects = [
         title: "Wordle Game",
         description:
             "A Wordle Game website built from watching YouTube. JavaScript, HTML and CSS were used.",
-        tags: ["JavaScript", "React", "HTML", "CSS"],
+        tags: ["JavaScript", "React", "CSS"],
+        sampleImg: `/wordle.png`,
         githubLink: "https://github.com/danielhc0228/Wordle-Game",
         demoLink: "https://wordlebydchung.netlify.app/",
     },
