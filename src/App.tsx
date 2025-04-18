@@ -21,6 +21,8 @@ const TopBtn = styled.button`
     position: fixed;
     text-align: center;
     padding-top: 7px;
+    z-index: 1;
+    cursor: pointer;
     &:hover {
         background-color: white;
         color: black;
@@ -51,10 +53,17 @@ function App() {
                                 setIsUnlocked={setIsUnlocked}
                             />
                             {isUnlocked && (
-                                <>
+                                <div
+                                    style={{
+                                        marginTop: "100vh",
+                                        position: "relative",
+                                        zIndex: 1,
+                                    }}
+                                >
                                     <Me />
                                     <Projects />
-                                </>
+                                    <Footer />
+                                </div>
                             )}
                         </>
                     }
@@ -63,7 +72,6 @@ function App() {
                 <Route path='*' element={<NotFound />} />
             </Routes>
 
-            <Footer />
             <TopBtn onClick={goUp}>
                 <svg
                     xmlns='http://www.w3.org/2000/svg'

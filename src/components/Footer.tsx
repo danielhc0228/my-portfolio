@@ -8,10 +8,9 @@ const FooterContainer = styled.footer`
     flex-direction: column;
     min-height: 50vh;
     gap: 20px;
-    background-color: "rgba(0, 0, 0, 1)";
+    background: #0d0d0d;
     color: #fff;
-    padding: 80px 0;
-    margin-top: 50px;
+    padding: 130px 0;
 `;
 
 const FooterContent = styled.div`

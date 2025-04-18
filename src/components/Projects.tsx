@@ -5,6 +5,11 @@ import { FaGithub } from "react-icons/fa";
 import { useState } from "react";
 import { subProjects, mainProjects, teamMainProjects } from "../project-list";
 
+const Wrapper = styled.div`
+    width: 100%;
+    background: #0d0d0d;
+`;
+
 const Container = styled.div`
     min-height: 100vh;
     margin: auto;
@@ -109,7 +114,6 @@ const Row = styled(motion.div)`
     gap: 20px;
     position: absolute;
     width: 100%;
-    z-index: 1;
 `;
 
 const SliderBtnLeft = styled.div`
@@ -122,7 +126,6 @@ const SliderBtnLeft = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
 
@@ -229,203 +232,207 @@ export default function Projects() {
     };
 
     return (
-        <Container>
-            <Title>Projects</Title>
-            <SemiTitle>Team Projects</SemiTitle>
-            {teamMainProjects.map((project, idx) => (
-                <MainProject key={idx}>
-                    <div>
-                        <MainProjectTitle>{project.title}</MainProjectTitle>
-                        <Notes>{project.note}</Notes>
-                        <MainProjectDescription>
-                            {project.description}
-                        </MainProjectDescription>
-                        <TagContainer>
-                            {project.tags.map((tag, idx) => (
-                                <Tag key={idx}>{tag}</Tag>
-                            ))}
-                        </TagContainer>
-                        <Link
-                            href={project.githubLink}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <FaGithub size={20} />
-                        </Link>
-                        <Link
-                            href={project.githubLink}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                fill='none'
-                                viewBox='0 0 24 24'
-                                strokeWidth={1.5}
-                                stroke='currentColor'
-                                width='20'
-                                height='20'
+        <Wrapper>
+            <Container>
+                <Title>Projects</Title>
+                <SemiTitle>Team Projects</SemiTitle>
+                {teamMainProjects.map((project, idx) => (
+                    <MainProject key={idx}>
+                        <div>
+                            <MainProjectTitle>{project.title}</MainProjectTitle>
+                            <Notes>{project.note}</Notes>
+                            <MainProjectDescription>
+                                {project.description}
+                            </MainProjectDescription>
+                            <TagContainer>
+                                {project.tags.map((tag, idx) => (
+                                    <Tag key={idx}>{tag}</Tag>
+                                ))}
+                            </TagContainer>
+                            <Link
+                                href={project.githubLink}
+                                target='_blank'
+                                rel='noopener noreferrer'
                             >
-                                <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
-                                />
-                            </svg>
-                        </Link>
-                    </div>
-
-                    <MainProjectImg
-                        src={project.sampleImg}
-                        variants={logoVariants}
-                        whileHover='active'
-                        animate='normal'
-                    />
-                </MainProject>
-            ))}
-
-            <SemiTitle>Personal Projects</SemiTitle>
-            {mainProjects.map((project, idx) => (
-                <MainProject key={idx}>
-                    <div>
-                        <MainProjectTitle>{project.title}</MainProjectTitle>
-                        <MainProjectDescription>
-                            {project.description}
-                        </MainProjectDescription>
-                        <TagContainer>
-                            {project.tags.map((tag, idx) => (
-                                <Tag key={idx}>{tag}</Tag>
-                            ))}
-                        </TagContainer>
-                        <Link
-                            href={project.githubLink}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <FaGithub size={20} />
-                        </Link>
-                        <Link
-                            href={project.githubLink}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                fill='none'
-                                viewBox='0 0 24 24'
-                                strokeWidth={1.5}
-                                stroke='currentColor'
-                                width='20'
-                                height='20'
+                                <FaGithub size={20} />
+                            </Link>
+                            <Link
+                                href={project.githubLink}
+                                target='_blank'
+                                rel='noopener noreferrer'
                             >
-                                <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
-                                />
-                            </svg>
-                        </Link>
-                    </div>
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    fill='none'
+                                    viewBox='0 0 24 24'
+                                    strokeWidth={1.5}
+                                    stroke='currentColor'
+                                    width='20'
+                                    height='20'
+                                >
+                                    <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
+                                    />
+                                </svg>
+                            </Link>
+                        </div>
 
-                    <MainProjectImg
-                        src={project.sampleImg}
-                        variants={logoVariants}
-                        whileHover='active'
-                        animate='normal'
-                    />
-                </MainProject>
-            ))}
-            <SemiTitle>Personal Sub Projects</SemiTitle>
-            <SubProjects>
-                <Slider>
-                    <SliderBtnLeft onClick={() => decreaseIndex()}>
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='size-6'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M15.75 19.5 8.25 12l7.5-7.5'
-                            />
-                        </svg>
-                    </SliderBtnLeft>
-                    <AnimatePresence
-                        initial={false}
-                        onExitComplete={toggleLeaving}
-                    >
-                        {[index].map((i) => (
-                            <Row
-                                key={i}
-                                variants={getRowVariants}
-                                initial='hidden'
-                                animate='visible'
-                                exit='exit'
-                                custom={rowState}
-                                transition={{
-                                    type: "tween",
-                                    duration: 1.5,
-                                }}
-                            >
-                                {subProjects
-                                    .slice(offset * i, offset * i + offset)
-                                    .map((project, idx) => (
-                                        <Card
-                                            key={idx}
-                                            title={project.title}
-                                            description={project.description}
-                                            tags={project.tags}
-                                            sampleImg={project.sampleImg}
-                                            gitLink={project.githubLink}
-                                            demoLink={project.demoLink}
-                                        />
-                                    ))}
-                            </Row>
-                        ))}
-                    </AnimatePresence>
-
-                    <SliderBtnRight onClick={() => incraseIndex()}>
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='size-6'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='m8.25 4.5 7.5 7.5-7.5 7.5'
-                            />
-                        </svg>
-                    </SliderBtnRight>
-                </Slider>
-            </SubProjects>
-            {isSeeAll ? (
-                <ToggleButton onClick={toggleSeeAll}>Collapse</ToggleButton>
-            ) : (
-                <ToggleButton onClick={toggleSeeAll}>See All</ToggleButton>
-            )}
-            {isSeeAll ? (
-                <AllSubProjects>
-                    {subProjects.map((project, idx) => (
-                        <Card
-                            key={idx}
-                            title={project.title}
-                            description={project.description}
-                            tags={project.tags}
-                            sampleImg={project.sampleImg}
-                            gitLink={project.githubLink}
-                            demoLink={project.demoLink}
+                        <MainProjectImg
+                            src={project.sampleImg}
+                            variants={logoVariants}
+                            whileHover='active'
+                            animate='normal'
                         />
-                    ))}
-                </AllSubProjects>
-            ) : null}
-        </Container>
+                    </MainProject>
+                ))}
+
+                <SemiTitle>Personal Projects</SemiTitle>
+                {mainProjects.map((project, idx) => (
+                    <MainProject key={idx}>
+                        <div>
+                            <MainProjectTitle>{project.title}</MainProjectTitle>
+                            <MainProjectDescription>
+                                {project.description}
+                            </MainProjectDescription>
+                            <TagContainer>
+                                {project.tags.map((tag, idx) => (
+                                    <Tag key={idx}>{tag}</Tag>
+                                ))}
+                            </TagContainer>
+                            <Link
+                                href={project.githubLink}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <FaGithub size={20} />
+                            </Link>
+                            <Link
+                                href={project.githubLink}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    fill='none'
+                                    viewBox='0 0 24 24'
+                                    strokeWidth={1.5}
+                                    stroke='currentColor'
+                                    width='20'
+                                    height='20'
+                                >
+                                    <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
+                                    />
+                                </svg>
+                            </Link>
+                        </div>
+
+                        <MainProjectImg
+                            src={project.sampleImg}
+                            variants={logoVariants}
+                            whileHover='active'
+                            animate='normal'
+                        />
+                    </MainProject>
+                ))}
+                <SemiTitle>Personal Sub Projects</SemiTitle>
+                <SubProjects>
+                    <Slider>
+                        <SliderBtnLeft onClick={() => decreaseIndex()}>
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className='size-6'
+                            >
+                                <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='M15.75 19.5 8.25 12l7.5-7.5'
+                                />
+                            </svg>
+                        </SliderBtnLeft>
+                        <AnimatePresence
+                            initial={false}
+                            onExitComplete={toggleLeaving}
+                        >
+                            {[index].map((i) => (
+                                <Row
+                                    key={i}
+                                    variants={getRowVariants}
+                                    initial='hidden'
+                                    animate='visible'
+                                    exit='exit'
+                                    custom={rowState}
+                                    transition={{
+                                        type: "tween",
+                                        duration: 1.5,
+                                    }}
+                                >
+                                    {subProjects
+                                        .slice(offset * i, offset * i + offset)
+                                        .map((project, idx) => (
+                                            <Card
+                                                key={idx}
+                                                title={project.title}
+                                                description={
+                                                    project.description
+                                                }
+                                                tags={project.tags}
+                                                sampleImg={project.sampleImg}
+                                                gitLink={project.githubLink}
+                                                demoLink={project.demoLink}
+                                            />
+                                        ))}
+                                </Row>
+                            ))}
+                        </AnimatePresence>
+
+                        <SliderBtnRight onClick={() => incraseIndex()}>
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className='size-6'
+                            >
+                                <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='m8.25 4.5 7.5 7.5-7.5 7.5'
+                                />
+                            </svg>
+                        </SliderBtnRight>
+                    </Slider>
+                </SubProjects>
+                {isSeeAll ? (
+                    <ToggleButton onClick={toggleSeeAll}>Collapse</ToggleButton>
+                ) : (
+                    <ToggleButton onClick={toggleSeeAll}>See All</ToggleButton>
+                )}
+                {isSeeAll ? (
+                    <AllSubProjects>
+                        {subProjects.map((project, idx) => (
+                            <Card
+                                key={idx}
+                                title={project.title}
+                                description={project.description}
+                                tags={project.tags}
+                                sampleImg={project.sampleImg}
+                                gitLink={project.githubLink}
+                                demoLink={project.demoLink}
+                            />
+                        ))}
+                    </AllSubProjects>
+                ) : null}
+            </Container>
+        </Wrapper>
     );
 }

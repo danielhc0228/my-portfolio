@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-    position: absolute;
+    position: fixed;
     top: 30px;
     left: 30px;
     width: 100%;
     display: flex;
     gap: 20px;
+    z-index: 1;
 `;
 
 const HeaderLinks = styled.div`

@@ -65,6 +65,7 @@ const SectionTitle = styled.h1<{ $isVisible: boolean }>`
     text-align: center; // Always keep centered
     white-space: nowrap;
     overflow: hidden;
+    background: #0d0d0d;
 
     span {
         display: inline-block;
@@ -100,6 +101,7 @@ const SkillsContainer = styled.div`
     padding-top: 20px;
     padding-bottom: 130px;
     width: 100%;
+    background: #0d0d0d;
 `;
 
 const SkillItem = styled.div`

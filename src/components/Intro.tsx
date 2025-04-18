@@ -3,14 +3,20 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Container = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #0d0d0d;
+    background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+
     color: white;
     gap: 40px;
+    z-index: 0;
 `;
 
 const TextWrapper = styled.div`
@@ -47,7 +53,7 @@ const FadeInText = styled.h2`
     font-size: 2rem;
     margin-top: 20px;
     opacity: 0;
-    animation: ${fadeIn} 0.5s ease-in forwards;
+    animation: ${fadeIn} 2s ease-in forwards;
     animation-delay: 1s;
 `;
 
@@ -56,6 +62,21 @@ const Lock = styled.div`
     flex-direction: row;
     gap: 200px;
 `;
+
+const Down = styled(motion.div)`
+    position: absolute;
+    bottom: 70px;
+`;
+
+const logoVariants = {
+    active: {
+        y: [0, -20, 0], // replicating transform: translateY(-20px)
+        transition: {
+            repeat: Infinity,
+            duration: 1.5,
+        },
+    },
+};
 
 type IntroProps = {
     isUnlocked: boolean;
@@ -220,6 +241,26 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                     </Droppable>
                 </DragDropContext>
             </Lock>
+
+            {isUnlocked && (
+                <Down variants={logoVariants} animate='active'>
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        width='34'
+                        height='34'
+                    >
+                        <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5'
+                        />
+                    </svg>
+                </Down>
+            )}
         </Container>
     );
 };
