@@ -39,14 +39,14 @@ export const teamMainProjects = [
 
 export const mainProjects = [
     {
-        title: "Netflix Clone",
+        title: "HojinFlix",
         description: (
             <>
                 A personal project that was developed using React, TypeScript
                 and Framer Motion Library.
                 <br />
-                The goal was to clone the main home page and search function of
-                the actual Netflix website.
+                The goal was to create a Movie Streaming website that works like
+                a famous movie streaming service, Netflix.
                 <br />
                 The development took about 3 weeks spending about 1 to 4 hours a
                 day excluding weekends.
@@ -68,19 +68,19 @@ export const mainProjects = [
         demoLink: "https://hojinflix.netlify.app/",
     },
     {
-        title: "Twitter Clone",
+        title: "SNS Platform - H",
         description: (
             <>
                 A personal project that was developed using React, TypeScript
                 and Firebase backend.
                 <br />
-                The goal was to clone the main feature of X, which was used to
-                be called Twitter.
+                The goal was to create a social networking service platform that
+                works similar to famous platform, X former called Twitter.
                 <br />
                 <br />
                 <b>Features:</b>
                 <br />
-                <b>Tweeting posts and images:</b>
+                <b>Uploading posts and images:</b>
                 <br />
                 <b>profile page and change profile image.:</b>
                 <br />
