@@ -43,13 +43,17 @@ export const mainProjects = [
         description: (
             <>
                 A personal project that was developed using React, TypeScript
-                and Framer Motion Library.
+                and Framer Motion Library, named after my Korean name.
                 <br />
-                The goal was to create a Movie Streaming website that works like
-                a famous movie streaming service, Netflix.
                 <br />
-                The development took about 3 weeks spending about 1 to 4 hours a
-                day excluding weekends.
+                <b>Goal:</b> Create a Movie Streaming website that works like a
+                famous movie streaming service, Netflix.
+                <br />
+                <br />
+                <b>Development:</b> 3 Weeks, approximately 1-4 hours a day.
+                <br />
+                <br />
+                <b>Tools and Libraries:</b>
                 <br />
                 The show informations are loaded from the API data that was
                 provided by TMDB database. <br />
@@ -68,30 +72,30 @@ export const mainProjects = [
         demoLink: "https://hojinflix.netlify.app/",
     },
     {
-        title: "SNS Platform - H",
+        title: "SNS Platform - 𝓗",
         description: (
             <>
                 A personal project that was developed using React, TypeScript
-                and Firebase backend.
+                and Firebase backend, named after my Korean name initial.
                 <br />
-                The goal was to create a social networking service platform that
-                works similar to famous platform, X former called Twitter.
+                <br />
+                <b>Goal:</b>Create a social networking service platform that
+                works similar to famous platform, X, former called Twitter.
+                <br />
+                <br />
+                <b>Development:</b> 8 days, 1-2 hours a day.
                 <br />
                 <br />
                 <b>Features:</b>
                 <br />
-                <b>Uploading posts and images:</b>
+                • Uploading posts and images,
                 <br />
-                <b>profile page and change profile image.:</b>
+                • Set up profile page and change profile image,
                 <br />
-                <b>
-                    Edit and delete posts but only the user who posted are able
-                    to.
-                </b>
+                • Edit and delete posts
                 <br />
                 <br />
-                The development took about a week spending about 1 to 2 hours a
-                day.
+                <b>Description:</b>
                 <br />
                 I have no backend experience but Firebase has done majority of
                 the backend work for me. Although, Firebase no longer provides

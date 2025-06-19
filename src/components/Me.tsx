@@ -235,6 +235,10 @@ export default function Me() {
                     <SkillIcon src='/firebase.svg' alt='Firebase' />
                     <SkillLabel>Firebase</SkillLabel>
                 </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/nextjs.svg' alt='Next.js' />
+                    <SkillLabel>Next.js</SkillLabel>
+                </SkillItem>
             </SkillsContainer>
         </div>
     );
