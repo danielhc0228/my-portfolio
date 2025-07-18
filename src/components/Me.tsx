@@ -239,6 +239,14 @@ export default function Me() {
                     <SkillIcon src='/nextjs.svg' alt='Next.js' />
                     <SkillLabel>Next.js</SkillLabel>
                 </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/prisma.png' alt='prisma' />
+                    <SkillLabel>Prisma</SkillLabel>
+                </SkillItem>
+                <SkillItem>
+                    <SkillIcon src='/supabase.png' alt='supabase' />
+                    <SkillLabel>Supabase</SkillLabel>
+                </SkillItem>
             </SkillsContainer>
         </div>
     );
