@@ -1,6 +1,38 @@
 import { useEffect, useRef, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
+const skills = [
+    {
+        name: "HTML",
+        icon: "/html.svg",
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTML",
+    },
+    {
+        name: "CSS",
+        icon: "/css.svg",
+        url: "https://developer.mozilla.org/en-US/docs/Web/CSS",
+    },
+    {
+        name: "JavaScript",
+        icon: "/javascript.svg",
+        url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+    },
+    {
+        name: "TypeScript",
+        icon: "/typescript.svg",
+        url: "https://www.typescriptlang.org/",
+    },
+    { name: "React", icon: "/react.svg", url: "https://reactjs.org/" },
+    {
+        name: "Firebase",
+        icon: "/firebase.svg",
+        url: "https://firebase.google.com/",
+    },
+    { name: "Next.js", icon: "/nextjs.svg", url: "https://nextjs.org/" },
+    { name: "Prisma", icon: "/prisma.png", url: "https://www.prisma.io/" },
+    { name: "Supabase", icon: "/supabase.png", url: "https://supabase.com/" },
+];
+
 const Container = styled.div`
     min-height: 100vh;
     display: flex;
@@ -208,45 +240,23 @@ export default function Me() {
                 </InfoContainer>
             </Container>
             <SectionTitle ref={titleRef} $isVisible={isImageVisible}>
-                <span>Skills</span>
+                <span>Tech Stack</span>
             </SectionTitle>
             <SkillsContainer>
-                <SkillItem>
-                    <SkillIcon src='/html.svg' alt='HTML' />
-                    <SkillLabel>HTML</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/css.svg' alt='CSS' />
-                    <SkillLabel>CSS</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/javascript.svg' alt='JavaScript' />
-                    <SkillLabel>JavaScript</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/typescript.svg' alt='TypeScript' />
-                    <SkillLabel>TypeScript</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/react.svg' alt='React' />
-                    <SkillLabel>React</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/firebase.svg' alt='Firebase' />
-                    <SkillLabel>Firebase</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/nextjs.svg' alt='Next.js' />
-                    <SkillLabel>Next.js</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/prisma.png' alt='prisma' />
-                    <SkillLabel>Prisma</SkillLabel>
-                </SkillItem>
-                <SkillItem>
-                    <SkillIcon src='/supabase.png' alt='supabase' />
-                    <SkillLabel>Supabase</SkillLabel>
-                </SkillItem>
+                {skills.map((skill) => (
+                    <a
+                        key={skill.name}
+                        href={skill.url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        style={{ textDecoration: "none" }}
+                    >
+                        <SkillItem>
+                            <SkillIcon src={skill.icon} alt={skill.name} />
+                            <SkillLabel>{skill.name}</SkillLabel>
+                        </SkillItem>
+                    </a>
+                ))}
             </SkillsContainer>
         </div>
     );
