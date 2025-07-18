@@ -60,6 +60,7 @@ const MainProjectTitle = styled.h1`
 `;
 
 const MainProjectImg = styled(motion.img)`
+    max-width: 70%;
     max-height: 80vh;
     border-radius: 5%;
 `;
