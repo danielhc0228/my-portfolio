@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 const Posts = styled.div`
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    height: 80vh;
     max-height: 90vh;
     padding: 20px;
     border: 1px solid rgba(255, 255, 255, 0.5);
