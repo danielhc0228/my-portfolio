@@ -241,7 +241,9 @@ export default function Projects() {
                     <MainProject key={idx}>
                         <div>
                             <MainProjectTitle>{project.title}</MainProjectTitle>
-                            <Notes>{project.note}</Notes>
+                            {project.note ? (
+                                <Notes>{project.note}</Notes>
+                            ) : null}
                             <MainProjectDescription>
                                 {project.description}
                             </MainProjectDescription>
@@ -294,6 +296,9 @@ export default function Projects() {
                     <MainProject key={idx}>
                         <div>
                             <MainProjectTitle>{project.title}</MainProjectTitle>
+                            {project.note ? (
+                                <Notes>{project.note}</Notes>
+                            ) : null}
                             <MainProjectDescription>
                                 {project.description}
                             </MainProjectDescription>
