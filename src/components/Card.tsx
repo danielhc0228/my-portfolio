@@ -19,7 +19,6 @@ const Project = styled.div`
         transform: scale(1.03);
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
         filter: grayscale(0%);
-        cursor: pointer;
     }
 `;
 

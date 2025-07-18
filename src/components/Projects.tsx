@@ -257,7 +257,7 @@ export default function Projects() {
                                 <FaGithub size={20} />
                             </Link>
                             <Link
-                                href={project.githubLink}
+                                href={project.demoLink}
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >
@@ -309,7 +309,7 @@ export default function Projects() {
                                 <FaGithub size={20} />
                             </Link>
                             <Link
-                                href={project.githubLink}
+                                href={project.demoLink}
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >

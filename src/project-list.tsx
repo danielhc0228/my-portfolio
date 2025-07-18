@@ -69,6 +69,8 @@ export const mainProjects = [
                 ChatGPT helped with debugging build issues and optimizing
                 TypeScript logic during development and increasing development
                 speed.
+                <br />
+                <br /> Mobile Friendly
             </>
         ),
         tags: [
