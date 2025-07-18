@@ -39,6 +39,51 @@ export const teamMainProjects = [
 
 export const mainProjects = [
     {
+        title: "DC-Market",
+        description: (
+            <>
+                A full-featured second-hand trading platform developed using
+                Next.js, TypeScript, Tailwind CSS, Prisma and Supabase.
+                <br />
+                <br />
+                <b>Goal:</b> Build a user-centric marketplace where people can
+                trade items, chat directly with sellers, and leave reviews after
+                transactions.
+                <br />
+                <br />
+                <b>Development:</b> ~2 Months, averaging 2-4 hours a day.
+                <br />
+                <br />
+                <b>Tools and Libraries:</b>
+                <br />
+                Prisma was used to structure and interact with the PostgreSQL
+                database. Supabase enabled authentication and real-time chatroom
+                logic.
+                <br />
+                Tailwind CSS and Headless UI were used to create clean and
+                responsive layouts. <br />
+                Infinite scrolling was implemented using IntersectionObserver
+                API, and form validation was handled using the zod library.
+                <br />
+                <br />
+                ChatGPT helped with debugging build issues and optimizing
+                TypeScript logic during development and increasing development
+                speed.
+            </>
+        ),
+        tags: [
+            "TypeScript",
+            "React",
+            "Next.js",
+            "Prisma",
+            "Supabase",
+            "Tailwind CSS",
+        ],
+        sampleImg: `/dc-market.png`,
+        githubLink: "https://github.com/danielhc0228/DC-Market",
+        demoLink: "https://dc-market.vercel.app/",
+    },
+    {
         title: "HojinFlix",
         description: (
             <>
@@ -68,7 +113,7 @@ export const mainProjects = [
         ),
         tags: ["TypeScript", "React"],
         sampleImg: `/netflix.png`,
-        githubLink: "https://github.com/danielhc0228/netflix-clone",
+        githubLink: "https://github.com/danielhc0228/HojinFlix-Movie-Website",
         demoLink: "https://hojinflix.netlify.app/",
     },
     {
@@ -107,7 +152,8 @@ export const mainProjects = [
         ),
         tags: ["TypeScript", "React", "Firebase"],
         sampleImg: `/twitter.png`,
-        githubLink: "https://github.com/danielhc0228/twitter-clone",
+        githubLink:
+            "https://github.com/danielhc0228/Social-Network-Service-project",
         demoLink: "https://twitter-clone-15a8b.web.app/",
     },
 ];
