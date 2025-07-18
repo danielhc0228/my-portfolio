@@ -40,6 +40,7 @@ export const teamMainProjects = [
 export const mainProjects = [
     {
         title: "DC-Market",
+        note: "*Adding Product feature is currently unavailable as no online storage has been set for this website yet. ",
         description: (
             <>
                 A full-featured second-hand trading platform developed using
