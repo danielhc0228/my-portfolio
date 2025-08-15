@@ -87,6 +87,57 @@ export const mainProjects = [
         demoLink: "https://dc-market.vercel.app/",
     },
     {
+        title: "Tennis League Web App",
+        note: "*Some admin features require authentication and are not accessible to public users.",
+        description: (
+            <>
+                A tennis league management platform built with Next.js,
+                TypeScript, Tailwind CSS, Prisma, and PostgreSQL. Made for my
+                tennis-group friends.
+                <br />
+                <br />
+                <b>Goal:</b> Create a streamlined system for managing players,
+                leagues, and availability tracking.
+                <br />
+                <br />
+                <b>Development:</b> ~3-4 weeks, averaging 2–4 hours a day.
+                <br />
+                <br />
+                <b>Tools and Libraries:</b>
+                <br />
+                Prisma was used to design and manage the PostgreSQL database
+                schema and queries.
+                <br />
+                NextAuth.js handled authentication, while Tailwind CSS was used
+                to create responsive and visually clean layouts.
+                <br />
+                Form validation was managed using the zod library.
+                <br />
+                Deployment was done on Vercel, ensuring fast builds and easy
+                integration with serverless functions.
+                <br />
+                <br />
+                ChatGPT assisted with debugging Prisma queries, optimizing
+                TypeScript logic, and improving UI/UX responsiveness during
+                development.
+                <br />
+                <br /> Fully Mobile Friendly
+            </>
+        ),
+        tags: [
+            "TypeScript",
+            "React",
+            "Next.js",
+            "Prisma",
+            "PostgreSQL",
+            "Tailwind CSS",
+        ],
+        sampleImg: `/tennis-league.png`,
+        githubLink: "https://github.com/danielhc0228/my-tennis-app",
+        demoLink: "https://htp-league.vercel.app/",
+    },
+
+    {
         title: "HojinFlix",
         description: (
             <>
