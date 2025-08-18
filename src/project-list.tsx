@@ -132,7 +132,7 @@ export const mainProjects = [
             "PostgreSQL",
             "Tailwind CSS",
         ],
-        sampleImg: `/tennis-league.png`,
+        sampleImg: `/htp.png`,
         githubLink: "https://github.com/danielhc0228/my-tennis-app",
         demoLink: "https://htp-league.vercel.app/",
     },
