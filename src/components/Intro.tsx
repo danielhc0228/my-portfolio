@@ -103,7 +103,7 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
         <Container>
             <TextWrapper>
                 <TypingText>Hi, I'm Daniel.</TypingText>
-                <FadeInText>A Front-end Developer.</FadeInText>
+                <FadeInText>A Full-stack Developer.</FadeInText>
             </TextWrapper>
             <Lock>
                 <DragDropContext onDragEnd={handleDragEnd}>
@@ -149,11 +149,7 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                             </div>
                         )}
                     </Droppable>
-                    {isUnlocked ? (
-                        <h1>Scroll Down</h1>
-                    ) : (
-                        <h1>Drag the "key" to the "lock" to proceed</h1>
-                    )}
+
                     {/* Drop Target */}
                     <Droppable droppableId='drop-zone'>
                         {(provided) => (
@@ -241,6 +237,11 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                     </Droppable>
                 </DragDropContext>
             </Lock>
+            {isUnlocked ? (
+                <h1>Scroll Down</h1>
+            ) : (
+                <h1>Drag the "key" to the "lock" to proceed</h1>
+            )}
 
             {isUnlocked && (
                 <Down variants={logoVariants} animate='active'>
