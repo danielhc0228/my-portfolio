@@ -59,6 +59,19 @@ const Image = styled.img<{ $isVisible: boolean }>`
     opacity: 0;
     transform: translateY(50px);
 
+    /* Responsive scaling */
+    @media (max-width: 1024px) {
+        height: 45vh;
+    }
+
+    @media (max-width: 768px) {
+        height: 35vh;
+    }
+
+    @media (max-width: 480px) {
+        height: 25vh;
+    }
+
     ${(props) =>
         props.$isVisible &&
         css`
