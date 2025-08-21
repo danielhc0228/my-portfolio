@@ -35,11 +35,13 @@ const skills = [
 
 const Container = styled.div`
     min-height: 100vh;
+    padding-top: 50px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     background: #0d0d0d;
     color: white;
-    justify-content: space-around;
+    justify-content: center;
 `;
 
 const fadeInUp = keyframes`
@@ -65,11 +67,11 @@ const Image = styled.img<{ $isVisible: boolean }>`
     }
 
     @media (max-width: 768px) {
-        height: 35vh;
+        height: 45vh;
     }
 
     @media (max-width: 480px) {
-        height: 25vh;
+        height: 35vh;
     }
 
     ${(props) =>
@@ -79,13 +81,10 @@ const Image = styled.img<{ $isVisible: boolean }>`
         `}
 `;
 
-const VerticalLine = styled.div`
-    height: 200px;
-    border-left: 4px solid white;
-`;
-
 const InfoContainer = styled.div`
     height: 65vh;
+    padding-left: 30px;
+    padding-right: 30px;
     display: flex;
     align-items: center;
     background: #0d0d0d;
@@ -217,7 +216,7 @@ export default function Me() {
                     src='\MyEmoji.png'
                     $isVisible={isImageVisible}
                 />
-                <VerticalLine />
+                {/* <VerticalLine /> */}
                 <InfoContainer>
                     <ContentWrapper>
                         <SectionTitle
@@ -236,9 +235,7 @@ export default function Me() {
                             <span>Experience</span>
                         </SectionTitle>
                         <Divider />
-                        <SubTitle>
-                            Bus Sanitiser, Waterless Car Wash - Multhana
-                        </SubTitle>
+                        <SubTitle>Bus Sanitiser Supervisor - Multhana</SubTitle>
                         <SubTitle>Cashier - Alien Night Market</SubTitle>
 
                         <SectionTitle $isVisible={isImageVisible}>
