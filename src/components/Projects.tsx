@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Card from "./Card";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { subProjects, mainProjects, teamMainProjects } from "../project-list";
 
 const Wrapper = styled.div`
@@ -68,6 +68,10 @@ const MainProjectImg = styled(motion.img)`
     max-width: 90%;
     max-height: 80vh;
     border-radius: 5%;
+
+    @media (min-width: 1100px) {
+        max-width: 70%;
+    }
 `;
 
 const MainProjectDescription = styled.div`
@@ -134,6 +138,7 @@ const SliderBtnLeft = styled.div`
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    z-index: 2;
 
     &:hover {
         transform: translateY(-55%) scale(1.1); /* Slight scale effect */
@@ -204,12 +209,25 @@ export default function Projects() {
     const [index, setIndex] = useState(0);
     const [rowState, setRowState] = useState(1);
     const [isSeeAll, setSeeAll] = useState(false);
+    const [offset, setOffset] = useState(4);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setOffset(2); // small screens
+            } else {
+                setOffset(4); // medium+ screens
+            }
+        };
+
+        handleResize(); // run once on mount
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const toggleLeaving = () => {
         setLeaving((prev) => !prev);
     };
-
-    const offset = 4;
 
     const incraseIndex = () => {
         if (leaving) return;
