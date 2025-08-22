@@ -51,6 +51,11 @@ const MainProject = styled.div`
     align-items: center;
     gap: 25px;
     padding-bottom: 100px;
+    flex-direction: column;
+
+    @media (min-width: 1100px) {
+        flex-direction: row; /* side by side on wide screens */
+    }
 `;
 
 const MainProjectTitle = styled.h1`
@@ -60,7 +65,7 @@ const MainProjectTitle = styled.h1`
 `;
 
 const MainProjectImg = styled(motion.img)`
-    max-width: 70%;
+    max-width: 90%;
     max-height: 80vh;
     border-radius: 5%;
 `;
