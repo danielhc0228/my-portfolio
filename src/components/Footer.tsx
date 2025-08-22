@@ -89,6 +89,9 @@ const fadeIn = keyframes`
 
 const FadeInText = styled.h2`
     font-size: 2rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
     opacity: 0;
     animation: ${fadeIn} 0.5s ease-in forwards;
     animation-delay: 1s;
