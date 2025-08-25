@@ -36,9 +36,6 @@ export default function Header() {
                     Github
                 </a>
             </HeaderLinks>
-            <HeaderLinks>
-                <Link to='/board'>Board</Link>
-            </HeaderLinks>
         </Container>
     );
 }
