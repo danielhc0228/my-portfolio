@@ -62,6 +62,7 @@ function App() {
                                 >
                                     <Me />
                                     <Projects />
+                                    <Board />
                                     <Footer />
                                 </div>
                             )}

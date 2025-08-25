@@ -5,8 +5,9 @@ import { db } from "../firebase";
 import Timeline from "./timeline";
 
 const Container = styled.div`
-    height: 100vh;
+    height: 120vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: #0d0d0d;
@@ -17,7 +18,7 @@ const Container = styled.div`
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 90%;
     gap: 10px;
 `;
 
