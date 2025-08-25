@@ -12,7 +12,7 @@ const Container = styled.div`
     justify-content: center;
     background: #0d0d0d;
     color: white;
-    gap: 40px;
+    gap: 20px;
 `;
 
 const Form = styled.form`
@@ -61,6 +61,10 @@ const SubmitBtn = styled.input`
     }
 `;
 
+const Title = styled.h1`
+    font-size: 32px;
+`;
+
 export default function Board() {
     const [isLoading, setLoading] = useState(false);
     const [post, setPosts] = useState("");
@@ -92,6 +96,7 @@ export default function Board() {
 
     return (
         <Container>
+            <Title>Comments</Title>
             <Form onSubmit={onSubmit}>
                 <NameTextArea
                     required

@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     margin-top: 30px;
     margin-bottom: 70px;
     height: 80vh;
-    width: 50%;
+    width: 90%;
 
     @media (max-width: 768px) {
         margin: 0px 5px;
@@ -39,11 +39,6 @@ const Posts = styled.div`
     border-radius: 15px;
     margin-top: 10px;
     overflow-y: auto;
-`;
-
-const Title = styled.h1`
-    font-size: 32px;
-    margin: 10px 0px;
 `;
 
 export default function Timeline() {
@@ -78,7 +73,6 @@ export default function Timeline() {
     }, []);
     return (
         <Wrapper>
-            <Title>Posts</Title>
             <Posts>
                 {posts.map((post) => (
                     <Post key={post.id} {...post} />
