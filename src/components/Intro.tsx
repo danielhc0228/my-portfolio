@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -63,6 +63,58 @@ const Lock = styled.div`
     gap: 200px;
 `;
 
+const keyGlowPulse = keyframes`
+  0%, 100% { box-shadow: 0 0 10px 2px rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 22px 8px rgba(255, 215, 0, 0.85); }
+`;
+
+const KeyIconWrapper = styled.div<{ $isDragging: boolean }>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    border-radius: 50%;
+    cursor: grab;
+    animation: ${keyGlowPulse} 1.8s ease-in-out infinite;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    ${(props) =>
+        props.$isDragging &&
+        css`
+            animation: none;
+            box-shadow: 0 0 26px 10px rgba(255, 215, 0, 0.95);
+        `}
+`;
+
+const dropGlowPulse = keyframes`
+  0%, 100% { box-shadow: 0 0 10px 2px rgba(29, 155, 240, 0.3); }
+  50% { box-shadow: 0 0 20px 6px rgba(29, 155, 240, 0.65); }
+`;
+
+const LockTargetWrapper = styled.div<{ $isDraggingOver: boolean }>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    animation: ${dropGlowPulse} 2.2s ease-in-out infinite;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease,
+        transform 0.3s ease;
+
+    ${(props) =>
+        props.$isDraggingOver &&
+        css`
+            animation: none;
+            border-color: #1d9bf0;
+            transform: scale(1.15);
+            box-shadow: 0 0 30px 10px rgba(29, 155, 240, 0.95);
+        `}
+`;
+
 const Down = styled(motion.div)`
     position: absolute;
     bottom: 70px;
@@ -119,11 +171,14 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                                         draggableId='draggable-item'
                                         index={0}
                                     >
-                                        {(provided) => (
-                                            <div
+                                        {(provided, snapshot) => (
+                                            <KeyIconWrapper
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
+                                                $isDragging={
+                                                    snapshot.isDragging
+                                                }
                                             >
                                                 <svg
                                                     xmlns='http://www.w3.org/2000/svg'
@@ -140,7 +195,7 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                                                         d='M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z'
                                                     />
                                                 </svg>
-                                            </div>
+                                            </KeyIconWrapper>
                                         )}
                                     </Draggable>
                                 )}
@@ -152,10 +207,11 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
 
                     {/* Drop Target */}
                     <Droppable droppableId='drop-zone'>
-                        {(provided) => (
-                            <div
+                        {(provided, snapshot) => (
+                            <LockTargetWrapper
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
+                                $isDraggingOver={snapshot.isDraggingOver}
                             >
                                 <AnimatePresence mode='wait'>
                                     {isUnlocked ? (
@@ -232,7 +288,7 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                                         </motion.svg>
                                     )}
                                 </AnimatePresence>
-                            </div>
+                            </LockTargetWrapper>
                         )}
                     </Droppable>
                 </DragDropContext>
