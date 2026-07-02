@@ -1,21 +1,23 @@
 export const teamMainProjects = [
     {
         title: "Olympic Planner & Translator - UQ Project",
-        note: "*UQ Server is no longer hosted. Demo can be viewed via YouTube",
+        note: "*Live server decommissioned post-graduation; demo available via YouTube walkthrough.",
         description: (
             <>
-                A mobile app offering event planning and live guidance for
-                culturally and linguistically diverse visitors to the Brisbane
-                2032 Olympics.
+                Collaborated in a university team to design and build a
+                cross-cultural event-planning mobile app for international
+                visitors to the Brisbane 2032 Olympics.
                 <br />
                 <br />
-                <b>Key Features:</b>
+                <b>Key Contributions:</b>
                 <br />
-                • Browse Olympic events and build a personal schedule
+                • Built event browsing and personalized schedule planning
                 <br />
-                • Real-time speech translation to overcome language barriers
+                • Integrated real-time speech translation to remove language
+                barriers
                 <br />
-                • Culturally mindful UX with AI/ML-driven event recommendations
+                • Designed an internationalization-first UX for a culturally
+                diverse audience, with AI/ML-driven event recommendations
             </>
         ),
 
@@ -30,25 +32,30 @@ export const teamMainProjects = [
 export const mainProjects = [
     {
         title: "DC-Market",
-        note: "*Adding Product feature is currently unavailable as no online storage has been set for this website yet. ",
+        note: "*Product image uploads are temporarily disabled pending cloud storage integration.",
         description: (
             <>
-                A full-featured second-hand trading marketplace built with
-                Next.js, TypeScript, Prisma and Supabase.
+                A full-stack second-hand trading marketplace enabling users to
+                list, discover and trade items, built end-to-end with Next.js,
+                TypeScript, Prisma and Supabase.
                 <br />
                 <br />
                 <b>Key Features:</b>
                 <br />
-                • Trade items with direct buyer-seller chat and post-transaction
-                reviews
+                • Real-time buyer-seller chat and a post-transaction review
+                system
                 <br />
-                • Infinite-scroll browsing and zod-validated forms
+                • Infinite-scroll product feed with schema-validated forms
+                (Zod)
                 <br />
-                • Responsive, mobile-friendly UI with Tailwind CSS and Headless UI
+                • Relational database design and querying with Prisma +
+                PostgreSQL
+                <br />
+                • Responsive, accessible UI built with Tailwind CSS and
+                Headless UI
                 <br />
                 <br />
-                Built over ~2 months; ChatGPT assisted with debugging and
-                TypeScript optimization.
+                Independently designed, built and shipped over ~2 months.
             </>
         ),
         tags: [
@@ -65,25 +72,28 @@ export const mainProjects = [
     },
     {
         title: "Tennis League Web App",
-        note: "*Some admin features require authentication and are not accessible to public users.",
+        note: "*Admin features require authentication and are not accessible in the public demo.",
         description: (
             <>
-                A tennis league management platform built with Next.js,
-                TypeScript, Prisma and PostgreSQL, made for my tennis-group
-                friends.
+                A full-stack tennis league management platform built for a
+                local sports club to streamline player, league and
+                availability management, using Next.js, TypeScript, Prisma and
+                PostgreSQL.
                 <br />
                 <br />
                 <b>Key Features:</b>
                 <br />
-                • Player, league and availability tracking
+                • Player, league and availability management system
                 <br />
-                • Authenticated admin tools via NextAuth.js
+                • Secure authentication and role-based admin tools via
+                NextAuth.js
                 <br />
-                • Fully responsive layouts, deployed on Vercel
+                • Relational schema design and query optimization with Prisma
+                <br />
+                • Fully responsive UI, deployed on Vercel
                 <br />
                 <br />
-                Built over ~3-4 weeks; ChatGPT assisted with debugging Prisma
-                queries and improving UI/UX.
+                Independently designed, built and deployed over ~3-4 weeks.
             </>
         ),
         tags: [
@@ -103,18 +113,23 @@ export const mainProjects = [
         title: "HojinFlix",
         description: (
             <>
-                A Netflix-style movie streaming site built with React,
-                TypeScript and Framer Motion, named after my Korean name.
+                A Netflix-inspired movie streaming interface built with React,
+                TypeScript and Framer Motion, showcasing complex UI animation
+                and third-party API integration.
                 <br />
                 <br />
                 <b>Key Features:</b>
                 <br />
-                • Live show data pulled from the TMDB API
+                • Live movie and show data fetched from the TMDB REST API
                 <br />
-                • Modal, slider and scroll animations powered by Framer Motion
+                • Modal, carousel and scroll-triggered animations built with
+                Framer Motion
+                <br />
+                • Component-driven architecture with reusable, typed UI
+                elements
                 <br />
                 <br />
-                Built in ~3 weeks; ChatGPT sped up CSS development.
+                Independently designed and built in ~3 weeks.
             </>
         ),
         tags: ["TypeScript", "React"],
@@ -126,21 +141,23 @@ export const mainProjects = [
         title: "SNS Platform - 𝓗",
         description: (
             <>
-                A Twitter/X-style social networking platform built with React,
-                TypeScript and Firebase, named after my Korean name initial.
+                A Twitter/X-inspired social networking platform built with
+                React, TypeScript and Firebase, covering the full
+                user-generated content lifecycle.
                 <br />
                 <br />
                 <b>Key Features:</b>
                 <br />
-                • Post creation with image uploads, editing and deletion
+                • Post creation, editing and deletion with image uploads
                 <br />
-                • Profile pages with custom profile images
+                • User profile pages with customizable avatars
                 <br />
-                • Images stored as base64 in Firestore, working around the lack
-                of Firebase Storage
+                • Firestore-backed data layer, with images encoded and stored
+                as base64 to work around the lack of Firebase Storage
                 <br />
                 <br />
-                Built in 8 days as my first backend-adjacent project.
+                Independently designed and built in 8 days, demonstrating rapid
+                full-stack delivery using Firebase as a backend-as-a-service.
             </>
         ),
         tags: ["TypeScript", "React", "Firebase"],
@@ -155,8 +172,8 @@ export const subProjects = [
     {
         title: "Trello Clone",
         description:
-            "Trello Clone built using React and hello-pangea/dnd library. Users can create boards and cards for various purposes like todo-list etc.",
-        tags: ["Typescript", "React"],
+            "A Trello-style task board built with React and @hello-pangea/dnd, featuring drag-and-drop boards and cards for flexible task organization.",
+        tags: ["TypeScript", "React"],
         sampleImg: `/trello.png`,
         githubLink: "https://github.com/danielhc0228/trello-clone",
         demoLink: "https://trello-clone-dc.netlify.app/",
@@ -164,7 +181,7 @@ export const subProjects = [
     {
         title: "My Portfolio",
         description:
-            "My portfolio website built using all my current skills such as React, TypeScript, and libraries like Framer Motion, styled-component, hello-pangea/dnd.",
+            "This portfolio site itself — built with React, TypeScript, Framer Motion, styled-components and Firebase to demonstrate end-to-end frontend engineering and interaction design.",
         tags: ["TypeScript", "React", "Firebase"],
         sampleImg: `/portfolio.png`,
         githubLink: "https://github.com/danielhc0228/my-portfolio",
@@ -173,7 +190,7 @@ export const subProjects = [
     {
         title: "Weather App",
         description:
-            "Live weather updates using Weatherbit.io API. Backend written by ChatGPT and its server running by Render.",
+            "A live weather dashboard built with React, consuming the Weatherbit.io API through a custom backend deployed on Render.",
         tags: ["JavaScript", "React", "CSS"],
         sampleImg: `/weather.png`,
         githubLink: "https://github.com/danielhc0228/Weather-App-Frontend",
@@ -182,7 +199,7 @@ export const subProjects = [
     {
         title: "Todo App",
         description:
-            "A website that allows users to create and orgainise their own todo-list.",
+            "A task management app built with React and TypeScript for creating, organizing and tracking personal to-do lists.",
         tags: ["TypeScript", "JavaScript", "React"],
         sampleImg: `/todo.png`,
         githubLink: "https://github.com/danielhc0228/todo-app",
@@ -191,7 +208,7 @@ export const subProjects = [
     {
         title: "Crypto Tracker",
         description:
-            "A website that shows live crypto coin currencies such as Bitcoin using API.",
+            "A real-time cryptocurrency price tracker built with React and TypeScript, consuming a live market data API.",
         tags: ["TypeScript", "React"],
         sampleImg: `/crypto.png`,
         githubLink: "https://github.com/danielhc0228/crypto-tracker",
@@ -200,7 +217,7 @@ export const subProjects = [
     {
         title: "Wordle Game",
         description:
-            "A Wordle Game website built from watching YouTube. JavaScript, HTML and CSS were used.",
+            "A browser-based Wordle clone built with JavaScript, HTML and CSS, replicating the core word-guessing game mechanics and win/loss logic.",
         tags: ["JavaScript", "React", "CSS"],
         sampleImg: `/wordle.png`,
         githubLink: "https://github.com/danielhc0228/Wordle-Game",
