@@ -5,7 +5,7 @@ import { db } from "../firebase";
 import Timeline from "./timeline";
 
 const Container = styled.div`
-    height: 120vh;
+    height: 180vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,8 +31,17 @@ const TextArea = styled.textarea`
     background-color: black;
     width: 100%;
     resize: none;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        "Open Sans",
+        "Helvetica Neue",
         sans-serif;
     &::placeholder {
         font-size: 16px;

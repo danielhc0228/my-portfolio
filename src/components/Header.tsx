@@ -13,7 +13,9 @@ const Container = styled.div`
 
 const HeaderLinks = styled.div`
     border-bottom: 2px solid white;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 
     &:hover {
         transform: translateY(-4px);
