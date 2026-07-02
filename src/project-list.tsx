@@ -2,6 +2,8 @@ export const teamMainProjects = [
     {
         title: "Olympic Planner & Translator - UQ Project",
         note: "*Live server decommissioned post-graduation; demo available via YouTube walkthrough.",
+        summary:
+            "Cross-cultural Olympic event planner with real-time speech translation, built in a university team.",
         description: (
             <>
                 Collaborated in a university team to design and build a
@@ -33,6 +35,8 @@ export const mainProjects = [
     {
         title: "DC-Market",
         note: "*Product image uploads are temporarily disabled pending cloud storage integration.",
+        summary:
+            "Full-stack second-hand marketplace with real-time chat, reviews and infinite scroll.",
         description: (
             <>
                 A full-stack second-hand trading marketplace enabling users to
@@ -73,6 +77,8 @@ export const mainProjects = [
     {
         title: "Tennis League Web App",
         note: "*Admin features require authentication and are not accessible in the public demo.",
+        summary:
+            "Full-stack tennis league manager with player, league and availability tracking.",
         description: (
             <>
                 A full-stack tennis league management platform built for a
@@ -111,6 +117,8 @@ export const mainProjects = [
 
     {
         title: "HojinFlix",
+        summary:
+            "Netflix-inspired streaming UI with live TMDB data and Framer Motion animations.",
         description: (
             <>
                 A Netflix-inspired movie streaming interface built with React,
@@ -139,6 +147,8 @@ export const mainProjects = [
     },
     {
         title: "SNS Platform - 𝓗",
+        summary:
+            "Twitter/X-inspired social platform with posts, profiles and Firestore-backed storage.",
         description: (
             <>
                 A Twitter/X-inspired social networking platform built with

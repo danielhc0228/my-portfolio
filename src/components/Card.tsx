@@ -122,7 +122,11 @@ export default function Card({
             </ImageWrapper>
 
             <ContentWrapper>
-                <Description>{description.slice(0, 90)}...</Description>
+                <Description>
+                    {description.length > 90
+                        ? `${description.slice(0, 90)}...`
+                        : description}
+                </Description>
 
                 <TagContainer>
                     {tags.map((tag, idx) => (

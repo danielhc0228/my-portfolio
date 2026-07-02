@@ -1,36 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import styled, { css, keyframes } from "styled-components";
+import SkillProjects from "./SkillProjects";
 
 const skills = [
-    {
-        name: "HTML",
-        icon: "/html.svg",
-        url: "https://developer.mozilla.org/en-US/docs/Web/HTML",
-    },
-    {
-        name: "CSS",
-        icon: "/css.svg",
-        url: "https://developer.mozilla.org/en-US/docs/Web/CSS",
-    },
-    {
-        name: "JavaScript",
-        icon: "/javascript.svg",
-        url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-    },
-    {
-        name: "TypeScript",
-        icon: "/typescript.svg",
-        url: "https://www.typescriptlang.org/",
-    },
-    { name: "React", icon: "/react.svg", url: "https://reactjs.org/" },
-    {
-        name: "Firebase",
-        icon: "/firebase.svg",
-        url: "https://firebase.google.com/",
-    },
-    { name: "Next.js", icon: "/nextjs.svg", url: "https://nextjs.org/" },
-    { name: "Prisma", icon: "/prisma.png", url: "https://www.prisma.io/" },
-    { name: "Supabase", icon: "/supabase.png", url: "https://supabase.com/" },
+    { name: "HTML", icon: "/html.svg" },
+    { name: "CSS", icon: "/css.svg" },
+    { name: "JavaScript", icon: "/javascript.svg" },
+    { name: "TypeScript", icon: "/typescript.svg" },
+    { name: "React", icon: "/react.svg" },
+    { name: "Firebase", icon: "/firebase.svg" },
+    { name: "Next.js", icon: "/nextjs.svg" },
+    { name: "Prisma", icon: "/prisma.png" },
+    { name: "Supabase", icon: "/supabase.png" },
 ];
 
 const Container = styled.div`
@@ -148,12 +130,16 @@ const SkillsContainer = styled.div`
     background: #0d0d0d;
 `;
 
-const SkillItem = styled.div`
+const SkillItem = styled.div<{ $isActive: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.3s ease-in-out;
+    padding: 8px;
+    border-radius: 12px;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
     cursor: pointer;
+    background-color: ${(props) =>
+        props.$isActive ? "rgba(255, 255, 255, 0.1)" : "transparent"};
 
     &:hover {
         transform: scale(1.1);
@@ -174,8 +160,13 @@ const SkillLabel = styled.span`
 
 export default function Me() {
     const [isImageVisible, setIsImageVisible] = useState(false);
+    const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
     const imageRef = useRef<HTMLImageElement | null>(null);
     const titleRef = useRef<HTMLHeadingElement | null>(null);
+
+    const toggleSkill = (skillName: string) => {
+        setSelectedSkill((prev) => (prev === skillName ? null : skillName));
+    };
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -254,20 +245,29 @@ export default function Me() {
             </SectionTitle>
             <SkillsContainer>
                 {skills.map((skill) => (
-                    <a
+                    <SkillItem
                         key={skill.name}
-                        href={skill.url}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        style={{ textDecoration: "none" }}
+                        role='button'
+                        tabIndex={0}
+                        $isActive={selectedSkill === skill.name}
+                        onClick={() => toggleSkill(skill.name)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                toggleSkill(skill.name);
+                            }
+                        }}
                     >
-                        <SkillItem>
-                            <SkillIcon src={skill.icon} alt={skill.name} />
-                            <SkillLabel>{skill.name}</SkillLabel>
-                        </SkillItem>
-                    </a>
+                        <SkillIcon src={skill.icon} alt={skill.name} />
+                        <SkillLabel>{skill.name}</SkillLabel>
+                    </SkillItem>
                 ))}
             </SkillsContainer>
+            <AnimatePresence mode='wait'>
+                {selectedSkill && (
+                    <SkillProjects key={selectedSkill} skill={selectedSkill} />
+                )}
+            </AnimatePresence>
         </div>
     );
 }
