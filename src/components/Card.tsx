@@ -67,8 +67,19 @@ const Description = styled.p`
 
 const TagContainer = styled.div`
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 6px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        black calc(100% - 24px),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        black calc(100% - 24px),
+        transparent 100%
+    );
 `;
 
 const Tag = styled.span`
@@ -77,6 +88,8 @@ const Tag = styled.span`
     font-size: 0.7rem;
     padding: 3px 8px;
     border-radius: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
 `;
 
 const LinkGroup = styled.div`
