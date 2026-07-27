@@ -136,7 +136,9 @@ const SkillItem = styled.div<{ $isActive: boolean }>`
     align-items: center;
     padding: 8px;
     border-radius: 12px;
-    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    transition:
+        transform 0.3s ease-in-out,
+        background-color 0.3s ease-in-out;
     cursor: pointer;
     background-color: ${(props) =>
         props.$isActive ? "rgba(255, 255, 255, 0.1)" : "transparent"};
@@ -177,7 +179,7 @@ export default function Me() {
                     observer.disconnect(); // Stop observing once the image is visible
                 }
             },
-            { threshold: 0.5 } // Image is considered visible when 50% of it is in the viewport
+            { threshold: 0.5 }, // Image is considered visible when 50% of it is in the viewport
         );
 
         if (imageRef.current) {
@@ -218,24 +220,30 @@ export default function Me() {
                         </SectionTitle>
                         <Divider />
                         <SubTitle>
-                            2021/03 ~ 2024/07 University of Queensland (Bachelor
-                            of Computer Science)
+                            Bachelor of Computer Science | University of
+                            Queensland (2024)
+                        </SubTitle>
+                        <SubTitle>
+                            Graduate Certificate of Computer Science |
+                            University of Queensland (In Progress)
                         </SubTitle>
 
                         <SectionTitle $isVisible={isImageVisible}>
                             <span>Experience</span>
                         </SectionTitle>
                         <Divider />
-                        <SubTitle>Bus Sanitiser Supervisor - Multhana</SubTitle>
-                        <SubTitle>Cashier - Alien Night Market</SubTitle>
+                        <SubTitle>Operations Supervisor | Multhana</SubTitle>
+                        <SubTitle>
+                            Sales Associate | Alien Night Market
+                        </SubTitle>
 
                         <SectionTitle $isVisible={isImageVisible}>
-                            <span>Career Goal</span>
+                            <span>Core Philosophy</span>
                         </SectionTitle>
                         <Divider />
                         <SubTitle>
-                            Build and get involved in a Project that anyone
-                            would know.
+                            "Clean architecture, seamless user experience, and
+                            continuous learning."
                         </SubTitle>
                     </ContentWrapper>
                 </InfoContainer>
