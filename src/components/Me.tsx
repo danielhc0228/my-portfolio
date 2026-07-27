@@ -128,8 +128,7 @@ const SkillsContainer = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
-    padding-top: 20px;
-    padding-bottom: 130px;
+    padding: 20px 90px 130px 90px;
     width: 100%;
     background: #0d0d0d;
 `;
