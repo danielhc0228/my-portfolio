@@ -17,13 +17,13 @@ export const teamMainProjects = [
                 <br />
                 • Integrated real-time speech translation to remove language
                 barriers
-                <br />
-                • Designed an internationalization-first UX for a culturally
-                diverse audience, with AI/ML-driven event recommendations
+                <br />• Designed an internationalization-first UX for a
+                culturally diverse audience, with AI/ML-driven event
+                recommendations
             </>
         ),
 
-        tags: ["JavaScript", "CSS"],
+        tags: ["JavaScript", "HTML", "CSS"],
         sampleImg: `/uq-project.png`,
         githubLink:
             "https://github.com/danielhc0228/UQ-CompSci-Project-Olympic-App-FrontEnd",
@@ -49,14 +49,13 @@ export const mainProjects = [
                 • Real-time buyer-seller chat and a post-transaction review
                 system
                 <br />
-                • Infinite-scroll product feed with schema-validated forms
-                (Zod)
+                • Infinite-scroll product feed with schema-validated forms (Zod)
                 <br />
                 • Relational database design and querying with Prisma +
                 PostgreSQL
                 <br />
-                • Responsive, accessible UI built with Tailwind CSS and
-                Headless UI
+                • Responsive, accessible UI built with Tailwind CSS and Headless
+                UI
                 <br />
                 <br />
                 Independently designed, built and shipped over ~2 months.
@@ -69,6 +68,7 @@ export const mainProjects = [
             "Prisma",
             "Supabase",
             "Tailwind CSS",
+            "HTML",
         ],
         sampleImg: `/dc-market.png`,
         githubLink: "https://github.com/danielhc0228/DC-Market",
@@ -81,10 +81,9 @@ export const mainProjects = [
             "Full-stack tennis league manager with player, league and availability tracking.",
         description: (
             <>
-                A full-stack tennis league management platform built for a
-                local sports club to streamline player, league and
-                availability management, using Next.js, TypeScript, Prisma and
-                PostgreSQL.
+                A full-stack tennis league management platform built for a local
+                sports club to streamline player, league and availability
+                management, using Next.js, TypeScript, Prisma and PostgreSQL.
                 <br />
                 <br />
                 <b>Key Features:</b>
@@ -109,6 +108,8 @@ export const mainProjects = [
             "Prisma",
             "PostgreSQL",
             "Tailwind CSS",
+            "HTML",
+            "Supabase",
         ],
         sampleImg: `/htp.png`,
         githubLink: "https://github.com/danielhc0228/my-tennis-app",
@@ -133,14 +134,13 @@ export const mainProjects = [
                 • Modal, carousel and scroll-triggered animations built with
                 Framer Motion
                 <br />
-                • Component-driven architecture with reusable, typed UI
-                elements
+                • Component-driven architecture with reusable, typed UI elements
                 <br />
                 <br />
                 Independently designed and built in ~3 weeks.
             </>
         ),
-        tags: ["TypeScript", "React"],
+        tags: ["TypeScript", "React", "HTML", "CSS"],
         sampleImg: `/netflix.png`,
         githubLink: "https://github.com/danielhc0228/HojinFlix-Movie-Website",
         demoLink: "https://hojinflix.netlify.app/",
@@ -152,8 +152,8 @@ export const mainProjects = [
         description: (
             <>
                 A Twitter/X-inspired social networking platform built with
-                React, TypeScript and Firebase, covering the full
-                user-generated content lifecycle.
+                React, TypeScript and Firebase, covering the full user-generated
+                content lifecycle.
                 <br />
                 <br />
                 <b>Key Features:</b>
@@ -162,15 +162,15 @@ export const mainProjects = [
                 <br />
                 • User profile pages with customizable avatars
                 <br />
-                • Firestore-backed data layer, with images encoded and stored
-                as base64 to work around the lack of Firebase Storage
+                • Firestore-backed data layer, with images encoded and stored as
+                base64 to work around the lack of Firebase Storage
                 <br />
                 <br />
                 Independently designed and built in 8 days, demonstrating rapid
                 full-stack delivery using Firebase as a backend-as-a-service.
             </>
         ),
-        tags: ["TypeScript", "React", "Firebase"],
+        tags: ["TypeScript", "React", "Firebase", "HTML", "CSS"],
         sampleImg: `/twitter.png`,
         githubLink:
             "https://github.com/danielhc0228/Social-Network-Service-project",
@@ -183,7 +183,7 @@ export const subProjects = [
         title: "Trello Clone",
         description:
             "A Trello-style task board built with React and @hello-pangea/dnd, featuring drag-and-drop boards and cards for flexible task organization.",
-        tags: ["TypeScript", "React"],
+        tags: ["HTML", "CSS", "TypeScript", "React"],
         sampleImg: `/trello.png`,
         githubLink: "https://github.com/danielhc0228/trello-clone",
         demoLink: "https://trello-clone-dc.netlify.app/",
@@ -192,7 +192,7 @@ export const subProjects = [
         title: "My Portfolio",
         description:
             "This portfolio site itself — built with React, TypeScript, Framer Motion, styled-components and Firebase to demonstrate end-to-end frontend engineering and interaction design.",
-        tags: ["TypeScript", "React", "Firebase"],
+        tags: ["HTML", "CSS", "TypeScript", "React", "Firebase"],
         sampleImg: `/portfolio.png`,
         githubLink: "https://github.com/danielhc0228/my-portfolio",
         demoLink: "/",
@@ -201,7 +201,7 @@ export const subProjects = [
         title: "Weather App",
         description:
             "A live weather dashboard built with React, consuming the Weatherbit.io API through a custom backend deployed on Render.",
-        tags: ["JavaScript", "React", "CSS"],
+        tags: ["HTML", "CSS", "JavaScript", "React"],
         sampleImg: `/weather.png`,
         githubLink: "https://github.com/danielhc0228/Weather-App-Frontend",
         demoLink: "https://weatherappdchung.netlify.app/",
@@ -210,7 +210,7 @@ export const subProjects = [
         title: "Todo App",
         description:
             "A task management app built with React and TypeScript for creating, organizing and tracking personal to-do lists.",
-        tags: ["TypeScript", "JavaScript", "React"],
+        tags: ["HTML", "CSS", "TypeScript", "JavaScript", "React"],
         sampleImg: `/todo.png`,
         githubLink: "https://github.com/danielhc0228/todo-app",
         demoLink: "https://todo-app-dc.netlify.app/",
@@ -219,7 +219,7 @@ export const subProjects = [
         title: "Crypto Tracker",
         description:
             "A real-time cryptocurrency price tracker built with React and TypeScript, consuming a live market data API.",
-        tags: ["TypeScript", "React"],
+        tags: ["HTML", "CSS", "TypeScript", "React"],
         sampleImg: `/crypto.png`,
         githubLink: "https://github.com/danielhc0228/crypto-tracker",
         demoLink: "https://danielhc0228.github.io/crypto-tracker/",
@@ -228,7 +228,7 @@ export const subProjects = [
         title: "Wordle Game",
         description:
             "A browser-based Wordle clone built with JavaScript, HTML and CSS, replicating the core word-guessing game mechanics and win/loss logic.",
-        tags: ["JavaScript", "React", "CSS"],
+        tags: ["HTML", "CSS", "JavaScript", "React"],
         sampleImg: `/wordle.png`,
         githubLink: "https://github.com/danielhc0228/Wordle-Game",
         demoLink: "https://wordlebydchung.netlify.app/",

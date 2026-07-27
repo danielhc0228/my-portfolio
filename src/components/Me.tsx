@@ -13,6 +13,10 @@ const skills = [
     { name: "Next.js", icon: "/nextjs.svg" },
     { name: "Prisma", icon: "/prisma.png" },
     { name: "Supabase", icon: "/supabase.png" },
+    { name: "Claude Code", icon: "/claude.png" },
+    { name: "Gemini", icon: "/gemini.png" },
+    { name: "Python", icon: "/python.png" },
+    { name: "LangChain/Graph", icon: "/lang.png" },
 ];
 
 const Container = styled.div`
