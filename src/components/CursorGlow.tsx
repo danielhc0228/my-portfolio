@@ -40,6 +40,8 @@ export default function CursorGlow() {
             const dpr = window.devicePixelRatio || 1;
             canvas.width = Math.round(window.innerWidth * dpr);
             canvas.height = Math.round(window.innerHeight * dpr);
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         };
         resize();
