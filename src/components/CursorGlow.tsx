@@ -37,8 +37,10 @@ export default function CursorGlow() {
         if (!ctx) return;
 
         const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.round(window.innerWidth * dpr);
+            canvas.height = Math.round(window.innerHeight * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         };
         resize();
         window.addEventListener("resize", resize);
@@ -71,9 +73,19 @@ export default function CursorGlow() {
         };
         window.addEventListener("mousedown", handleMouseDown);
 
+        const handleMouseOut = (e: MouseEvent) => {
+            // relatedTarget is null when the pointer leaves the window itself
+            // (vs. moving between elements within the page).
+            if (e.relatedTarget === null) {
+                cursorPosRef.current = null;
+                lastPosRef.current = null;
+            }
+        };
+        window.addEventListener("mouseout", handleMouseOut);
+
         const draw = () => {
             const now = performance.now();
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
             pointsRef.current = pointsRef.current.filter(
                 (p) => now - p.t < TRAIL_MAX_AGE
@@ -141,6 +153,7 @@ export default function CursorGlow() {
             window.removeEventListener("resize", resize);
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mousedown", handleMouseDown);
+            window.removeEventListener("mouseout", handleMouseOut);
             if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
         };
     }, []);
