@@ -114,7 +114,7 @@ type CardProps = {
     title: string;
     description: string;
     tags: string[];
-    sampleImg: string;
+    sampleImg?: string;
     gitLink: string;
     demoLink: string;
 };
@@ -130,7 +130,7 @@ export default function Card({
     return (
         <Project>
             <ImageWrapper>
-                <img src={sampleImg} alt='Project preview' />
+                {sampleImg && <img src={sampleImg} alt='Project preview' />}
                 <TitleOverlay>{title}</TitleOverlay>
             </ImageWrapper>
 

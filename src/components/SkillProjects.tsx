@@ -7,7 +7,7 @@ type FlatProject = {
     title: string;
     description: string;
     tags: string[];
-    sampleImg: string;
+    sampleImg?: string;
     githubLink: string;
     demoLink: string;
 };
