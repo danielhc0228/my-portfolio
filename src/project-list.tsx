@@ -33,6 +33,40 @@ export const teamMainProjects = [
 
 export const mainProjects = [
     {
+        title: "Personalised Recipe AI Agent",
+        summary:
+            "Multimodal RAG pipeline built with LangChain, Gemini API, and ChromaDB for intelligent recipe search.",
+        description: (
+            <>
+                A multimodal Retrieval-Augmented Generation system designed to
+                bridge visual semantics and textual data, enabling autonomous,
+                context-aware culinary recommendations.
+                <br />
+                <br />
+                <b>Key Features:</b>
+                <br />
+                • Multimodal RAG pipeline ingesting text and image embeddings
+                via Google Gemini API into ChromaDB
+                <br />
+                • Autonomous LLM tool execution using custom Python function
+                calling workflows
+                <br />
+                • Cross-modal vector search bridging visual semantics with
+                structured text recipes
+                <br />
+                <br />
+                Built with LangGraph and Python to explore modern agentic AI
+                architecture.
+            </>
+        ),
+        tags: ["Python", "LangChain", "LangGraph", "ChromaDB", "Gemini API"],
+        // sampleImg: `/recipe-ai.png`,
+        githubLink:
+            "https://github.com/danielhc0228/Personalised-Recipe-AI-Agent",
+        demoLink:
+            "https://github.com/danielhc0228/Personalised-Recipe-AI-Agent",
+    },
+    {
         title: "DC-Market",
         note: "*Product image uploads are temporarily disabled pending cloud storage integration.",
         summary:
