@@ -429,7 +429,8 @@ const IconOrb = styled.div`
     }
 
     ${SkillItem}:hover &::before,
-    ${SkillItem}:focus-visible &::before {
+    ${SkillItem}:focus-visible &::before,
+    ${SkillItem}[data-selected="true"] &::before {
         opacity: 1;
         transform: scale(1);
     }
@@ -444,7 +445,8 @@ const SkillIcon = styled.img`
     transition: filter 0.35s ease;
 
     ${SkillItem}:hover &,
-    ${SkillItem}:focus-visible & {
+    ${SkillItem}:focus-visible &,
+    ${SkillItem}[data-selected="true"] & {
         filter: drop-shadow(0 0 8px rgba(var(--glow), 0.9))
             drop-shadow(0 0 20px rgba(var(--glow), 0.55));
     }
@@ -459,7 +461,8 @@ const SkillLabel = styled.span`
         text-shadow 0.35s ease;
 
     ${SkillItem}:hover &,
-    ${SkillItem}:focus-visible & {
+    ${SkillItem}:focus-visible &,
+    ${SkillItem}[data-selected="true"] & {
         color: rgb(var(--glow));
         text-shadow: 0 0 12px rgba(var(--glow), 0.6);
     }
@@ -478,6 +481,10 @@ export default function Me() {
     const toggleSkill = (skillName: string) => {
         setSelectedSkill((prev) => (prev === skillName ? null : skillName));
     };
+
+    const selectedSkillData = skills.find(
+        (skill) => skill.name === selectedSkill,
+    );
 
     /* Pointer position is written straight to CSS custom properties inside a
        rAF so tilting the card never triggers a React render. */
@@ -639,6 +646,8 @@ export default function Me() {
                         tabIndex={0}
                         $isActive={selectedSkill === skill.name}
                         $glow={skill.glow}
+                        data-selected={selectedSkill === skill.name}
+                        aria-pressed={selectedSkill === skill.name}
                         onClick={() => toggleSkill(skill.name)}
                         onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
@@ -655,8 +664,14 @@ export default function Me() {
                 ))}
             </SkillsContainer>
             <AnimatePresence mode='wait'>
-                {selectedSkill && (
-                    <SkillProjects key={selectedSkill} skill={selectedSkill} />
+                {selectedSkillData && (
+                    <SkillProjects
+                        key={selectedSkillData.name}
+                        skill={selectedSkillData.name}
+                        icon={selectedSkillData.icon}
+                        glow={selectedSkillData.glow}
+                        onClose={() => setSelectedSkill(null)}
+                    />
                 )}
             </AnimatePresence>
         </div>
