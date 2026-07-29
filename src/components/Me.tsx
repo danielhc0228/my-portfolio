@@ -47,8 +47,10 @@ const CARD_RATIO = "1792 / 2400";
 /* Scene owns the perspective + the entrance animation, so the card itself is
    free to use `transform` exclusively for tilt/flip. */
 const CardScene = styled.div<{ $isVisible: boolean }>`
-    perspective: 1400px;
-    padding: 40px;
+    /* Scales with the card so the bigger artwork doesn't get an exaggerated
+       fish-eye from the same perspective depth. */
+    perspective: 2000px;
+    padding: 28px 40px;
     opacity: 0;
     transform: translateY(50px);
 
@@ -69,7 +71,9 @@ const Card = styled.div<{ $active: boolean; $flipped: boolean }>`
     --scale: ${(props) => (props.$active ? 1.04 : 1)};
 
     position: relative;
-    height: clamp(340px, 62vh, 620px);
+    /* The second term keeps the card's *width* inside the viewport on narrow
+       screens, since aspect-ratio derives width from height. */
+    height: min(clamp(420px, 80vh, 860px), calc(86vw * 1.34));
     aspect-ratio: ${CARD_RATIO};
     transform-style: preserve-3d;
     cursor: pointer;
@@ -90,11 +94,11 @@ const Card = styled.div<{ $active: boolean; $flipped: boolean }>`
     }
 
     @media (max-width: 1024px) {
-        height: clamp(300px, 52vh, 520px);
+        height: min(clamp(380px, 68vh, 700px), calc(86vw * 1.34));
     }
 
     @media (max-width: 480px) {
-        height: clamp(260px, 42vh, 420px);
+        height: min(clamp(320px, 58vh, 560px), calc(88vw * 1.34));
     }
 
     @media (prefers-reduced-motion: reduce) {
