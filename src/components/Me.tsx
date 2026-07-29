@@ -3,20 +3,22 @@ import { AnimatePresence } from "framer-motion";
 import styled, { css, keyframes } from "styled-components";
 import SkillProjects from "./SkillProjects";
 
+/* `glow` is each tech's brand colour as an "r, g, b" triple, so it can be
+   composed into rgba() at whatever opacity the hover state needs. */
 const skills = [
-    { name: "HTML", icon: "/html.svg" },
-    { name: "CSS", icon: "/css.svg" },
-    { name: "JavaScript", icon: "/javascript.svg" },
-    { name: "TypeScript", icon: "/typescript.svg" },
-    { name: "React", icon: "/react.svg" },
-    { name: "Firebase", icon: "/firebase.svg" },
-    { name: "Next.js", icon: "/nextjs.svg" },
-    { name: "Prisma", icon: "/prisma.png" },
-    { name: "Supabase", icon: "/supabase.png" },
-    { name: "Claude Code", icon: "/claude.png" },
-    { name: "Gemini", icon: "/gemini.png" },
-    { name: "Python", icon: "/python.png" },
-    { name: "LangChain/Graph", icon: "/lang.png" },
+    { name: "HTML", icon: "/html.svg", glow: "227, 79, 38" },
+    { name: "CSS", icon: "/css.svg", glow: "41, 154, 224" },
+    { name: "JavaScript", icon: "/javascript.svg", glow: "247, 223, 30" },
+    { name: "TypeScript", icon: "/typescript.svg", glow: "73, 145, 220" },
+    { name: "React", icon: "/react.svg", glow: "97, 218, 251" },
+    { name: "Firebase", icon: "/firebase.svg", glow: "255, 202, 40" },
+    { name: "Next.js", icon: "/nextjs.svg", glow: "235, 235, 235" },
+    { name: "Prisma", icon: "/prisma.png", glow: "45, 212, 191" },
+    { name: "Supabase", icon: "/supabase.png", glow: "62, 207, 142" },
+    { name: "Claude Code", icon: "/claude.png", glow: "217, 119, 87" },
+    { name: "Gemini", icon: "/gemini.png", glow: "116, 143, 255" },
+    { name: "Python", icon: "/python.png", glow: "255, 212, 59" },
+    { name: "LangChain/Graph", icon: "/lang.png", glow: "26, 200, 168" },
 ];
 
 const Container = styled.div`
@@ -367,7 +369,8 @@ const SkillsContainer = styled.div`
     background: #0d0d0d;
 `;
 
-const SkillItem = styled.div<{ $isActive: boolean }>`
+const SkillItem = styled.div<{ $isActive: boolean; $glow: string }>`
+    --glow: ${(props) => props.$glow};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -383,18 +386,83 @@ const SkillItem = styled.div<{ $isActive: boolean }>`
     &:hover {
         transform: scale(1.1);
     }
+
+    &:focus-visible {
+        outline: 2px solid rgba(var(--glow), 0.9);
+        outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &:hover {
+            transform: none;
+        }
+    }
+`;
+
+/* Holds the halo that sits behind the logo; the logo itself can't host it
+   because a radial gradient there would be clipped to the image box. */
+const IconOrb = styled.div`
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 74px;
+    height: 74px;
+    margin-bottom: 10px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(var(--glow), 0.5),
+            rgba(var(--glow), 0.12) 45%,
+            transparent 70%
+        );
+        opacity: 0;
+        transform: scale(0.65);
+        transition:
+            opacity 0.35s ease,
+            transform 0.35s ease;
+        pointer-events: none;
+    }
+
+    ${SkillItem}:hover &::before,
+    ${SkillItem}:focus-visible &::before {
+        opacity: 1;
+        transform: scale(1);
+    }
 `;
 
 const SkillIcon = styled.img`
     width: 60px;
     height: 60px;
-    margin-bottom: 10px;
+    position: relative;
+    /* drop-shadow traces the logo's alpha, so the glow hugs the mark itself
+       rather than a rectangle around it. */
+    transition: filter 0.35s ease;
+
+    ${SkillItem}:hover &,
+    ${SkillItem}:focus-visible & {
+        filter: drop-shadow(0 0 8px rgba(var(--glow), 0.9))
+            drop-shadow(0 0 20px rgba(var(--glow), 0.55));
+    }
 `;
 
 const SkillLabel = styled.span`
     color: #fff;
     font-size: 0.9rem;
     margin-top: 5px;
+    transition:
+        color 0.35s ease,
+        text-shadow 0.35s ease;
+
+    ${SkillItem}:hover &,
+    ${SkillItem}:focus-visible & {
+        color: rgb(var(--glow));
+        text-shadow: 0 0 12px rgba(var(--glow), 0.6);
+    }
 `;
 
 export default function Me() {
@@ -570,6 +638,7 @@ export default function Me() {
                         role='button'
                         tabIndex={0}
                         $isActive={selectedSkill === skill.name}
+                        $glow={skill.glow}
                         onClick={() => toggleSkill(skill.name)}
                         onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
@@ -578,7 +647,9 @@ export default function Me() {
                             }
                         }}
                     >
-                        <SkillIcon src={skill.icon} alt={skill.name} />
+                        <IconOrb>
+                            <SkillIcon src={skill.icon} alt={skill.name} />
+                        </IconOrb>
                         <SkillLabel>{skill.name}</SkillLabel>
                     </SkillItem>
                 ))}

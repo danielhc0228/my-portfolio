@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import styled, { keyframes } from "styled-components";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import {
+    AnimatePresence,
+    motion,
+    useScroll,
+    useTransform,
+} from "framer-motion";
 import { FaGithub } from "react-icons/fa";
 import { subProjects, mainProjects, teamMainProjects } from "../project-list";
 
@@ -65,7 +70,7 @@ const StickyPane = styled.div`
 
 const Header = styled.div`
     position: absolute;
-    top: clamp(32px, 8vh, 80px);
+    top: clamp(32px, 5vh, 80px);
     left: 6vw;
     right: 6vw;
     display: flex;
@@ -556,7 +561,10 @@ export default function Projects() {
             const track = trackRef.current;
             if (!track) return;
             setDistance(
-                Math.max(0, track.scrollWidth - document.documentElement.clientWidth),
+                Math.max(
+                    0,
+                    track.scrollWidth - document.documentElement.clientWidth,
+                ),
             );
         };
         measure();
