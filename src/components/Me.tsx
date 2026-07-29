@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import styled, { css, keyframes } from "styled-components";
 import SkillProjects from "./SkillProjects";
@@ -41,30 +41,260 @@ const fadeInUp = keyframes`
   }
 `;
 
-const Image = styled.img<{ $isVisible: boolean }>`
-    height: 60vh;
-    border-radius: 25%;
+const CARD_SRC = "/MyEmoji.png";
+const CARD_RATIO = "1792 / 2400";
+
+/* Scene owns the perspective + the entrance animation, so the card itself is
+   free to use `transform` exclusively for tilt/flip. */
+const CardScene = styled.div<{ $isVisible: boolean }>`
+    perspective: 1400px;
+    padding: 40px;
     opacity: 0;
     transform: translateY(50px);
-
-    /* Responsive scaling */
-    @media (max-width: 1024px) {
-        height: 45vh;
-    }
-
-    @media (max-width: 768px) {
-        height: 45vh;
-    }
-
-    @media (max-width: 480px) {
-        height: 35vh;
-    }
 
     ${(props) =>
         props.$isVisible &&
         css`
             animation: ${fadeInUp} 1s ease-out forwards;
         `}
+`;
+
+const Card = styled.div<{ $active: boolean; $flipped: boolean }>`
+    --rx: 0; /* -1 .. 1, pointer offset on the X axis */
+    --ry: 0; /* -1 .. 1, pointer offset on the Y axis */
+    --mx: 50%; /* pointer position, used by the glare */
+    --my: 50%;
+    --tilt: 13deg;
+    --flip: ${(props) => (props.$flipped ? "180deg" : "0deg")};
+    --scale: ${(props) => (props.$active ? 1.04 : 1)};
+
+    position: relative;
+    height: clamp(340px, 62vh, 620px);
+    aspect-ratio: ${CARD_RATIO};
+    transform-style: preserve-3d;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background: none;
+    -webkit-tap-highlight-color: transparent;
+
+    transform: scale(var(--scale)) rotateX(calc(var(--ry) * var(--tilt)))
+        rotateY(calc(var(--rx) * var(--tilt))) rotateY(var(--flip));
+    transition: transform ${(props) => (props.$active ? "0.12s" : "0.9s")}
+        cubic-bezier(0.22, 1, 0.36, 1);
+
+    &:focus-visible {
+        outline: 2px solid #8ad4ff;
+        outline-offset: 12px;
+        border-radius: 24px;
+    }
+
+    @media (max-width: 1024px) {
+        height: clamp(300px, 52vh, 520px);
+    }
+
+    @media (max-width: 480px) {
+        height: clamp(260px, 42vh, 420px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        --tilt: 0deg;
+        --scale: 1;
+    }
+`;
+
+/* Every layer is masked by the artwork's own alpha channel, so the foil and
+   glare stop exactly at the card's rounded silhouette. */
+const maskedByCard = css`
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    -webkit-mask-image: url(${CARD_SRC});
+    mask-image: url(${CARD_SRC});
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+`;
+
+const CardFace = styled.div`
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    isolation: isolate;
+    filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.65));
+`;
+
+const CardArt = styled.img`
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+`;
+
+/* Foil: two repeating gradients blended together, then color-dodged over the
+   artwork. Stationary at rest, tracks the pointer while hovered. */
+const Holo = styled.div<{ $active: boolean }>`
+    ${maskedByCard}
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+           #0e152e 0%,
+            hsl(180, 10%, 60%) 3.8%,
+            hsl(180, 29%, 66%) 4.5%,
+            hsl(180, 10%, 60%) 5.2%,
+            #0e152e 10%,
+            #0e152e 12%
+        ),
+        repeating-linear-gradient(
+            125deg,
+            #0e152e 0%,
+            hsl(180, 10%, 60%) 3.8%,
+            hsl(180, 29%, 66%) 4.5%,
+            hsl(180, 10%, 60%) 5.2%,
+            #0e152e 10%,
+            #0e152e 12%
+        );
+    background-blend-mode: exclusion;
+    background-size: 300% 400%;
+    mix-blend-mode: color-dodge;
+    filter: brightness(0.85) contrast(2.2) saturate(1.4);
+    opacity: ${(props) => (props.$active ? 0.5 : 0.24)};
+    /* Always pointer-driven: at rest --mx/--my hold their 50% defaults, so the
+       foil simply sits still instead of drifting on its own. */
+    background-position:
+        var(--mx) var(--my),
+        var(--mx) var(--my);
+    transition:
+        opacity 0.4s ease,
+        background-position 0.1s ease-out;
+`;
+
+/* Fine glitter, parallaxed against the tilt so it reads as depth. */
+const Glitter = styled.div<{ $active: boolean }>`
+    ${maskedByCard}
+    background-image:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(255, 255, 255, 0.9) 0.5px,
+            transparent 1.2px
+        ),
+        radial-gradient(
+            circle at 70% 65%,
+            rgba(180, 230, 255, 0.8) 0.6px,
+            transparent 1.4px
+        ),
+        radial-gradient(
+            circle at 45% 85%,
+            rgba(255, 220, 180, 0.8) 0.5px,
+            transparent 1.2px
+        );
+    background-size:
+        90px 90px,
+        130px 130px,
+        70px 70px;
+    mix-blend-mode: screen;
+    opacity: ${(props) => (props.$active ? 0.75 : 0.25)};
+    transform: translate3d(calc(var(--rx) * -10px), calc(var(--ry) * -10px), 0);
+    transition: opacity 0.4s ease;
+`;
+
+/* Soft specular highlight that sits under the pointer. */
+const Glare = styled.div<{ $active: boolean }>`
+    ${maskedByCard}
+    background: radial-gradient(
+        circle at var(--mx) var(--my),
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.15) 25%,
+        rgba(0, 0, 0, 0.4) 70%
+    );
+    mix-blend-mode: overlay;
+    opacity: ${(props) => (props.$active ? 1 : 0)};
+    transition: opacity 0.4s ease;
+`;
+
+const CardBack = styled.div`
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    border-radius: 4.5% / 3.4%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(120, 80, 190, 0.55),
+            transparent 62%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(180, 45, 65, 0.5),
+            transparent 60%
+        ),
+        #10101a;
+    border: 6px solid #1c1c28;
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+        0 24px 34px rgba(0, 0, 0, 0.65);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.05) 0 2px,
+            transparent 2px 10px
+        );
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at var(--mx) var(--my),
+            rgba(255, 255, 255, 0.28),
+            transparent 55%
+        );
+    }
+`;
+
+const BackMark = styled.span`
+    position: relative;
+    font-size: clamp(2.5rem, 7vh, 4.5rem);
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #ffffff, #9aa2b8 55%, #4b5168);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+`;
+
+const BackName = styled.span`
+    position: relative;
+    font-size: clamp(0.7rem, 1.6vh, 0.95rem);
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+`;
+
+const FlipHint = styled.p<{ $hidden: boolean }>`
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    opacity: ${(props) => (props.$hidden ? 0 : 1)};
+    transition: opacity 0.5s ease;
 `;
 
 const InfoContainer = styled.div`
@@ -166,12 +396,59 @@ const SkillLabel = styled.span`
 export default function Me() {
     const [isImageVisible, setIsImageVisible] = useState(false);
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
-    const imageRef = useRef<HTMLImageElement | null>(null);
+    const [isCardActive, setIsCardActive] = useState(false);
+    const [isCardFlipped, setIsCardFlipped] = useState(false);
+    const imageRef = useRef<HTMLDivElement | null>(null);
+    const cardRef = useRef<HTMLDivElement | null>(null);
+    const frameRef = useRef<number | null>(null);
     const titleRef = useRef<HTMLHeadingElement | null>(null);
 
     const toggleSkill = (skillName: string) => {
         setSelectedSkill((prev) => (prev === skillName ? null : skillName));
     };
+
+    /* Pointer position is written straight to CSS custom properties inside a
+       rAF so tilting the card never triggers a React render. */
+    const writeCardVars = useCallback(
+        (rx: number, ry: number, mx: number, my: number) => {
+            if (frameRef.current !== null) {
+                cancelAnimationFrame(frameRef.current);
+            }
+            frameRef.current = requestAnimationFrame(() => {
+                const el = cardRef.current;
+                if (!el) return;
+                el.style.setProperty("--rx", `${rx}`);
+                el.style.setProperty("--ry", `${ry}`);
+                el.style.setProperty("--mx", `${mx}%`);
+                el.style.setProperty("--my", `${my}%`);
+            });
+        },
+        [],
+    );
+
+    const handleCardMove = (event: React.PointerEvent<HTMLDivElement>) => {
+        const el = cardRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        // Invert the X axis so the card leans away from the cursor.
+        writeCardVars(px * 2 - 1, -(py * 2 - 1), px * 100, py * 100);
+    };
+
+    const handleCardLeave = () => {
+        setIsCardActive(false);
+        writeCardVars(0, 0, 50, 50);
+    };
+
+    useEffect(
+        () => () => {
+            if (frameRef.current !== null) {
+                cancelAnimationFrame(frameRef.current);
+            }
+        },
+        [],
+    );
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -207,11 +484,39 @@ export default function Me() {
     return (
         <div>
             <Container>
-                <Image
-                    ref={imageRef}
-                    src='\MyEmoji.png'
-                    $isVisible={isImageVisible}
-                />
+                <CardScene ref={imageRef} $isVisible={isImageVisible}>
+                    <Card
+                        ref={cardRef}
+                        role='button'
+                        tabIndex={0}
+                        aria-label='Daniel Chung trading card — activate to flip'
+                        aria-pressed={isCardFlipped}
+                        $active={isCardActive}
+                        $flipped={isCardFlipped}
+                        onPointerEnter={() => setIsCardActive(true)}
+                        onPointerMove={handleCardMove}
+                        onPointerLeave={handleCardLeave}
+                        onClick={() => setIsCardFlipped((prev) => !prev)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                setIsCardFlipped((prev) => !prev);
+                            }
+                        }}
+                    >
+                        <CardFace>
+                            <CardArt src={CARD_SRC} alt='Daniel Chung' />
+                            <Holo $active={isCardActive} />
+                            <Glitter $active={isCardActive} />
+                            <Glare $active={isCardActive} />
+                        </CardFace>
+                        <CardBack>
+                            <BackMark>{"{/}"}</BackMark>
+                            <BackName>Daniel Chung</BackName>
+                        </CardBack>
+                    </Card>
+                    <FlipHint $hidden={isCardFlipped}>Click to flip</FlipHint>
+                </CardScene>
                 {/* <VerticalLine /> */}
                 <InfoContainer>
                     <ContentWrapper>
