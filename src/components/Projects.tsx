@@ -1,467 +1,720 @@
-import styled from "styled-components";
-import Card from "./Card";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import styled, { keyframes } from "styled-components";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
-import { useEffect, useState } from "react";
 import { subProjects, mainProjects, teamMainProjects } from "../project-list";
 
-const Wrapper = styled.div`
+type Project = {
+    title: string;
+    note?: string;
+    summary?: string;
+    description: ReactNode;
+    tags: string[];
+    sampleImg?: string;
+    githubLink: string;
+    demoLink: string;
+};
+
+/* One accent per card, as an "r, g, b" triple so it can be composed into
+   rgba() at any opacity for the hover glow. */
+const ACCENTS = [
+    "255, 92, 122",
+    "94, 214, 255",
+    "255, 184, 76",
+    "163, 132, 255",
+    "80, 227, 168",
+    "255, 128, 191",
+    "120, 168, 255",
+    "255, 138, 96",
+    "126, 231, 255",
+    "205, 180, 255",
+    "142, 240, 130",
+    "255, 214, 102",
+];
+
+/* Vertical scroll distance per pixel of horizontal travel. Below 1 the track
+   outruns the scrollbar, which keeps the pinned section from becoming an
+   absurdly tall page. */
+const SCROLL_PACE = 0.7;
+
+const Wrapper = styled.section`
     width: 100%;
     background: #0d0d0d;
+    color: white;
 `;
 
-const Container = styled.div`
-    min-height: 100vh;
-    margin: auto;
-    width: 80%;
-    color: white;
+/* Tall spacer: its height is what the pinned pane consumes while the track
+   slides sideways. */
+const ScrollSpace = styled.div<{ $distance: number }>`
+    position: relative;
+    height: ${(props) =>
+        props.$distance > 0
+            ? `calc(100vh + ${props.$distance * SCROLL_PACE}px)`
+            : "100vh"};
+`;
+
+const StickyPane = styled.div`
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+`;
+
+const Header = styled.div`
+    position: absolute;
+    top: clamp(32px, 8vh, 80px);
+    left: 6vw;
+    right: 6vw;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    flex-wrap: wrap;
 `;
 
 const Title = styled.h1`
-    font-size: 3rem;
+    font-size: clamp(2rem, 5vw, 3rem);
     font-weight: bold;
-    color: white;
-    margin-bottom: 12px;
+    margin: 0;
 `;
 
-const SubProjects = styled.div`
-    min-height: 50vh;
-    margin-bottom: 40px;
+const Hint = styled.span`
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
 `;
 
-const AllSubProjects = styled.div`
-    min-height: 50vh;
+const Track = styled(motion.div)`
     display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    flex-wrap: wrap;
-    gap: 30px;
-`;
-
-const SemiTitle = styled.h1`
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 20px;
-`;
-
-const MainProject = styled.div`
-    display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 25px;
-    padding-bottom: 100px;
+    gap: clamp(20px, 3vw, 44px);
+    padding: 0 6vw;
+    width: max-content;
+    will-change: transform;
+`;
+
+const ProgressRail = styled.div`
+    position: absolute;
+    left: 6vw;
+    right: 6vw;
+    bottom: clamp(28px, 6vh, 56px);
+    height: 2px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+    overflow: hidden;
+`;
+
+const ProgressBar = styled(motion.div)`
+    height: 100%;
+    background: rgba(255, 255, 255, 0.75);
+    transform-origin: 0% 50%;
+`;
+
+/* ---------- card ---------- */
+
+/* Shell carries the glow (needs to bleed outside the rounded edge), Inner
+   clips the content — hence the two elements rather than one. */
+const CardShell = styled.article<{ $accent: string }>`
+    --accent: ${(props) => props.$accent};
+    position: relative;
+    flex: 0 0 auto;
+    /* Two per screen at most: 44vw + gap leaves a sliver of the third. */
+    width: clamp(260px, 44vw, 640px);
+    height: min(66vh, 620px);
+    cursor: pointer;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 34px;
+        background: rgba(var(--accent), 0.75);
+        filter: blur(26px);
+        opacity: 0;
+        transition: opacity 0.45s ease;
+        pointer-events: none;
+    }
+
+    &:hover,
+    &:focus-within {
+        transform: translateY(-12px);
+    }
+
+    &:hover::before,
+    &:focus-within::before {
+        opacity: 0.55;
+    }
+
+    @media (max-width: 900px) {
+        width: 78vw;
+        height: min(70vh, 560px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &:hover,
+        &:focus-within {
+            transform: none;
+        }
+    }
+`;
+
+const CardInner = styled.div`
+    position: relative;
+    height: 100%;
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
     flex-direction: column;
+    background: #121218;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition:
+        border-color 0.45s ease,
+        box-shadow 0.45s ease;
 
-    @media (min-width: 1100px) {
-        flex-direction: row; /* side by side on wide screens */
+    ${CardShell}:hover &,
+    ${CardShell}:focus-within & {
+        border-color: rgba(var(--accent), 0.55);
+        box-shadow: inset 0 0 60px rgba(var(--accent), 0.12);
     }
 `;
 
-const MainProjectTitle = styled.h1`
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-`;
+/* Top half: artwork. */
+const Media = styled.div`
+    position: relative;
+    flex: 1 1 50%;
+    min-height: 0;
+    overflow: hidden;
+    background: linear-gradient(
+        140deg,
+        rgba(var(--accent), 0.35),
+        rgba(var(--accent), 0.05)
+    );
 
-const MainProjectImg = styled(motion.img)`
-    max-width: 90%;
-    max-height: 80vh;
-    border-radius: 5%;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-    @media (min-width: 1100px) {
-        max-width: 70%;
+    ${CardShell}:hover & img {
+        transform: scale(1.06);
+    }
+
+    /* Fades the screenshot into the text half so the seam isn't a hard line. */
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            transparent 55%,
+            rgba(18, 18, 24, 0.9)
+        );
     }
 `;
 
-const MainProjectDescription = styled.div`
-    margin-bottom: 20px;
-    width: 80%;
+const MediaFallback = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    color: rgba(var(--accent), 0.85);
+    letter-spacing: -0.04em;
+`;
 
-    b,
-    strong {
-        font-weight: bold;
-    }
+/* Bottom half: copy. */
+const Body = styled.div`
+    flex: 1 1 50%;
+    min-height: 0;
+    padding: clamp(18px, 2.4vw, 30px);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const CardTitle = styled.h2`
+    font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.25;
+`;
+
+const Summary = styled.p`
+    margin: 0;
+    font-size: clamp(0.82rem, 1vw, 0.95rem);
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.62);
+    /* Keeps every card's text block the same height regardless of copy length. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 `;
 
 const TagContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 7px;
+    margin-top: auto;
 `;
 
 const Tag = styled.span`
-    background-color: #eee;
-    color: #333;
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 999px;
+    color: rgba(var(--accent), 0.95);
+    background: rgba(var(--accent), 0.12);
+    border: 1px solid rgba(var(--accent), 0.28);
+    white-space: nowrap;
 `;
 
-const Link = styled.a`
-    color: white;
-    transition: color 0.3s ease-in-out;
-    padding-right: 10px;
+const OpenCue = styled.span`
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(var(--accent), 0.9);
+    opacity: 0.55;
+    transition: opacity 0.35s ease;
 
-    &:hover {
-        color: #ff4500; /* Netflix-like red */
+    ${CardShell}:hover & {
+        opacity: 1;
     }
 `;
 
-const Notes = styled.h2`
-    color: tomato;
-    font-size: 15px;
-    margin-bottom: 10px;
+/* ---------- reduced-motion fallback ---------- */
+
+const StaticHeader = styled.div`
+    padding: 60px 6vw 0;
 `;
 
-const Slider = styled.div`
-    position: relative;
-`;
-const Row = styled(motion.div)`
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    position: absolute;
-    width: 100%;
+const StaticGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+    padding: 60px 6vw 100px;
+
+    @media (max-width: 900px) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    ${CardShell} {
+        width: 100%;
+    }
 `;
 
-const SliderBtnLeft = styled.div`
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    top: 170px;
-    transform: translateY(-50%);
-    font-size: 24px;
+/* ---------- modal ---------- */
+
+const Backdrop = styled(motion.div)`
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.78);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
-    z-index: 2;
-
-    &:hover {
-        transform: translateY(-55%) scale(1.1); /* Slight scale effect */
-    }
-
-    &:active {
-        transform: scale(0.9); /* Shrinks when clicked */
-    }
+    padding: clamp(16px, 4vw, 48px);
 `;
 
-const SliderBtnRight = styled(SliderBtnLeft)`
-    right: 0;
-    left: auto;
-`;
-
-const ToggleButton = styled.button`
-    background-color: transparent;
+const Modal = styled(motion.div)<{ $accent: string }>`
+    --accent: ${(props) => props.$accent};
+    position: relative;
+    width: min(1040px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 24px;
+    background: #131319;
+    border: 1px solid rgba(var(--accent), 0.4);
+    box-shadow:
+        0 0 40px rgba(var(--accent), 0.25),
+        0 30px 80px rgba(0, 0, 0, 0.6);
     color: white;
-    border: 1px solid white;
-    padding: 10px 24px;
-    margin-bottom: 20px;
-    border-radius: 30px;
+`;
+
+const ModalImage = styled.img`
+    width: 100%;
+    display: block;
+    border-bottom: 1px solid rgba(var(--accent), 0.25);
+`;
+
+const ModalBody = styled.div`
+    padding: clamp(22px, 3vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;
+
+const ModalTitle = styled.h2`
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    font-weight: 700;
+`;
+
+const Notes = styled.p`
+    margin: 0;
+    color: rgba(var(--accent), 0.9);
+    font-size: 0.85rem;
+`;
+
+const Description = styled.div`
     font-size: 0.95rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.25s ease-in-out;
-    letter-spacing: 0.5px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+
+    b,
+    strong {
+        font-weight: 700;
+        color: white;
+    }
+`;
+
+const LinkRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+`;
+
+const LinkButton = styled.a`
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    border: 1px solid rgba(var(--accent), 0.5);
+    background: rgba(var(--accent), 0.12);
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        color 0.25s ease;
 
     &:hover {
-        background-color: white;
-        color: black;
+        background: rgba(var(--accent), 0.85);
+        color: #0d0d0d;
         transform: translateY(-2px);
     }
+`;
 
-    &:active {
-        transform: scale(0.97);
+const CloseButton = styled.button`
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+
+    &:hover {
+        background: rgba(var(--accent), 0.85);
+        color: #0d0d0d;
+        border-color: transparent;
     }
 `;
 
-const logoVariants = {
-    normal: {
-        opacity: 1,
-        y: 0, // for translateY
-    },
-    active: {
-        opacity: [1, 0.5, 1],
-        y: [0, -20, 0], // replicating transform: translateY(-20px)
-        transition: {
-            duration: 1.5,
-        },
-    },
-};
+const pulse = keyframes`
+  0%, 100% { opacity: .35; }
+  50%      { opacity: 1; }
+`;
 
-const getRowVariants = {
-    hidden: (custom: number) => ({
-        x: custom === 1 ? window.outerWidth - 5 : -window.outerWidth + 5,
-    }),
-    visible: {
-        x: 0,
-    },
-    exit: (custom: number) => ({
-        x: custom === 1 ? -window.outerWidth + 5 : window.outerWidth - 5,
-    }),
-};
+const ScrollCue = styled.span`
+    animation: ${pulse} 2.4s ease-in-out infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+    }
+`;
+
+const LinkIcon = () => (
+    <svg
+        xmlns='http://www.w3.org/2000/svg'
+        fill='none'
+        viewBox='0 0 24 24'
+        strokeWidth={1.5}
+        stroke='currentColor'
+        width='18'
+        height='18'
+    >
+        <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
+        />
+    </svg>
+);
+
+function ProjectCard({
+    project,
+    accent,
+    onOpen,
+}: {
+    project: Project;
+    accent: string;
+    onOpen: () => void;
+}) {
+    return (
+        <CardShell
+            $accent={accent}
+            role='button'
+            tabIndex={0}
+            aria-label={`${project.title} — open details`}
+            onClick={onOpen}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onOpen();
+                }
+            }}
+        >
+            <CardInner>
+                <Media>
+                    {project.sampleImg ? (
+                        <img
+                            src={project.sampleImg}
+                            alt={project.title}
+                            loading='lazy'
+                        />
+                    ) : (
+                        <MediaFallback>{project.title.charAt(0)}</MediaFallback>
+                    )}
+                </Media>
+                <Body>
+                    <CardTitle>{project.title}</CardTitle>
+                    <Summary>{project.summary}</Summary>
+                    <TagContainer>
+                        {project.tags.slice(0, 5).map((tag) => (
+                            <Tag key={tag}>{tag}</Tag>
+                        ))}
+                    </TagContainer>
+                    <OpenCue>View details →</OpenCue>
+                </Body>
+            </CardInner>
+        </CardShell>
+    );
+}
 
 export default function Projects() {
-    const [leaving, setLeaving] = useState(false);
-    const [index, setIndex] = useState(0);
-    const [rowState, setRowState] = useState(1);
-    const [isSeeAll, setSeeAll] = useState(false);
-    const [offset, setOffset] = useState(4);
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const [distance, setDistance] = useState(0);
+    const [reduceMotion, setReduceMotion] = useState(false);
+
+    const spaceRef = useRef<HTMLDivElement | null>(null);
+    const trackRef = useRef<HTMLDivElement | null>(null);
+
+    /* Team, personal and sub projects are merged into one list — the horizontal
+       track is the only section, so the old headings have nothing to divide. */
+    const projects = useMemo<Project[]>(
+        () => [
+            ...teamMainProjects,
+            ...mainProjects,
+            ...subProjects.map((p) => ({ ...p, summary: p.description })),
+        ],
+        [],
+    );
 
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth < 768) {
-                setOffset(2); // small screens
-            } else {
-                setOffset(4); // medium+ screens
-            }
-        };
-
-        handleResize(); // run once on mount
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const sync = () => setReduceMotion(query.matches);
+        sync();
+        query.addEventListener("change", sync);
+        return () => query.removeEventListener("change", sync);
     }, []);
 
-    const toggleLeaving = () => {
-        setLeaving((prev) => !prev);
-    };
-
-    const incraseIndex = () => {
-        if (leaving) return;
-
-        if (subProjects) {
-            const maxIndex = Math.ceil(subProjects.length / offset) - 1;
-            toggleLeaving();
-            setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
-            setRowState(1);
+    /* How far the track has to travel before its right edge reaches the
+       viewport's right edge. Drives both the transform and the page height. */
+    useEffect(() => {
+        if (reduceMotion) {
+            setDistance(0);
+            return;
         }
-    };
+        const measure = () => {
+            const track = trackRef.current;
+            if (!track) return;
+            setDistance(
+                Math.max(0, track.scrollWidth - document.documentElement.clientWidth),
+            );
+        };
+        measure();
+        window.addEventListener("resize", measure);
+        return () => window.removeEventListener("resize", measure);
+    }, [reduceMotion, projects.length]);
 
-    const decreaseIndex = () => {
-        if (leaving) return;
+    const { scrollYProgress } = useScroll({
+        target: spaceRef,
+        offset: ["start start", "end end"],
+    });
+    const x = useTransform(scrollYProgress, [0, 1], [0, -distance]);
 
-        if (subProjects) {
-            const maxIndex = Math.ceil(subProjects.length / offset) - 1;
-            toggleLeaving();
-            setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
-            setRowState(-1);
-        }
-    };
+    const activeProject = activeIndex === null ? null : projects[activeIndex];
 
-    const toggleSeeAll = () => {
-        setSeeAll(!isSeeAll);
-    };
+    /* Close on Escape and freeze the page behind the modal. */
+    useEffect(() => {
+        if (!activeProject) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") setActiveIndex(null);
+        };
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        window.addEventListener("keydown", onKeyDown);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener("keydown", onKeyDown);
+        };
+    }, [activeProject]);
+
+    const cards = projects.map((project, idx) => (
+        <ProjectCard
+            key={project.title}
+            project={project}
+            accent={ACCENTS[idx % ACCENTS.length]}
+            onOpen={() => setActiveIndex(idx)}
+        />
+    ));
 
     return (
-        <Wrapper>
-            <Container>
-                <Title>Projects</Title>
-                <SemiTitle>Team Projects</SemiTitle>
-                {teamMainProjects.map((project, idx) => (
-                    <MainProject key={idx}>
-                        <div>
-                            <MainProjectTitle>{project.title}</MainProjectTitle>
-                            {project.note ? (
-                                <Notes>{project.note}</Notes>
-                            ) : null}
-                            <MainProjectDescription>
-                                {project.description}
-                            </MainProjectDescription>
-                            <TagContainer>
-                                {project.tags.map((tag, idx) => (
-                                    <Tag key={idx}>{tag}</Tag>
-                                ))}
-                            </TagContainer>
-                            <Link
-                                href={project.githubLink}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <FaGithub size={20} />
-                            </Link>
-                            <Link
-                                href={project.demoLink}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='none'
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={1.5}
-                                    stroke='currentColor'
-                                    width='20'
-                                    height='20'
-                                >
-                                    <path
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                        d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
-                                    />
-                                </svg>
-                            </Link>
-                        </div>
+        <Wrapper id='projects'>
+            {reduceMotion ? (
+                <>
+                    <StaticHeader>
+                        <Title>Projects</Title>
+                    </StaticHeader>
+                    <StaticGrid>{cards}</StaticGrid>
+                </>
+            ) : (
+                <ScrollSpace ref={spaceRef} $distance={distance}>
+                    <StickyPane>
+                        <Header>
+                            <Title>Projects</Title>
+                            <Hint>
+                                <ScrollCue>scroll to explore →</ScrollCue>
+                            </Hint>
+                        </Header>
+                        <Track ref={trackRef} style={{ x }}>
+                            {cards}
+                        </Track>
+                        <ProgressRail>
+                            <ProgressBar style={{ scaleX: scrollYProgress }} />
+                        </ProgressRail>
+                    </StickyPane>
+                </ScrollSpace>
+            )}
 
-                        <MainProjectImg
-                            src={project.sampleImg}
-                            variants={logoVariants}
-                            whileHover='active'
-                            animate='normal'
-                        />
-                    </MainProject>
-                ))}
-
-                <SemiTitle>Personal Projects</SemiTitle>
-                {mainProjects.map((project, idx) => (
-                    <MainProject key={idx}>
-                        <div>
-                            <MainProjectTitle>{project.title}</MainProjectTitle>
-                            {project.note ? (
-                                <Notes>{project.note}</Notes>
-                            ) : null}
-                            <MainProjectDescription>
-                                {project.description}
-                            </MainProjectDescription>
-                            <TagContainer>
-                                {project.tags.map((tag, idx) => (
-                                    <Tag key={idx}>{tag}</Tag>
-                                ))}
-                            </TagContainer>
-                            <Link
-                                href={project.githubLink}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <FaGithub size={20} />
-                            </Link>
-                            <Link
-                                href={project.demoLink}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='none'
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={1.5}
-                                    stroke='currentColor'
-                                    width='20'
-                                    height='20'
-                                >
-                                    <path
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                        d='M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244'
-                                    />
-                                </svg>
-                            </Link>
-                        </div>
-
-                        <MainProjectImg
-                            src={project.sampleImg}
-                            variants={logoVariants}
-                            whileHover='active'
-                            animate='normal'
-                        />
-                    </MainProject>
-                ))}
-                <SemiTitle>Personal Sub Projects</SemiTitle>
-                <SubProjects>
-                    <Slider>
-                        <SliderBtnLeft onClick={() => decreaseIndex()}>
-                            <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                fill='none'
-                                viewBox='0 0 24 24'
-                                strokeWidth={1.5}
-                                stroke='currentColor'
-                                className='size-6'
-                            >
-                                <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M15.75 19.5 8.25 12l7.5-7.5'
-                                />
-                            </svg>
-                        </SliderBtnLeft>
-                        <AnimatePresence
-                            initial={false}
-                            onExitComplete={toggleLeaving}
+            <AnimatePresence>
+                {activeProject && activeIndex !== null && (
+                    <Backdrop
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                        onClick={() => setActiveIndex(null)}
+                    >
+                        <Modal
+                            role='dialog'
+                            aria-modal='true'
+                            aria-label={activeProject.title}
+                            $accent={ACCENTS[activeIndex % ACCENTS.length]}
+                            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+                            transition={{
+                                duration: 0.3,
+                                ease: [0.22, 1, 0.36, 1],
+                            }}
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            {[index].map((i) => (
-                                <Row
-                                    key={i}
-                                    variants={getRowVariants}
-                                    initial='hidden'
-                                    animate='visible'
-                                    exit='exit'
-                                    custom={rowState}
-                                    transition={{
-                                        type: "tween",
-                                        duration: 1.5,
-                                    }}
-                                >
-                                    {subProjects
-                                        .slice(offset * i, offset * i + offset)
-                                        .map((project, idx) => (
-                                            <Card
-                                                key={idx}
-                                                title={project.title}
-                                                description={
-                                                    project.description
-                                                }
-                                                tags={project.tags}
-                                                sampleImg={project.sampleImg}
-                                                gitLink={project.githubLink}
-                                                demoLink={project.demoLink}
-                                            />
-                                        ))}
-                                </Row>
-                            ))}
-                        </AnimatePresence>
-
-                        <SliderBtnRight onClick={() => incraseIndex()}>
-                            <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                fill='none'
-                                viewBox='0 0 24 24'
-                                strokeWidth={1.5}
-                                stroke='currentColor'
-                                className='size-6'
+                            <CloseButton
+                                onClick={() => setActiveIndex(null)}
+                                aria-label='Close'
                             >
-                                <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='m8.25 4.5 7.5 7.5-7.5 7.5'
+                                <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    fill='none'
+                                    viewBox='0 0 24 24'
+                                    strokeWidth={2}
+                                    stroke='currentColor'
+                                    width='18'
+                                    height='18'
+                                >
+                                    <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        d='M6 18 18 6M6 6l12 12'
+                                    />
+                                </svg>
+                            </CloseButton>
+
+                            {activeProject.sampleImg && (
+                                <ModalImage
+                                    src={activeProject.sampleImg}
+                                    alt={activeProject.title}
                                 />
-                            </svg>
-                        </SliderBtnRight>
-                    </Slider>
-                </SubProjects>
-                {isSeeAll ? (
-                    <ToggleButton onClick={toggleSeeAll}>Collapse</ToggleButton>
-                ) : (
-                    <ToggleButton onClick={toggleSeeAll}>See All</ToggleButton>
+                            )}
+
+                            <ModalBody>
+                                <ModalTitle>{activeProject.title}</ModalTitle>
+                                {activeProject.note && (
+                                    <Notes>{activeProject.note}</Notes>
+                                )}
+                                <Description>
+                                    {activeProject.description}
+                                </Description>
+                                <TagContainer style={{ marginTop: 0 }}>
+                                    {activeProject.tags.map((tag) => (
+                                        <Tag key={tag}>{tag}</Tag>
+                                    ))}
+                                </TagContainer>
+                                <LinkRow>
+                                    {activeProject.githubLink && (
+                                        <LinkButton
+                                            href={activeProject.githubLink}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                        >
+                                            <FaGithub size={18} />
+                                            GitHub
+                                        </LinkButton>
+                                    )}
+                                    {activeProject.demoLink && (
+                                        <LinkButton
+                                            href={activeProject.demoLink}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                        >
+                                            <LinkIcon />
+                                            Live demo
+                                        </LinkButton>
+                                    )}
+                                </LinkRow>
+                            </ModalBody>
+                        </Modal>
+                    </Backdrop>
                 )}
-                {isSeeAll ? (
-                    <AllSubProjects>
-                        {subProjects.map((project, idx) => (
-                            <Card
-                                key={idx}
-                                title={project.title}
-                                description={project.description}
-                                tags={project.tags}
-                                sampleImg={project.sampleImg}
-                                gitLink={project.githubLink}
-                                demoLink={project.demoLink}
-                            />
-                        ))}
-                    </AllSubProjects>
-                ) : null}
-            </Container>
+            </AnimatePresence>
         </Wrapper>
     );
 }
