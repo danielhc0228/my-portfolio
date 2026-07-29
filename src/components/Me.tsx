@@ -1,5 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import styled, { css, keyframes } from "styled-components";
 import SkillProjects from "./SkillProjects";
 
@@ -359,7 +365,7 @@ const Divider = styled.hr`
     margin: 10px auto;
 `;
 
-const SkillsContainer = styled.div`
+const SkillsContainer = styled(motion.div)`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -369,19 +375,63 @@ const SkillsContainer = styled.div`
     background: #0d0d0d;
 `;
 
-const SkillItem = styled.div<{ $isActive: boolean; $glow: string }>`
+/* The two layers stack on top of each other and cross-fade, while SwapArea
+   animates between their measured heights — so the page never collapses to
+   zero between them. */
+/* The whole section is opaque so nothing behind it (the fixed Intro) can show
+   through any translucent child. */
+const Page = styled.div`
+    background: #0d0d0d;
+`;
+
+const SwapArea = styled.div`
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    /* Opaque: mid-cross-fade both layers are translucent, and without this the
+       fixed Intro behind the page shows through them. */
+    background: #0d0d0d;
+    transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+`;
+
+const SwapLayer = styled(motion.div)`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+`;
+
+/* The grid and the project panel swap places, so the icons stagger out on the
+   way to making room and stagger back in when the panel closes. */
+const gridVariants = {
+    hidden: {
+        opacity: 0,
+        transition: { staggerChildren: 0.02, staggerDirection: -1 },
+    },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.03, delayChildren: 0.05 },
+    },
+};
+
+const iconVariants = {
+    hidden: { opacity: 0, scale: 0.75, y: -10 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+};
+
+const SkillItem = styled(motion.div)<{ $glow: string }>`
     --glow: ${(props) => props.$glow};
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 8px;
     border-radius: 12px;
-    transition:
-        transform 0.3s ease-in-out,
-        background-color 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
     cursor: pointer;
-    background-color: ${(props) =>
-        props.$isActive ? "rgba(255, 255, 255, 0.1)" : "transparent"};
 
     &:hover {
         transform: scale(1.1);
@@ -429,8 +479,7 @@ const IconOrb = styled.div`
     }
 
     ${SkillItem}:hover &::before,
-    ${SkillItem}:focus-visible &::before,
-    ${SkillItem}[data-selected="true"] &::before {
+    ${SkillItem}:focus-visible &::before {
         opacity: 1;
         transform: scale(1);
     }
@@ -445,8 +494,7 @@ const SkillIcon = styled.img`
     transition: filter 0.35s ease;
 
     ${SkillItem}:hover &,
-    ${SkillItem}:focus-visible &,
-    ${SkillItem}[data-selected="true"] & {
+    ${SkillItem}:focus-visible & {
         filter: drop-shadow(0 0 8px rgba(var(--glow), 0.9))
             drop-shadow(0 0 20px rgba(var(--glow), 0.55));
     }
@@ -461,8 +509,7 @@ const SkillLabel = styled.span`
         text-shadow 0.35s ease;
 
     ${SkillItem}:hover &,
-    ${SkillItem}:focus-visible &,
-    ${SkillItem}[data-selected="true"] & {
+    ${SkillItem}:focus-visible & {
         color: rgb(var(--glow));
         text-shadow: 0 0 12px rgba(var(--glow), 0.6);
     }
@@ -485,6 +532,24 @@ export default function Me() {
     const selectedSkillData = skills.find(
         (skill) => skill.name === selectedSkill,
     );
+
+    /* Measure whichever layer is currently the live one and drive SwapArea's
+       height from it. Separate refs because the outgoing layer stays mounted
+       through its fade and would otherwise null out a shared ref. */
+    const [swapHeight, setSwapHeight] = useState<number | null>(null);
+    const gridRef = useRef<HTMLDivElement | null>(null);
+    const panelRef = useRef<HTMLDivElement | null>(null);
+
+    useLayoutEffect(() => {
+        const el = selectedSkill ? panelRef.current : gridRef.current;
+        if (!el) return;
+        const measure = () => setSwapHeight(el.offsetHeight);
+        measure();
+        // Project thumbnails and wrapping can change the height after mount.
+        const observer = new ResizeObserver(measure);
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, [selectedSkill]);
 
     /* Pointer position is written straight to CSS custom properties inside a
        rAF so tilting the card never triggers a React render. */
@@ -561,7 +626,7 @@ export default function Me() {
     }, []);
 
     return (
-        <div>
+        <Page>
             <Container>
                 <CardScene ref={imageRef} $isVisible={isImageVisible}>
                     <Card
@@ -638,42 +703,72 @@ export default function Me() {
             <SectionTitle ref={titleRef} $isVisible={isImageVisible}>
                 <span>Tech Stack</span>
             </SectionTitle>
-            <SkillsContainer>
-                {skills.map((skill) => (
-                    <SkillItem
-                        key={skill.name}
-                        role='button'
-                        tabIndex={0}
-                        $isActive={selectedSkill === skill.name}
-                        $glow={skill.glow}
-                        data-selected={selectedSkill === skill.name}
-                        aria-pressed={selectedSkill === skill.name}
-                        onClick={() => toggleSkill(skill.name)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault();
-                                toggleSkill(skill.name);
-                            }
-                        }}
-                    >
-                        <IconOrb>
-                            <SkillIcon src={skill.icon} alt={skill.name} />
-                        </IconOrb>
-                        <SkillLabel>{skill.name}</SkillLabel>
-                    </SkillItem>
-                ))}
-            </SkillsContainer>
-            <AnimatePresence mode='wait'>
-                {selectedSkillData && (
-                    <SkillProjects
-                        key={selectedSkillData.name}
-                        skill={selectedSkillData.name}
-                        icon={selectedSkillData.icon}
-                        glow={selectedSkillData.glow}
-                        onClose={() => setSelectedSkill(null)}
-                    />
-                )}
-            </AnimatePresence>
-        </div>
+            {/* Grid and panel are alternates in the same slot: picking a skill
+                clears the icons and the panel takes their place. */}
+            <SwapArea
+                style={swapHeight === null ? undefined : { height: swapHeight }}
+            >
+                <AnimatePresence initial={false}>
+                    {selectedSkillData ? (
+                        <SwapLayer
+                            key={selectedSkillData.name}
+                            ref={panelRef}
+                            initial={{ opacity: 0 }}
+                            animate={{
+                                opacity: 1,
+                                transition: { duration: 0.35, delay: 0.1 },
+                            }}
+                            exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                        >
+                            <SkillProjects
+                                skill={selectedSkillData.name}
+                                icon={selectedSkillData.icon}
+                                glow={selectedSkillData.glow}
+                                onClose={() => setSelectedSkill(null)}
+                            />
+                        </SwapLayer>
+                    ) : (
+                        <SwapLayer
+                            key='skill-grid'
+                            ref={gridRef}
+                            variants={gridVariants}
+                            initial='hidden'
+                            animate='visible'
+                            exit='hidden'
+                        >
+                            <SkillsContainer>
+                                {skills.map((skill) => (
+                                    <SkillItem
+                                        key={skill.name}
+                                        variants={iconVariants}
+                                        role='button'
+                                        tabIndex={0}
+                                        $glow={skill.glow}
+                                        onClick={() => toggleSkill(skill.name)}
+                                        onKeyDown={(e) => {
+                                            if (
+                                                e.key === "Enter" ||
+                                                e.key === " "
+                                            ) {
+                                                e.preventDefault();
+                                                toggleSkill(skill.name);
+                                            }
+                                        }}
+                                    >
+                                        <IconOrb>
+                                            <SkillIcon
+                                                src={skill.icon}
+                                                alt={skill.name}
+                                            />
+                                        </IconOrb>
+                                        <SkillLabel>{skill.name}</SkillLabel>
+                                    </SkillItem>
+                                ))}
+                            </SkillsContainer>
+                        </SwapLayer>
+                    )}
+                </AnimatePresence>
+            </SwapArea>
+        </Page>
     );
 }

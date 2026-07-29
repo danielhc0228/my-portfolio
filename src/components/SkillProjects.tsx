@@ -36,16 +36,19 @@ const allProjects: FlatProject[] = [
     ...subProjects,
 ];
 
-const Wrapper = styled(motion.div)`
+/* Height and fading are owned by the swap area in Me.tsx, so this is a plain
+   block — animating height here too would fight it. */
+const Wrapper = styled.div`
     width: 100%;
     background: #0d0d0d;
-    overflow: hidden;
 `;
 
+/* Generous padding gives the panel's outer glow room to fade before SwapArea's
+   `overflow: hidden` clips it. */
 const Inner = styled.div`
     max-width: 1180px;
     margin: 0 auto;
-    padding: 4px 20px 70px;
+    padding: 26px 26px 70px;
 `;
 
 /* The container the skill's own colour outlines. */
@@ -295,25 +298,31 @@ const LinkButton = styled.a`
     }
 `;
 
-const CloseButton = styled.button`
+/* Labelled rather than a bare ✕: with the skill grid hidden, this is the only
+   way back to it, so it needs to say so. */
+const BackButton = styled.button`
     position: absolute;
     top: 14px;
     right: 14px;
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     transition:
         background 0.25s ease,
-        color 0.25s ease;
+        color 0.25s ease,
+        border-color 0.25s ease;
 
     &:hover {
-        background: rgba(var(--glow), 0.85);
+        background: rgba(var(--glow), 0.9);
         color: #0d0d0d;
         border-color: transparent;
     }
@@ -347,12 +356,7 @@ export default function SkillProjects({
     );
 
     return (
-        <Wrapper
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-        >
+        <Wrapper>
             <Inner>
                 <Panel
                     $glow={glow}
@@ -361,23 +365,27 @@ export default function SkillProjects({
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    <CloseButton onClick={onClose} aria-label='Close'>
+                    <BackButton
+                        onClick={onClose}
+                        aria-label='Back to all skills'
+                    >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             fill='none'
                             viewBox='0 0 24 24'
-                            strokeWidth={2}
+                            strokeWidth={2.2}
                             stroke='currentColor'
-                            width='14'
-                            height='14'
+                            width='13'
+                            height='13'
                         >
                             <path
                                 strokeLinecap='round'
                                 strokeLinejoin='round'
-                                d='M6 18 18 6M6 6l12 12'
+                                d='M15.75 19.5 8.25 12l7.5-7.5'
                             />
                         </svg>
-                    </CloseButton>
+                        All skills
+                    </BackButton>
 
                     {/* Icon settles into the left column, projects into the
                         right — the two halves converge as the panel opens. */}
