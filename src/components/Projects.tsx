@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import styled, { keyframes } from "styled-components";
 import {
     AnimatePresence,
@@ -632,97 +633,104 @@ export default function Projects() {
                 </ScrollSpace>
             )}
 
-            <AnimatePresence>
-                {activeProject && activeIndex !== null && (
-                    <Backdrop
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                        onClick={() => setActiveIndex(null)}
-                    >
-                        <Modal
-                            role='dialog'
-                            aria-modal='true'
-                            aria-label={activeProject.title}
-                            $accent={ACCENTS[activeIndex % ACCENTS.length]}
-                            initial={{ opacity: 0, y: 24, scale: 0.97 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 16, scale: 0.98 }}
-                            transition={{
-                                duration: 0.3,
-                                ease: [0.22, 1, 0.36, 1],
-                            }}
-                            onClick={(e) => e.stopPropagation()}
+            {/* Portalled to <body> so it escapes App's `z-index: 1` wrapper —
+                otherwise the fixed header would paint over the overlay. */}
+            {createPortal(
+                <AnimatePresence>
+                    {activeProject && activeIndex !== null && (
+                        <Backdrop
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            onClick={() => setActiveIndex(null)}
                         >
-                            <CloseButton
-                                onClick={() => setActiveIndex(null)}
-                                aria-label='Close'
+                            <Modal
+                                role='dialog'
+                                aria-modal='true'
+                                aria-label={activeProject.title}
+                                $accent={ACCENTS[activeIndex % ACCENTS.length]}
+                                initial={{ opacity: 0, y: 24, scale: 0.97 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 16, scale: 0.98 }}
+                                transition={{
+                                    duration: 0.3,
+                                    ease: [0.22, 1, 0.36, 1],
+                                }}
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    fill='none'
-                                    viewBox='0 0 24 24'
-                                    strokeWidth={2}
-                                    stroke='currentColor'
-                                    width='18'
-                                    height='18'
+                                <CloseButton
+                                    onClick={() => setActiveIndex(null)}
+                                    aria-label='Close'
                                 >
-                                    <path
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                        d='M6 18 18 6M6 6l12 12'
+                                    <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        fill='none'
+                                        viewBox='0 0 24 24'
+                                        strokeWidth={2}
+                                        stroke='currentColor'
+                                        width='18'
+                                        height='18'
+                                    >
+                                        <path
+                                            strokeLinecap='round'
+                                            strokeLinejoin='round'
+                                            d='M6 18 18 6M6 6l12 12'
+                                        />
+                                    </svg>
+                                </CloseButton>
+
+                                {activeProject.sampleImg && (
+                                    <ModalImage
+                                        src={activeProject.sampleImg}
+                                        alt={activeProject.title}
                                     />
-                                </svg>
-                            </CloseButton>
-
-                            {activeProject.sampleImg && (
-                                <ModalImage
-                                    src={activeProject.sampleImg}
-                                    alt={activeProject.title}
-                                />
-                            )}
-
-                            <ModalBody>
-                                <ModalTitle>{activeProject.title}</ModalTitle>
-                                {activeProject.note && (
-                                    <Notes>{activeProject.note}</Notes>
                                 )}
-                                <Description>
-                                    {activeProject.description}
-                                </Description>
-                                <TagContainer style={{ marginTop: 0 }}>
-                                    {activeProject.tags.map((tag) => (
-                                        <Tag key={tag}>{tag}</Tag>
-                                    ))}
-                                </TagContainer>
-                                <LinkRow>
-                                    {activeProject.githubLink && (
-                                        <LinkButton
-                                            href={activeProject.githubLink}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
-                                            <FaGithub size={18} />
-                                            GitHub
-                                        </LinkButton>
+
+                                <ModalBody>
+                                    <ModalTitle>
+                                        {activeProject.title}
+                                    </ModalTitle>
+                                    {activeProject.note && (
+                                        <Notes>{activeProject.note}</Notes>
                                     )}
-                                    {activeProject.demoLink && (
-                                        <LinkButton
-                                            href={activeProject.demoLink}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
-                                            <LinkIcon />
-                                            Live demo
-                                        </LinkButton>
-                                    )}
-                                </LinkRow>
-                            </ModalBody>
-                        </Modal>
-                    </Backdrop>
-                )}
-            </AnimatePresence>
+                                    <Description>
+                                        {activeProject.description}
+                                    </Description>
+                                    <TagContainer style={{ marginTop: 0 }}>
+                                        {activeProject.tags.map((tag) => (
+                                            <Tag key={tag}>{tag}</Tag>
+                                        ))}
+                                    </TagContainer>
+                                    <LinkRow>
+                                        {activeProject.githubLink && (
+                                            <LinkButton
+                                                href={activeProject.githubLink}
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                            >
+                                                <FaGithub size={18} />
+                                                GitHub
+                                            </LinkButton>
+                                        )}
+                                        {activeProject.demoLink && (
+                                            <LinkButton
+                                                href={activeProject.demoLink}
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                            >
+                                                <LinkIcon />
+                                                Live demo
+                                            </LinkButton>
+                                        )}
+                                    </LinkRow>
+                                </ModalBody>
+                            </Modal>
+                        </Backdrop>
+                    )}
+                </AnimatePresence>,
+                document.body,
+            )}
         </Wrapper>
     );
 }
