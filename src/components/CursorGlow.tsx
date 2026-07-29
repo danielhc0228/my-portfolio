@@ -27,7 +27,7 @@ export default function CursorGlow() {
     useEffect(() => {
         const canPointFine = window.matchMedia("(pointer: fine)").matches;
         const prefersReducedMotion = window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
+            "(prefers-reduced-motion: reduce)",
         ).matches;
         if (!canPointFine || prefersReducedMotion) return;
 
@@ -90,10 +90,10 @@ export default function CursorGlow() {
             ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
             pointsRef.current = pointsRef.current.filter(
-                (p) => now - p.t < TRAIL_MAX_AGE
+                (p) => now - p.t < TRAIL_MAX_AGE,
             );
             burstsRef.current = burstsRef.current.filter(
-                (b) => now - b.t < BURST_MAX_AGE
+                (b) => now - b.t < BURST_MAX_AGE,
             );
 
             const points = pointsRef.current;
@@ -122,7 +122,7 @@ export default function CursorGlow() {
                     0,
                     cursor.x,
                     cursor.y,
-                    18
+                    18,
                 );
                 gradient.addColorStop(0, `hsla(${hue}, 100%, 75%, 0.9)`);
                 gradient.addColorStop(1, `hsla(${hue}, 100%, 75%, 0)`);
