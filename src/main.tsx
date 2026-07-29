@@ -57,7 +57,11 @@ table {
 }
 body {
   font-weight: 300;
-  font-family: 'Source Sans Pro', sans-serif;
+  /* San Francisco. -apple-system / BlinkMacSystemFont are the only legal way
+     to reach it on the web — Apple doesn't license SF for redistribution — so
+     the named entries catch anyone who has SF Pro installed locally, and the
+     rest is the platform fallback chain. */
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color:white;
   line-height: 1.2;
   background-color: #0d0d0d;
