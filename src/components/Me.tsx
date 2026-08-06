@@ -437,15 +437,23 @@ const iconVariants = {
     visible: { opacity: 1, scale: 1, y: 0 },
 };
 
-const SkillItem = styled(motion.div)<{ $glow: string }>`
+const SkillItem = styled(motion.div)<{ $glow: string; $outlined: boolean }>`
     --glow: ${(props) => props.$glow};
+    /* So the dragged icon's z-index actually takes effect. */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px;
-    border-radius: 12px;
-    transition: transform 0.3s ease-in-out;
-    cursor: pointer;
+    /* Dragging writes transform inline every frame; leaving it in the
+       transition would make the held icon ease along behind the pointer. */
+    transition: ${(props) =>
+        props.$outlined ? "none" : "transform 0.3s ease-in-out"};
+    cursor: grab;
+    user-select: none;
+
+    &:active {
+        cursor: grabbing;
+    }
 
     &:hover {
         transform: scale(1.1);
@@ -461,6 +469,26 @@ const SkillItem = styled(motion.div)<{ $glow: string }>`
             transform: none;
         }
     }
+`;
+
+/* Carries the shove-away translation, so it never fights SkillItem's hover
+   scale or framer-motion's drag transform. The outline lives here rather than
+   on SkillItem so it travels with the icon it belongs to. */
+const Pusher = styled.div<{ $outlined: boolean }>`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    border-radius: 12px;
+    /* Always present so switching the colour on can't shift the layout. */
+    border: 2px solid
+        ${(props) =>
+            props.$outlined ? `rgba(var(--glow), 0.85)` : "transparent"};
+    /* The translate property, not transform, so it composes with the
+       ancestors' transforms instead of overwriting them. */
+    transition:
+        translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.25s ease;
 `;
 
 /* Holds the halo that sits behind the logo; the logo itself can't host it
@@ -503,6 +531,10 @@ const SkillIcon = styled.img`
     width: 60px;
     height: 60px;
     position: relative;
+    /* Without this the browser's own image drag-and-drop hijacks the gesture
+       and framer-motion never sees the pointer move. */
+    -webkit-user-drag: none;
+    user-select: none;
     /* drop-shadow traces the logo's alpha, so the glow hugs the mark itself
        rather than a rectangle around it. */
     transition: filter 0.35s ease;
@@ -542,6 +574,84 @@ export default function Me() {
     const toggleSkill = (skillName: string) => {
         setSelectedSkill((prev) => (prev === skillName ? null : skillName));
     };
+
+    /* Drag-to-shove: the held icon pushes its neighbours out of the way. The
+       neighbours are moved by writing `translate` straight to the DOM, so a
+       drag never re-renders the grid — only the outline flag does. */
+    const [isHolding, setIsHolding] = useState(false);
+    // A press that lingers is a grab, not a click, so it must not open the
+    // panel on release. framer already swallows the click after a real drag;
+    // this also covers holding still and letting go.
+    const pressStartedAt = useRef(0);
+    const TAP_MAX_MS = 250;
+    const pusherRefs = useRef<(HTMLDivElement | null)[]>([]);
+    // Captured once per drag: mid-drag the pushed icons are moving, so their
+    // live rects would feed back into the next frame's push.
+    const restCenters = useRef<{ x: number; y: number }[]>([]);
+
+    const PUSH_RADIUS = 130; // px from the pointer where the shove starts
+    const PUSH_STRENGTH = 0.85; // fraction of the overlap turned into travel
+
+    const captureCenters = () => {
+        restCenters.current = pusherRefs.current.map((el) => {
+            const rect = el?.getBoundingClientRect();
+            if (!rect) return { x: 0, y: 0 };
+            // Undo any push still applied, so we always store the rest position.
+            const [tx, ty] = (el?.style.translate || "0px 0px")
+                .split(" ")
+                .map(parseFloat);
+            return {
+                x: rect.left + rect.width / 2 - (tx || 0),
+                y: rect.top + rect.height / 2 - (ty || 0),
+            };
+        });
+    };
+
+    const shoveNeighbours = (
+        heldIndex: number,
+        pointer: { x: number; y: number },
+    ) => {
+        pusherRefs.current.forEach((el, i) => {
+            if (!el || i === heldIndex) return;
+            const center = restCenters.current[i];
+            const dx = center.x - pointer.x;
+            const dy = center.y - pointer.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist >= PUSH_RADIUS) {
+                el.style.translate = "";
+                return;
+            }
+            // Straight down is an arbitrary but stable direction for a direct hit.
+            const nx = dist === 0 ? 0 : dx / dist;
+            const ny = dist === 0 ? 1 : dy / dist;
+            const push = (PUSH_RADIUS - dist) * PUSH_STRENGTH;
+            el.style.translate = `${nx * push}px ${ny * push}px`;
+        });
+    };
+
+    const releaseNeighbours = () => {
+        pusherRefs.current.forEach((el) => {
+            if (el) el.style.translate = "";
+        });
+    };
+
+    /* Listened for on the window, not the icon: a release outside the grid (or
+       a cancelled gesture) still has to drop the outlines and let everyone
+       settle back. framer's own onDragEnd can't do this — it never fires for a
+       press that didn't cross the drag threshold. */
+    useEffect(() => {
+        if (!isHolding) return;
+        const end = () => {
+            setIsHolding(false);
+            releaseNeighbours();
+        };
+        window.addEventListener("pointerup", end);
+        window.addEventListener("pointercancel", end);
+        return () => {
+            window.removeEventListener("pointerup", end);
+            window.removeEventListener("pointercancel", end);
+        };
+    }, [isHolding]);
 
     const selectedSkillData = skills.find(
         (skill) => skill.name === selectedSkill,
@@ -751,14 +861,40 @@ export default function Me() {
                             exit='hidden'
                         >
                             <SkillsContainer>
-                                {skills.map((skill) => (
+                                {skills.map((skill, index) => (
                                     <SkillItem
                                         key={skill.name}
                                         variants={iconVariants}
                                         role='button'
                                         tabIndex={0}
                                         $glow={skill.glow}
-                                        onClick={() => toggleSkill(skill.name)}
+                                        $outlined={isHolding}
+                                        drag
+                                        dragSnapToOrigin
+                                        dragMomentum={false}
+                                        whileDrag={{ scale: 1.15, zIndex: 2 }}
+                                        onPointerDown={() => {
+                                            pressStartedAt.current = Date.now();
+                                            captureCenters();
+                                            setIsHolding(true);
+                                        }}
+                                        onDrag={(event) =>
+                                            shoveNeighbours(index, {
+                                                x: (event as PointerEvent)
+                                                    .clientX,
+                                                y: (event as PointerEvent)
+                                                    .clientY,
+                                            })
+                                        }
+                                        onClick={() => {
+                                            if (
+                                                Date.now() -
+                                                    pressStartedAt.current >
+                                                TAP_MAX_MS
+                                            )
+                                                return;
+                                            toggleSkill(skill.name);
+                                        }}
                                         onKeyDown={(e) => {
                                             if (
                                                 e.key === "Enter" ||
@@ -769,13 +905,20 @@ export default function Me() {
                                             }
                                         }}
                                     >
-                                        <IconOrb>
-                                            <SkillIcon
-                                                src={skill.icon}
-                                                alt={skill.name}
-                                            />
-                                        </IconOrb>
-                                        <SkillLabel>{skill.name}</SkillLabel>
+                                        <Pusher
+                                            $outlined={isHolding}
+                                            ref={(el) => {
+                                                pusherRefs.current[index] = el;
+                                            }}
+                                        >
+                                            <IconOrb>
+                                                <SkillIcon
+                                                    src={skill.icon}
+                                                    alt={skill.name}
+                                                />
+                                            </IconOrb>
+                                            <SkillLabel>{skill.name}</SkillLabel>
+                                        </Pusher>
                                     </SkillItem>
                                 ))}
                             </SkillsContainer>
