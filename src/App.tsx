@@ -7,6 +7,7 @@ import Projects from "./components/Projects";
 import Board from "./components/Board";
 import NotFound from "./components/NotFound";
 import Header from "./components/Header";
+import Loader from "./components/Loader";
 import styled from "styled-components";
 
 const TopBtn = styled.button`
@@ -31,9 +32,14 @@ const TopBtn = styled.button`
 
 function App() {
     const [isUnlocked, setIsUnlocked] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     const goUp = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
+
+    // Mount the site only after the loader fades, so Intro's on-mount
+    // animations start when it's actually visible.
+    if (!isLoaded) return <Loader onDone={() => setIsLoaded(true)} />;
 
     return (
         <Router>
