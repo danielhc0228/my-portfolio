@@ -58,7 +58,10 @@ const CardScene = styled.div<{ $isVisible: boolean }>`
     /* Scales with the card so the bigger artwork doesn't get an exaggerated
        fish-eye from the same perspective depth. */
     perspective: 2000px;
-    padding: 28px 40px;
+    /* Custom property so the card can subtract this gutter when it works out
+       how wide it's allowed to be — inherited, so Card reads the same value. */
+    --gutter: clamp(16px, 5vw, 40px);
+    padding: 28px var(--gutter);
     opacity: 0;
     transform: translateY(50px);
 
@@ -80,8 +83,13 @@ const Card = styled.div<{ $active: boolean; $flipped: boolean }>`
 
     position: relative;
     /* The second term keeps the card's *width* inside the viewport on narrow
-       screens, since aspect-ratio derives width from height. */
-    height: min(clamp(420px, 80vh, 860px), calc(86vw * 1.34));
+       screens, since aspect-ratio derives width from height. It has to subtract
+       CardScene's gutter on both sides, or the card plus its padding ends up
+       wider than the viewport and the page scrolls sideways. */
+    height: min(
+        clamp(420px, 80vh, 860px),
+        calc((100vw - 2 * var(--gutter)) * 1.34)
+    );
     aspect-ratio: ${CARD_RATIO};
     transform-style: preserve-3d;
     cursor: pointer;
@@ -102,11 +110,17 @@ const Card = styled.div<{ $active: boolean; $flipped: boolean }>`
     }
 
     @media (max-width: 1024px) {
-        height: min(clamp(380px, 68vh, 700px), calc(86vw * 1.34));
+        height: min(
+            clamp(380px, 68vh, 700px),
+            calc((100vw - 2 * var(--gutter)) * 1.34)
+        );
     }
 
     @media (max-width: 480px) {
-        height: min(clamp(320px, 58vh, 560px), calc(88vw * 1.34));
+        height: min(
+            clamp(320px, 58vh, 560px),
+            calc((100vw - 2 * var(--gutter)) * 1.34)
+        );
     }
 
     @media (prefers-reduced-motion: reduce) {
