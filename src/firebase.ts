@@ -20,7 +20,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// ponytail: no App Check, so this config being public means anyone can call the
+// AI Logic endpoint on this project. Harmless on the Spark plan (free tier is a
+// hard cap, worst case is quota exhaustion). MUST add App Check with a
+// reCAPTCHA v3 provider before upgrading to Blaze, where that becomes a bill.
+export const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 export const auth = getAuth(app);
