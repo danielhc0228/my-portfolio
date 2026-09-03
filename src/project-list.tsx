@@ -35,7 +35,7 @@ export const mainProjects = [
             "Gemini",
             "Claude Code",
         ],
-        sampleImg: `/racquetgeek.png`,
+        sampleImg: `/racquetgeek.webp`,
         githubLink: "",
         demoLink: "https://racquetgeek.com",
     },
@@ -67,7 +67,7 @@ export const mainProjects = [
             </>
         ),
         tags: ["Python", "LangChain", "LangGraph", "ChromaDB", "Gemini API"],
-        // sampleImg: `/recipe-ai.png`,
+        // sampleImg: `/recipe-ai.webp`,
         githubLink:
             "https://github.com/danielhc0228/Personalised-Recipe-AI-Agent",
         demoLink:
@@ -111,7 +111,7 @@ export const mainProjects = [
             "Tailwind CSS",
             "HTML",
         ],
-        sampleImg: `/dc-market.png`,
+        sampleImg: `/dc-market.webp`,
         githubLink: "https://github.com/danielhc0228/DC-Market",
         demoLink: "https://dc-market.vercel.app/",
     },
@@ -152,7 +152,7 @@ export const mainProjects = [
             "HTML",
             "Supabase",
         ],
-        sampleImg: `/htp.png`,
+        sampleImg: `/htp.webp`,
         githubLink: "https://github.com/danielhc0228/my-tennis-app",
         demoLink: "https://htp-league.vercel.app/",
     },
@@ -182,7 +182,7 @@ export const mainProjects = [
             </>
         ),
         tags: ["TypeScript", "React", "HTML", "CSS"],
-        sampleImg: `/netflix.png`,
+        sampleImg: `/netflix.webp`,
         githubLink: "https://github.com/danielhc0228/HojinFlix-Movie-Website",
         demoLink: "https://hojinflix.netlify.app/",
     },
@@ -212,7 +212,7 @@ export const mainProjects = [
             </>
         ),
         tags: ["TypeScript", "React", "Firebase", "HTML", "CSS"],
-        sampleImg: `/twitter.png`,
+        sampleImg: `/twitter.webp`,
         githubLink:
             "https://github.com/danielhc0228/Social-Network-Service-project",
         demoLink: "https://twitter-clone-15a8b.web.app/",
@@ -242,7 +242,7 @@ export const mainProjects = [
         ),
 
         tags: ["JavaScript", "HTML", "CSS"],
-        sampleImg: `/uq-project.png`,
+        sampleImg: `/uq-project.webp`,
         githubLink:
             "https://github.com/danielhc0228/UQ-CompSci-Project-Olympic-App-FrontEnd",
         demoLink: "https://youtu.be/IL9nFx0_cxk",
@@ -255,7 +255,7 @@ export const subProjects = [
         description:
             "A Trello-style task board built with React and @hello-pangea/dnd, featuring drag-and-drop boards and cards for flexible task organization.",
         tags: ["HTML", "CSS", "TypeScript", "React"],
-        sampleImg: `/trello.png`,
+        sampleImg: `/trello.webp`,
         githubLink: "https://github.com/danielhc0228/trello-clone",
         demoLink: "https://trello-clone-dc.netlify.app/",
     },
@@ -264,7 +264,7 @@ export const subProjects = [
         description:
             "This portfolio site itself — built with React, TypeScript, Framer Motion, styled-components and Firebase to demonstrate end-to-end frontend engineering and interaction design.",
         tags: ["HTML", "CSS", "TypeScript", "React", "Firebase"],
-        sampleImg: `/portfolio.png`,
+        sampleImg: `/portfolio.webp`,
         githubLink: "https://github.com/danielhc0228/my-portfolio",
         demoLink: "/",
     },
@@ -273,7 +273,7 @@ export const subProjects = [
         description:
             "A live weather dashboard built with React, consuming the Weatherbit.io API through a custom backend deployed on Render.",
         tags: ["HTML", "CSS", "JavaScript", "React"],
-        sampleImg: `/weather.png`,
+        sampleImg: `/weather.webp`,
         githubLink: "https://github.com/danielhc0228/Weather-App-Frontend",
         demoLink: "https://weatherappdchung.netlify.app/",
     },
@@ -282,7 +282,7 @@ export const subProjects = [
         description:
             "A task management app built with React and TypeScript for creating, organizing and tracking personal to-do lists.",
         tags: ["HTML", "CSS", "TypeScript", "JavaScript", "React"],
-        sampleImg: `/todo.png`,
+        sampleImg: `/todo.webp`,
         githubLink: "https://github.com/danielhc0228/todo-app",
         demoLink: "https://todo-app-dc.netlify.app/",
     },
@@ -291,7 +291,7 @@ export const subProjects = [
         description:
             "A real-time cryptocurrency price tracker built with React and TypeScript, consuming a live market data API.",
         tags: ["HTML", "CSS", "TypeScript", "React"],
-        sampleImg: `/crypto.png`,
+        sampleImg: `/crypto.webp`,
         githubLink: "https://github.com/danielhc0228/crypto-tracker",
         demoLink: "https://danielhc0228.github.io/crypto-tracker/",
     },
@@ -300,7 +300,7 @@ export const subProjects = [
         description:
             "A browser-based Wordle clone built with JavaScript, HTML and CSS, replicating the core word-guessing game mechanics and win/loss logic.",
         tags: ["HTML", "CSS", "JavaScript", "React"],
-        sampleImg: `/wordle.png`,
+        sampleImg: `/wordle.webp`,
         githubLink: "https://github.com/danielhc0228/Wordle-Game",
         demoLink: "https://wordlebydchung.netlify.app/",
     },

@@ -19,12 +19,12 @@ const skills = [
     { name: "React", icon: "/react.svg", glow: "97, 218, 251" },
     { name: "Firebase", icon: "/firebase.svg", glow: "255, 202, 40" },
     { name: "Next.js", icon: "/nextjs.svg", glow: "235, 235, 235" },
-    { name: "Prisma", icon: "/prisma.png", glow: "45, 212, 191" },
-    { name: "Supabase", icon: "/supabase.png", glow: "62, 207, 142" },
-    { name: "Claude Code", icon: "/claude.png", glow: "217, 119, 87" },
-    { name: "Gemini", icon: "/gemini.png", glow: "116, 143, 255" },
-    { name: "Python", icon: "/python.png", glow: "255, 212, 59" },
-    { name: "LangChain/Graph", icon: "/lang.png", glow: "26, 200, 168" },
+    { name: "Prisma", icon: "/prisma.webp", glow: "45, 212, 191" },
+    { name: "Supabase", icon: "/supabase.webp", glow: "62, 207, 142" },
+    { name: "Claude Code", icon: "/claude.webp", glow: "217, 119, 87" },
+    { name: "Gemini", icon: "/gemini.webp", glow: "116, 143, 255" },
+    { name: "Python", icon: "/python.webp", glow: "255, 212, 59" },
+    { name: "LangChain/Graph", icon: "/lang.webp", glow: "26, 200, 168" },
 ];
 
 const Container = styled.div`
@@ -49,7 +49,7 @@ const fadeInUp = keyframes`
   }
 `;
 
-const CARD_SRC = "/MyEmoji.png";
+const CARD_SRC = "/MyEmoji.webp";
 const CARD_RATIO = "1792 / 2400";
 
 /* Scene owns the perspective + the entrance animation, so the card itself is
