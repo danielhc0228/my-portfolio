@@ -26,13 +26,17 @@ const SocialIcons = styled.div`
     display: flex;
     gap: 15px;
     margin-bottom: 10px;
+`;
 
-    a {
-        color: white;
-        transition: color 0.3s ease-in-out;
-        &:hover {
-            color: #ff4500; /* Netflix-like red */
-        }
+/* Each link hovers to its own brand colour. Instagram's identity is a
+   gradient, so it takes the pink its logo resolves to at one stop. */
+const Social = styled.a<{ $brand: string }>`
+    color: white;
+    display: inline-flex;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+        color: ${(props) => props.$brand};
     }
 `;
 
@@ -108,27 +112,38 @@ function Footer() {
             </FadeInText>
             <FooterContent>
                 <SocialIcons>
-                    <a
+                    <Social
                         href='https://www.facebook.com/daniel.chung.7509836/'
                         target='_blank'
+                        $brand='#1877f2'
+                        aria-label='Facebook'
                     >
                         <FaFacebook size={20} />
-                    </a>
-                    <a href='https://github.com/danielhc0228' target='_blank'>
+                    </Social>
+                    <Social
+                        href='https://github.com/danielhc0228'
+                        target='_blank'
+                        $brand='#8b949e'
+                        aria-label='GitHub'
+                    >
                         <FaGithub size={20} />
-                    </a>
-                    <a
+                    </Social>
+                    <Social
                         href='https://www.instagram.com/danielchung2802/'
                         target='_blank'
+                        $brand='#e1306c'
+                        aria-label='Instagram'
                     >
                         <FaInstagram size={20} />
-                    </a>
-                    <a
+                    </Social>
+                    <Social
                         href='https://www.linkedin.com/in/daniel-chung-83451522b/'
                         target='_blank'
+                        $brand='#0a66c2'
+                        aria-label='LinkedIn'
                     >
                         <FaLinkedin size={20} />
-                    </a>
+                    </Social>
                 </SocialIcons>
 
                 <FooterLinks>

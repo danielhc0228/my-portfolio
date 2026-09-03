@@ -827,6 +827,9 @@ export default function Me() {
             <SectionTitle ref={titleRef} $isVisible={isImageVisible}>
                 <span>Tech Stack</span>
             </SectionTitle>
+            <FlipHint $hidden={!!selectedSkillData}>
+                Hold icons and play around with it
+            </FlipHint>
             {/* Grid and panel are alternates in the same slot: picking a skill
                 clears the icons and the panel takes their place. */}
             <SwapArea

@@ -302,10 +302,74 @@ const OpenCue = styled.span`
     }
 `;
 
+/* ---------- sub-project grid ---------- */
+
+/* Sits at the end of the track as one more "card": 3 rows of 16:9 cells whose
+   total height matches a main card, so row height (and therefore cell width)
+   is derived from that height rather than measured. */
+const SubGrid = styled.div`
+    --h: min(66vh, 620px);
+    --gap: 14px;
+    --row: calc((var(--h) - 2 * var(--gap)) / 3);
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-rows: repeat(3, var(--row));
+    grid-template-columns: repeat(2, calc(var(--row) * 16 / 9));
+    gap: var(--gap);
+
+    @media (max-width: 900px) {
+        --h: min(70vh, 560px);
+    }
+`;
+
+const SubCell = styled.button`
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 10px;
+    background: #121218;
+    color: white;
+    text-align: left;
+    transition:
+        border-color 0.3s ease,
+        transform 0.3s ease;
+
+    &:hover,
+    &:focus-visible {
+        border-color: white;
+        transform: translateY(-4px);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+    }
+`;
+
+const SubLabel = styled.span`
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 18px 12px 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+`;
+
 /* ---------- reduced-motion fallback ---------- */
 
 const StaticHeader = styled.div`
     padding: 60px 6vw 0;
+`;
+
+const StaticSubWrap = styled.div`
+    padding: 0 6vw 100px;
 `;
 
 const StaticGrid = styled.div`
@@ -532,8 +596,8 @@ export default function Projects() {
     const spaceRef = useRef<HTMLDivElement | null>(null);
     const trackRef = useRef<HTMLDivElement | null>(null);
 
-    /* Main and sub projects are merged into one list — the horizontal
-       track is the only section, so the old headings have nothing to divide. */
+    /* One flat list purely so the modal can address any project by index —
+       main projects render as track cards, sub projects as the trailing grid. */
     const projects = useMemo<Project[]>(
         () => [
             ...mainProjects,
@@ -595,7 +659,7 @@ export default function Projects() {
         };
     }, [activeProject]);
 
-    const cards = projects.map((project, idx) => (
+    const cards = mainProjects.map((project, idx) => (
         <ProjectCard
             key={project.title}
             project={project}
@@ -603,6 +667,27 @@ export default function Projects() {
             onOpen={() => setActiveIndex(idx)}
         />
     ));
+
+    const subGrid = (
+        <SubGrid>
+            {subProjects.map((project, idx) => (
+                <SubCell
+                    key={project.title}
+                    aria-label={`${project.title} — open details`}
+                    onClick={() => setActiveIndex(mainProjects.length + idx)}
+                >
+                    {project.sampleImg && (
+                        <img
+                            src={project.sampleImg}
+                            alt={project.title}
+                            loading='lazy'
+                        />
+                    )}
+                    <SubLabel>{project.title}</SubLabel>
+                </SubCell>
+            ))}
+        </SubGrid>
+    );
 
     return (
         <Wrapper id='projects'>
@@ -612,6 +697,7 @@ export default function Projects() {
                         <Title>Projects</Title>
                     </StaticHeader>
                     <StaticGrid>{cards}</StaticGrid>
+                    <StaticSubWrap>{subGrid}</StaticSubWrap>
                 </>
             ) : (
                 <ScrollSpace ref={spaceRef} $distance={distance}>
@@ -624,6 +710,7 @@ export default function Projects() {
                         </Header>
                         <Track ref={trackRef} style={{ x }}>
                             {cards}
+                            {subGrid}
                         </Track>
                         <ProgressRail>
                             <ProgressBar style={{ scaleX: scrollYProgress }} />
