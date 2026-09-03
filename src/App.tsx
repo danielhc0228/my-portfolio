@@ -8,7 +8,6 @@ import Board from "./components/Board";
 import NotFound from "./components/NotFound";
 import Header from "./components/Header";
 import Loader from "./components/Loader";
-import AskAI from "./components/AskAI";
 import styled from "styled-components";
 
 const TopBtn = styled.button`
@@ -91,8 +90,6 @@ function App() {
                     />
                 </svg>
             </TopBtn>
-
-            <AskAI />
         </Router>
     );
 }

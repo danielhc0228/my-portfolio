@@ -1,13 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
-import styled, { css, keyframes } from "styled-components";
+import AskAI from "./AskAI";
+import styled, { css } from "styled-components";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
-
-const gradientShift = keyframes`
-  0%   { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-`;
 
 /* Transparent over the hero, glass once you start scrolling — so it never
    competes with the intro but stays legible over content. */
@@ -17,9 +13,11 @@ const Bar = styled.header<{ $scrolled: boolean }>`
     left: 0;
     width: 100%;
     z-index: 40;
-    display: flex;
+    /* Equal 1fr gutters keep the composer on the true centre line even when
+       the brand collapses to nothing on mobile. */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: 16px;
     padding: 14px clamp(18px, 5vw, 48px);
     transition:
@@ -40,49 +38,11 @@ const Bar = styled.header<{ $scrolled: boolean }>`
 `;
 
 const Brand = styled(Link)`
+    justify-self: start;
     display: inline-flex;
     align-items: center;
     gap: 12px;
     color: white;
-`;
-
-const Mark = styled.span`
-    width: 40px;
-    height: 40px;
-    border-radius: 13px;
-    display: grid;
-    place-items: center;
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: #0d0d0d;
-    background: linear-gradient(
-        110deg,
-        #5ed6ff,
-        #a384ff,
-        #ff5c7a,
-        #ffd166,
-        #5ed6ff
-    );
-    background-size: 200% 100%;
-    animation: ${gradientShift} 7s linear infinite;
-    box-shadow: 0 0 22px rgba(140, 160, 255, 0.35);
-    transition:
-        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.3s ease;
-
-    ${Brand}:hover & {
-        transform: scale(1.08) rotate(-4deg);
-        box-shadow: 0 0 34px rgba(140, 160, 255, 0.6);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        animation: none;
-
-        ${Brand}:hover & {
-            transform: none;
-        }
-    }
 `;
 
 const BrandName = styled.span`
@@ -97,6 +57,7 @@ const BrandName = styled.span`
 `;
 
 const Nav = styled.nav`
+    justify-self: end;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -158,12 +119,19 @@ const navItem = css`
     }
 `;
 
-const NavLink = styled(Link)`
-    ${navItem}
-`;
-
 const NavAnchor = styled.a`
     ${navItem}
+
+    @media (max-width: 620px) {
+        padding: 8px 10px;
+    }
+`;
+
+/* Mobile keeps the mark only — the bar has to make room for the AI composer. */
+const NavLabel = styled.span`
+    @media (max-width: 620px) {
+        display: none;
+    }
 `;
 
 /* Doubles as decoration and a genuine read on how far down the page you are. */
@@ -180,7 +148,6 @@ const Progress = styled(motion.div)`
 export default function Header() {
     const [isScrolled, setScrolled] = useState(false);
     const { scrollY, scrollYProgress } = useScroll();
-    const { pathname } = useLocation();
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         setScrolled(latest > 24);
@@ -189,21 +156,19 @@ export default function Header() {
     return (
         <Bar $scrolled={isScrolled}>
             <Brand to='/' aria-label='Daniel Chung — home'>
-                <Mark aria-hidden='true'>DC</Mark>
                 <BrandName>Daniel Chung</BrandName>
             </Brand>
 
+            <AskAI />
+
             <Nav>
-                <NavLink to='/' data-active={pathname === "/"}>
-                    Home
-                </NavLink>
                 <NavAnchor
                     href='https://github.com/danielhc0228/my-portfolio'
                     target='_blank'
                     rel='noopener noreferrer'
                 >
                     <FaGithub size={15} />
-                    Github
+                    <NavLabel>Github</NavLabel>
                 </NavAnchor>
             </Nav>
 

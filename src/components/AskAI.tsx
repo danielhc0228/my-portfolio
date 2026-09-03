@@ -13,16 +13,62 @@ const gradientShift = keyframes`
 
 const gradient = `linear-gradient(110deg, #5ed6ff, #a384ff, #ff5c7a, #ffd166, #5ed6ff)`;
 
-/* Sits above the scroll-to-top button, which owns bottom: 20px. */
-const Bubble = styled.button`
-    position: fixed;
-    right: 20px;
-    bottom: 84px;
-    z-index: 41;
-    height: 54px;
-    width: 54px;
+/* Anchors the answer panel to the composer, which now lives in the header.
+   The header gains `backdrop-filter` when scrolled, which would make a fixed
+   panel position against the header box anyway — absolute is the honest form. */
+const Wrap = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: center;
+`;
+
+const TriggerForm = styled.form`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: clamp(150px, 34vw, 400px);
+    padding: 3px 3px 3px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease;
+
+    &:focus-within {
+        border-color: rgba(163, 132, 255, 0.7);
+        background: rgba(255, 255, 255, 0.08);
+    }
+`;
+
+const Spark = styled.span`
     display: grid;
     place-items: center;
+    flex-shrink: 0;
+    color: #a384ff;
+`;
+
+const Input = styled.input`
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: clamp(0.72rem, 2.4vw, 0.86rem);
+    outline: none;
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+    }
+`;
+
+const SendBtn = styled.button`
+    display: grid;
+    place-items: center;
+    height: clamp(26px, 7vw, 32px);
+    width: clamp(26px, 7vw, 32px);
+    flex-shrink: 0;
     border: none;
     border-radius: 50%;
     color: #0d0d0d;
@@ -30,38 +76,31 @@ const Bubble = styled.button`
     background: ${gradient};
     background-size: 200% 100%;
     animation: ${gradientShift} 7s linear infinite;
-    box-shadow: 0 0 22px rgba(140, 160, 255, 0.4);
-    transition:
-        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.3s ease;
 
-    &:hover {
-        transform: scale(1.08);
-        box-shadow: 0 0 34px rgba(140, 160, 255, 0.65);
+    &:disabled {
+        opacity: 0.35;
+        cursor: default;
     }
 
     @media (prefers-reduced-motion: reduce) {
         animation: none;
-        &:hover {
-            transform: none;
-        }
     }
 `;
 
 const Panel = styled(motion.div)`
-    position: fixed;
-    right: 20px;
-    bottom: 84px;
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
     z-index: 42;
-    width: min(380px, calc(100vw - 40px));
-    height: min(540px, calc(100vh - 140px));
+    width: min(420px, calc(100vw - 24px));
+    height: min(440px, 60vh);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transform-origin: bottom right;
-    border-radius: 20px;
+    transform-origin: top center;
+    border-radius: 18px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(13, 13, 13, 0.86);
+    background: rgba(13, 13, 13, 0.92);
     backdrop-filter: blur(18px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 `;
@@ -70,13 +109,13 @@ const PanelHead = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 `;
 
 const HeadMark = styled.span`
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     display: grid;
     place-items: center;
     border-radius: 9px;
@@ -92,10 +131,11 @@ const HeadMark = styled.span`
 
 const HeadTitle = styled.span`
     flex: 1;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
+    color: #fff;
 `;
 
 const CloseBtn = styled.button`
@@ -154,53 +194,6 @@ const Bubbles = styled.div<{ $role: "user" | "model" }>`
             props.$role === "user" ? "transparent" : "rgba(255,255,255,0.08)"};
 `;
 
-const Form = styled.form`
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-`;
-
-const Input = styled.input`
-    flex: 1;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.04);
-    color: #fff;
-    font: inherit;
-    font-size: 0.88rem;
-    outline: none;
-
-    &::placeholder {
-        color: rgba(255, 255, 255, 0.35);
-    }
-
-    &:focus {
-        border-color: rgba(163, 132, 255, 0.7);
-    }
-`;
-
-const SendBtn = styled.button`
-    display: grid;
-    place-items: center;
-    height: 38px;
-    width: 38px;
-    flex-shrink: 0;
-    border: none;
-    border-radius: 50%;
-    color: #0d0d0d;
-    cursor: pointer;
-    background: ${gradient};
-    background-size: 200% 100%;
-
-    &:disabled {
-        opacity: 0.35;
-        cursor: default;
-    }
-`;
-
 type Message = { role: "user" | "model"; text: string };
 
 export default function AskAI() {
@@ -230,6 +223,7 @@ export default function AskAI() {
         if (!text || isPending) return;
 
         setDraft("");
+        setIsOpen(true);
         setIsPending(true);
         // The empty model message is the slot the stream fills in.
         setMessages((prev) => [
@@ -245,7 +239,9 @@ export default function AskAI() {
                 const part = chunk.text();
                 setMessages((prev) =>
                     prev.map((m, i) =>
-                        i === prev.length - 1 ? { ...m, text: m.text + part } : m,
+                        i === prev.length - 1
+                            ? { ...m, text: m.text + part }
+                            : m,
                     ),
                 );
             }
@@ -267,14 +263,34 @@ export default function AskAI() {
     };
 
     return (
-        <>
+        <Wrap>
+            <TriggerForm onSubmit={send}>
+                <Spark aria-hidden='true'>
+                    <HiSparkles size={14} />
+                </Spark>
+                <Input
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    onFocus={() => setIsOpen(true)}
+                    placeholder='Ask AI about Daniel…'
+                    aria-label='Ask AI about Daniel'
+                />
+                <SendBtn
+                    type='submit'
+                    disabled={isPending || !draft.trim()}
+                    aria-label='Send'
+                >
+                    <FiSend size={14} />
+                </SendBtn>
+            </TriggerForm>
+
             <AnimatePresence>
-                {isOpen ? (
+                {isOpen && (
                     <Panel
                         key='panel'
-                        initial={{ opacity: 0, scale: 0.9, y: 12 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 12 }}
+                        initial={{ opacity: 0, scale: 0.94, y: -8, x: "-50%" }}
+                        animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
+                        exit={{ opacity: 0, scale: 0.94, y: -8, x: "-50%" }}
                         transition={{
                             duration: 0.25,
                             ease: [0.22, 1, 0.36, 1],
@@ -282,7 +298,7 @@ export default function AskAI() {
                     >
                         <PanelHead>
                             <HeadMark aria-hidden='true'>
-                                <HiSparkles size={15} />
+                                <HiSparkles size={14} />
                             </HeadMark>
                             <HeadTitle>Ask AI</HeadTitle>
                             <CloseBtn
@@ -308,38 +324,9 @@ export default function AskAI() {
                                 ))
                             )}
                         </Log>
-
-                        <Form onSubmit={send}>
-                            <Input
-                                value={draft}
-                                onChange={(e) => setDraft(e.target.value)}
-                                placeholder='Ask anything…'
-                                aria-label='Message'
-                                autoFocus
-                            />
-                            <SendBtn
-                                type='submit'
-                                disabled={isPending || !draft.trim()}
-                                aria-label='Send'
-                            >
-                                <FiSend size={16} />
-                            </SendBtn>
-                        </Form>
                     </Panel>
-                ) : (
-                    <Bubble
-                        key='bubble'
-                        as={motion.button}
-                        initial={{ opacity: 0, scale: 0.6 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.6 }}
-                        onClick={() => setIsOpen(true)}
-                        aria-label='Open AI chat'
-                    >
-                        <HiSparkles size={22} />
-                    </Bubble>
                 )}
             </AnimatePresence>
-        </>
+        </Wrap>
     );
 }
