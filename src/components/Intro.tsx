@@ -1,6 +1,12 @@
-import styled, { css, keyframes } from "styled-components";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { AnimatePresence, motion } from "framer-motion";
+import { useRef } from "react";
+import styled, { keyframes } from "styled-components";
+import {
+    AnimatePresence,
+    animate,
+    motion,
+    useMotionValue,
+    useTransform,
+} from "framer-motion";
 
 const Container = styled.div`
     position: fixed;
@@ -57,62 +63,70 @@ const FadeInText = styled.h2`
     animation-delay: 1s;
 `;
 
-const Lock = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 200px;
+const KNOB = 56;
+const PAD = 4;
+
+const Track = styled.div`
+    position: relative;
+    width: min(320px, 80vw);
+    height: ${KNOB + PAD * 2}px;
+    padding: ${PAD}px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
 `;
 
-const keyGlowPulse = keyframes`
+const shimmer = keyframes`
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+`;
+
+const TrackLabel = styled(motion.span)`
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: ${KNOB / 2}px;
+    font-size: 0.95rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.25) 25%,
+        rgba(255, 255, 255, 0.9) 50%,
+        rgba(255, 255, 255, 0.25) 75%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: ${shimmer} 2.5s linear infinite;
+`;
+
+const knobGlowPulse = keyframes`
   0%, 100% { box-shadow: 0 0 10px 2px rgba(255, 215, 0, 0.4); }
   50% { box-shadow: 0 0 22px 8px rgba(255, 215, 0, 0.85); }
 `;
 
-const KeyIconWrapper = styled.div<{ $isDragging: boolean }>`
+const Knob = styled(motion.div)`
+    position: relative;
+    width: ${KNOB}px;
+    height: ${KNOB}px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 14px;
     border-radius: 50%;
+    background: #1a1a1a;
     cursor: grab;
-    animation: ${keyGlowPulse} 1.8s ease-in-out infinite;
+    touch-action: none;
+    animation: ${knobGlowPulse} 1.8s ease-in-out infinite;
 
     &:active {
         cursor: grabbing;
     }
-
-    ${(props) =>
-        props.$isDragging &&
-        css`
-            animation: none;
-            box-shadow: 0 0 26px 10px rgba(255, 215, 0, 0.95);
-        `}
-`;
-
-const dropGlowPulse = keyframes`
-  0%, 100% { box-shadow: 0 0 10px 2px rgba(29, 155, 240, 0.3); }
-  50% { box-shadow: 0 0 20px 6px rgba(29, 155, 240, 0.65); }
-`;
-
-const LockTargetWrapper = styled.div<{ $isDraggingOver: boolean }>`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px;
-    border-radius: 50%;
-    border: 2px dashed rgba(255, 255, 255, 0.35);
-    animation: ${dropGlowPulse} 2.2s ease-in-out infinite;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease,
-        transform 0.3s ease;
-
-    ${(props) =>
-        props.$isDraggingOver &&
-        css`
-            animation: none;
-            border-color: #1d9bf0;
-            transform: scale(1.15);
-            box-shadow: 0 0 30px 10px rgba(29, 155, 240, 0.95);
-        `}
 `;
 
 const Down = styled(motion.div)`
@@ -136,18 +150,20 @@ type IntroProps = {
 };
 
 const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleDragEnd = (result: any) => {
-        const { destination, draggableId } = result;
+    const trackRef = useRef<HTMLDivElement>(null);
+    const x = useMotionValue(0);
+    const labelOpacity = useTransform(x, [0, 90], [1, 0]);
 
-        if (!destination) return;
+    const maxX = () =>
+        (trackRef.current?.offsetWidth ?? 0) - KNOB - PAD * 2;
 
-        // Check if dropped into the special target area
-        if (
-            destination.droppableId === "drop-zone" &&
-            draggableId === "draggable-item"
-        ) {
+    const handleDragEnd = () => {
+        const max = maxX();
+        if (x.get() >= max * 0.85) {
             setIsUnlocked(true);
+            animate(x, max, { type: "spring", stiffness: 400, damping: 40 });
+        } else {
+            animate(x, 0, { type: "spring", stiffness: 500, damping: 40 });
         }
     };
 
@@ -157,146 +173,69 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                 <TypingText>Hi, I'm Daniel.</TypingText>
                 <FadeInText>A Full-stack Developer.</FadeInText>
             </TextWrapper>
-            <Lock>
-                <DragDropContext onDragEnd={handleDragEnd}>
-                    {/* Draggable Component */}
-                    <Droppable droppableId='drag-area'>
-                        {(provided) => (
-                            <div
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
+            <Track ref={trackRef}>
+                <TrackLabel style={{ opacity: labelOpacity }}>
+                    Swipe to unlock
+                </TrackLabel>
+                <Knob
+                    drag={isUnlocked ? false : "x"}
+                    dragConstraints={trackRef}
+                    dragElastic={0.04}
+                    dragMomentum={false}
+                    style={{ x }}
+                    onDragEnd={handleDragEnd}
+                >
+                    <AnimatePresence mode='wait'>
+                        {isUnlocked ? (
+                            <motion.svg
+                                key='unlocked'
+                                initial={{ opacity: 0, scale: 0.8, rotate: -30 }}
+                                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                exit={{ opacity: 0, scale: 0.8, rotate: 30 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth='1.5'
+                                stroke='white'
+                                width='28'
+                                height='28'
                             >
-                                {isUnlocked ? null : (
-                                    <Draggable
-                                        draggableId='draggable-item'
-                                        index={0}
-                                    >
-                                        {(provided, snapshot) => (
-                                            <KeyIconWrapper
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                $isDragging={
-                                                    snapshot.isDragging
-                                                }
-                                            >
-                                                <svg
-                                                    xmlns='http://www.w3.org/2000/svg'
-                                                    fill='none'
-                                                    viewBox='0 0 24 24'
-                                                    strokeWidth='1.5'
-                                                    stroke='white'
-                                                    width='32'
-                                                    height='32'
-                                                >
-                                                    <path
-                                                        strokeLinecap='round'
-                                                        strokeLinejoin='round'
-                                                        d='M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z'
-                                                    />
-                                                </svg>
-                                            </KeyIconWrapper>
-                                        )}
-                                    </Draggable>
-                                )}
-
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-
-                    {/* Drop Target */}
-                    <Droppable droppableId='drop-zone'>
-                        {(provided, snapshot) => (
-                            <LockTargetWrapper
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                                $isDraggingOver={snapshot.isDraggingOver}
+                                <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
+                                />
+                            </motion.svg>
+                        ) : (
+                            <motion.svg
+                                key='locked'
+                                initial={{ opacity: 0, scale: 0.8, rotate: 30 }}
+                                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                exit={{ opacity: 0, scale: 0.8, rotate: -30 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth='1.5'
+                                stroke='white'
+                                width='28'
+                                height='28'
                             >
-                                <AnimatePresence mode='wait'>
-                                    {isUnlocked ? (
-                                        <motion.svg
-                                            key='unlocked'
-                                            initial={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                                rotate: -30,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                scale: 1,
-                                                rotate: 0,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                                rotate: 30,
-                                            }}
-                                            transition={{
-                                                duration: 0.4,
-                                                ease: "easeOut",
-                                            }}
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            fill='none'
-                                            viewBox='0 0 24 24'
-                                            strokeWidth='1.5'
-                                            stroke='white'
-                                            width='32'
-                                            height='32'
-                                        >
-                                            <path
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                d='M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
-                                            />
-                                        </motion.svg>
-                                    ) : (
-                                        <motion.svg
-                                            key='locked'
-                                            initial={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                                rotate: 30,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                                scale: 1,
-                                                rotate: 0,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                                scale: 0.8,
-                                                rotate: -30,
-                                            }}
-                                            transition={{
-                                                duration: 0.4,
-                                                ease: "easeOut",
-                                            }}
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            fill='none'
-                                            viewBox='0 0 24 24'
-                                            strokeWidth='1.5'
-                                            stroke='white'
-                                            width='32'
-                                            height='32'
-                                        >
-                                            <path
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
-                                            />
-                                        </motion.svg>
-                                    )}
-                                </AnimatePresence>
-                            </LockTargetWrapper>
+                                <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
+                                />
+                            </motion.svg>
                         )}
-                    </Droppable>
-                </DragDropContext>
-            </Lock>
+                    </AnimatePresence>
+                </Knob>
+            </Track>
             {isUnlocked ? (
                 <h1>Scroll Down</h1>
             ) : (
-                <h1>Drag the "key" to the "lock" to proceed</h1>
+                <h1>Swipe the key across to unlock</h1>
             )}
 
             {isUnlocked && (
