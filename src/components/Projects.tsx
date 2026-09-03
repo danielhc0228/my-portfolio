@@ -8,7 +8,7 @@ import {
     useTransform,
 } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
-import { subProjects, mainProjects, teamMainProjects } from "../project-list";
+import { subProjects, mainProjects } from "../project-list";
 
 type Project = {
     title: string;
@@ -532,11 +532,10 @@ export default function Projects() {
     const spaceRef = useRef<HTMLDivElement | null>(null);
     const trackRef = useRef<HTMLDivElement | null>(null);
 
-    /* Team, personal and sub projects are merged into one list — the horizontal
+    /* Main and sub projects are merged into one list — the horizontal
        track is the only section, so the old headings have nothing to divide. */
     const projects = useMemo<Project[]>(
         () => [
-            ...teamMainProjects,
             ...mainProjects,
             ...subProjects.map((p) => ({ ...p, summary: p.description })),
         ],

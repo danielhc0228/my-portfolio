@@ -1,37 +1,44 @@
-export const teamMainProjects = [
+export const mainProjects = [
     {
-        title: "Olympic Planner & Translator - UQ Project",
-        note: "*Live server decommissioned post-graduation; demo available via YouTube walkthrough.",
+        title: "RacquetGeek",
         summary:
-            "Cross-cultural Olympic event planner with real-time speech translation, built in a university team.",
+            "Tennis racquet spec database turning feel into numbers — 12,000+ total visits.",
         description: (
             <>
-                Collaborated in a university team to design and build a
-                cross-cultural event-planning mobile app for international
-                visitors to the Brisbane 2032 Olympics.
+                A tennis racquet research tool that replaces vague marketing
+                copy with hard numbers, letting players compare frames on
+                measurable specs instead of adjectives.
                 <br />
                 <br />
-                <b>Key Contributions:</b>
+                <b>Key Features:</b>
                 <br />
-                • Built event browsing and personalized schedule planning
+                • Numerical racquet stats — weight, balance, swingweight,
+                stiffness and beam profile — presented side by side for direct
+                comparison
                 <br />
-                • Integrated real-time speech translation to remove language
-                barriers
-                <br />• Designed an internationalization-first UX for a
-                culturally diverse audience, with AI/ML-driven event
-                recommendations
+                • Server-rendered Next.js pages for fast loads and searchable
+                racquet detail pages
+                <br />
+                • Visual assets generated with Nano Banana (Gemini) and built
+                largely with Claude Code
+                <br />
+                <br />
+                Has grown past 10,000+ total visits since launch.
             </>
         ),
 
-        tags: ["JavaScript", "HTML", "CSS"],
-        sampleImg: `/uq-project.png`,
-        githubLink:
-            "https://github.com/danielhc0228/UQ-CompSci-Project-Olympic-App-FrontEnd",
-        demoLink: "https://youtu.be/IL9nFx0_cxk",
+        tags: [
+            "TypeScript",
+            "React",
+            "Next.js",
+            "CSS",
+            "Gemini",
+            "Claude Code",
+        ],
+        sampleImg: `/racquetgeek.png`,
+        githubLink: "",
+        demoLink: "https://racquetgeek.com",
     },
-];
-
-export const mainProjects = [
     {
         title: "Personalised Recipe AI Agent",
         summary:
@@ -209,6 +216,36 @@ export const mainProjects = [
         githubLink:
             "https://github.com/danielhc0228/Social-Network-Service-project",
         demoLink: "https://twitter-clone-15a8b.web.app/",
+    },
+    {
+        title: "Olympic Planner & Translator - UQ Project",
+        note: "*Live server decommissioned post-graduation; demo available via YouTube walkthrough.",
+        summary:
+            "Cross-cultural Olympic event planner with real-time speech translation, built in a university team.",
+        description: (
+            <>
+                Collaborated in a university team to design and build a
+                cross-cultural event-planning mobile app for international
+                visitors to the Brisbane 2032 Olympics.
+                <br />
+                <br />
+                <b>Key Contributions:</b>
+                <br />
+                • Built event browsing and personalized schedule planning
+                <br />
+                • Integrated real-time speech translation to remove language
+                barriers
+                <br />• Designed an internationalization-first UX for a
+                culturally diverse audience, with AI/ML-driven event
+                recommendations
+            </>
+        ),
+
+        tags: ["JavaScript", "HTML", "CSS"],
+        sampleImg: `/uq-project.png`,
+        githubLink:
+            "https://github.com/danielhc0228/UQ-CompSci-Project-Olympic-App-FrontEnd",
+        demoLink: "https://youtu.be/IL9nFx0_cxk",
     },
 ];
 

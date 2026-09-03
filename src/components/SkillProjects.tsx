@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { FaGithub } from "react-icons/fa";
-import { teamMainProjects, mainProjects, subProjects } from "../project-list";
+import { mainProjects, subProjects } from "../project-list";
 
 type FlatProject = {
     title: string;
@@ -13,16 +13,6 @@ type FlatProject = {
 };
 
 const allProjects: FlatProject[] = [
-    ...teamMainProjects.map(
-        ({ title, summary, tags, sampleImg, githubLink, demoLink }) => ({
-            title,
-            description: summary,
-            tags,
-            sampleImg,
-            githubLink,
-            demoLink,
-        }),
-    ),
     ...mainProjects.map(
         ({ title, summary, tags, sampleImg, githubLink, demoLink }) => ({
             title,

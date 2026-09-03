@@ -1,11 +1,11 @@
 import { getAI, getGenerativeModel, GoogleAIBackend } from "firebase/ai";
 import { app } from "./firebase";
-import { mainProjects, subProjects, teamMainProjects } from "./project-list";
+import { mainProjects, subProjects } from "./project-list";
 
 /* The project data already lives in project-list.tsx, so the model's context is
    derived from it rather than duplicated. `description` is JSX on the main
    projects and a plain string on the sub ones — only the string form is usable. */
-const projectLines = [...teamMainProjects, ...mainProjects, ...subProjects]
+const projectLines = [...mainProjects, ...subProjects]
     .map((p) => {
         const blurb =
             "summary" in p
