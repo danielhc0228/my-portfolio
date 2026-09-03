@@ -19,11 +19,11 @@ const Screen = styled(motion.div)`
 
 const Row = styled(motion.div)`
     display: flex;
-    gap: 18px;
+    gap: min(18px, 2vw);
 `;
 
 const Cell = styled.div`
-    width: 64px;
+    width: min(64px, 12vw);
     height: 72px;
     display: flex;
     align-items: center;
@@ -31,23 +31,23 @@ const Cell = styled.div`
 `;
 
 const Square = styled(motion.div)`
-    width: 42px;
-    height: 42px;
+    width: min(42px, 8vw);
+    height: min(42px, 8vw);
     border: 3px solid white;
     background: transparent;
 `;
 
 const Letter = styled(motion.span)`
-    font-size: 3.4rem;
+    font-size: min(3.4rem, 9vw);
     font-weight: 700;
     letter-spacing: 2px;
     color: white;
 `;
 
 const Loaded = styled(motion.h1)`
-    font-size: 2.6rem;
+    font-size: min(2.6rem, 7vw);
     font-weight: 700;
-    letter-spacing: 8px;
+    letter-spacing: min(8px, 2vw);
     color: white;
     height: 72px;
     display: flex;
