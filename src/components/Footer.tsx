@@ -32,9 +32,21 @@ const WaveImage = styled.img`
     right: 0;
     bottom: 0;
     width: 280px;
+    /* Anchored to the corner it already sits in, so growing pushes it up and
+       inward instead of off the edge of the page. */
+    transform-origin: bottom right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+    &:hover {
+        transform: scale(1.18);
+    }
 
     @media (max-width: 620px) {
         width: 200px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
     }
 `;
 
