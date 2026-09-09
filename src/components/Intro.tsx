@@ -17,7 +17,8 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    padding-bottom: 14vh;
     background: linear-gradient(to bottom, var(--bg-grad-top), var(--bg));
 
     color: var(--text);
@@ -26,7 +27,22 @@ const Container = styled.div`
 `;
 
 const TextWrapper = styled.div`
+    position: absolute;
+    inset: 0;
+    padding: 0 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.05em;
+    align-items: center;
     text-align: center;
+    pointer-events: none;
+    z-index: -1;
+`;
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
 const typing = keyframes`
@@ -40,7 +56,8 @@ const blink = keyframes`
 `;
 
 const TypingText = styled.h1`
-    font-size: 3rem;
+    font-size: 14.5vw;
+    line-height: 0.95;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -50,18 +67,16 @@ const TypingText = styled.h1`
         ${blink} 0.75s step-end infinite;
 `;
 
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
 const FadeInText = styled.h2`
-    font-size: 2rem;
-    margin-top: 20px;
+    font-size: 9.6vw;
+    line-height: 0.95;
+    white-space: nowrap;
+
     opacity: 0;
     animation: ${fadeIn} 2s ease-in forwards;
     animation-delay: 1s;
 `;
+
 
 const KNOB = 56;
 const PAD = 4;
@@ -73,7 +88,7 @@ const Track = styled.div`
     padding: ${PAD}px;
     border-radius: 999px;
     border: 1px solid rgba(var(--fg), 0.18);
-    background: rgba(var(--fg), 0.06);
+    background: var(--bg);
     overflow: hidden;
 `;
 
