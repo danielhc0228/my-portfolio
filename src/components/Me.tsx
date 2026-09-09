@@ -387,6 +387,13 @@ const SkillsContainer = styled(motion.div)`
     padding: 20px 90px 130px 90px;
     width: 100%;
     background: var(--bg);
+
+    /* The 90px side padding is most of a phone's width, which left room for
+       only one icon per row. */
+    @media (max-width: 620px) {
+        gap: 16px;
+        padding: 20px 16px 100px;
+    }
 `;
 
 /* The two layers stack on top of each other and cross-fade, while SwapArea
@@ -463,6 +470,15 @@ const SkillItem = styled(motion.div)<{ $glow: string; $outlined: boolean }>`
     &:focus-visible {
         outline: 2px solid rgba(var(--glow), 0.9);
         outline-offset: 4px;
+    }
+
+    /* Half a row minus half the gap: two always fit, and a long label wraps
+       instead of stretching its item across the whole row. Short labels still
+       let three or four sit side by side. Floors at 94px (the 74px orb plus
+       Pusher's padding and border), which the cap clears down to a 320px
+       viewport. */
+    @media (max-width: 620px) {
+        max-width: calc(50% - 8px);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -551,6 +567,10 @@ const SkillLabel = styled.span`
     color: var(--text);
     font-size: 0.9rem;
     margin-top: 5px;
+    text-align: center;
+    /* Names like "LangChain/Graph" have to be breakable, or the item they're
+       in refuses to narrow past its longest word. */
+    overflow-wrap: anywhere;
     transition:
         color 0.35s ease,
         text-shadow 0.35s ease;
