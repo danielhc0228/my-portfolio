@@ -90,7 +90,7 @@ const Hint = styled.span`
     font-size: 0.8rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgb(255, 234, 0);
 `;
 
 const Track = styled(motion.div)`
@@ -705,7 +705,7 @@ export default function Projects() {
                         <Header>
                             <Title>Projects</Title>
                             <Hint>
-                                <ScrollCue>scroll to explore →</ScrollCue>
+                                <ScrollCue>scroll down to explore →</ScrollCue>
                             </Hint>
                         </Header>
                         <Track ref={trackRef} style={{ x }}>

@@ -318,7 +318,7 @@ const FlipHint = styled.p<{ $hidden: boolean }>`
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgb(186, 214, 0);
     opacity: ${(props) => (props.$hidden ? 0 : 1)};
     transition: opacity 0.5s ease;
 `;
@@ -828,7 +828,7 @@ export default function Me() {
                 <span>Tech Stack</span>
             </SectionTitle>
             <FlipHint $hidden={!!selectedSkillData}>
-                Hold icons and play around with it
+                Hold icons and play around with it. Click to see projects related to a skill.
             </FlipHint>
             {/* Grid and panel are alternates in the same slot: picking a skill
                 clears the icons and the panel takes their place. */}
