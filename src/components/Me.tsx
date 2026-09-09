@@ -24,7 +24,7 @@ const skills = [
     { name: "Claude Code", icon: "/claude.webp", glow: "217, 119, 87" },
     { name: "Gemini", icon: "/gemini.webp", glow: "116, 143, 255" },
     { name: "Python", icon: "/python.webp", glow: "255, 212, 59" },
-    { name: "LangChain/Graph", icon: "/lang.webp", glow: "26, 200, 168" },
+    { name: "LangChain / LangGraph", icon: "/lang.webp", glow: "26, 200, 168" },
 ];
 
 const Container = styled.div`

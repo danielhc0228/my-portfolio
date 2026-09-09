@@ -2,7 +2,7 @@ export const mainProjects = [
     {
         title: "RacquetGeek",
         summary:
-            "Tennis racquet spec database turning feel into numbers — 12,000+ total visits.",
+            "Tennis racquet spec database turning feel into numbers — 17,000+ total visits.",
         description: (
             <>
                 A tennis racquet research tool that replaces vague marketing
@@ -23,7 +23,7 @@ export const mainProjects = [
                 largely with Claude Code
                 <br />
                 <br />
-                Has grown past 10,000+ total visits since launch.
+                Has grown past 17,000+ total visits since launch.
             </>
         ),
 
@@ -66,7 +66,7 @@ export const mainProjects = [
                 architecture.
             </>
         ),
-        tags: ["Python", "LangChain", "LangGraph", "ChromaDB", "Gemini API"],
+        tags: ["Python", "LangChain / LangGraph", "ChromaDB", "Gemini API"],
         // sampleImg: `/recipe-ai.webp`,
         githubLink:
             "https://github.com/danielhc0228/Personalised-Recipe-AI-Agent",
