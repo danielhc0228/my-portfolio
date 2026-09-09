@@ -78,6 +78,17 @@ const FadeInText = styled.h2`
 `;
 
 
+// intro text finishes at 3s (typing 1s + fade 2s delayed 1s)
+const Reveal = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    opacity: 0;
+    animation: ${fadeIn} 0.8s ease-out forwards;
+    animation-delay: 3s;
+`;
+
 const KNOB = 56;
 const PAD = 4;
 
@@ -188,7 +199,8 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                 <TypingText>Hi, I'm Daniel.</TypingText>
                 <FadeInText>A Full-stack Developer.</FadeInText>
             </TextWrapper>
-            <Track ref={trackRef}>
+            <Reveal>
+                <Track ref={trackRef}>
                 <TrackLabel style={{ opacity: labelOpacity }}>
                     Swipe to unlock
                 </TrackLabel>
@@ -246,12 +258,13 @@ const Intro = ({ isUnlocked, setIsUnlocked }: IntroProps) => {
                         )}
                     </AnimatePresence>
                 </Knob>
-            </Track>
-            {isUnlocked ? (
-                <h1>Scroll Down</h1>
-            ) : (
-                <h1>Swipe the key across to unlock</h1>
-            )}
+                </Track>
+                {isUnlocked ? (
+                    <h1>Scroll Down</h1>
+                ) : (
+                    <h1>Swipe the key across to unlock</h1>
+                )}
+            </Reveal>
 
             {isUnlocked && (
                 <Down variants={logoVariants} animate='active'>
