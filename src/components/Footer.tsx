@@ -11,6 +11,11 @@ const FooterContainer = styled.footer`
     background: #0d0d0d;
     color: #fff;
     padding: 130px 0;
+    position: relative;
+
+    @media (max-width: 620px) {
+        padding-bottom: 260px;
+    }
 `;
 
 const FooterContent = styled.div`
@@ -20,6 +25,17 @@ const FooterContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const WaveImage = styled.img`
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 280px;
+
+    @media (max-width: 620px) {
+        width: 200px;
+    }
 `;
 
 const SocialIcons = styled.div`
@@ -110,6 +126,7 @@ function Footer() {
             <FadeInText>
                 Please give me a message if you want to work with me!
             </FadeInText>
+            <WaveImage src='/mewavinghand.webp' alt='Daniel waving' />
             <FooterContent>
                 <SocialIcons>
                     <Social
