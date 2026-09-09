@@ -22,6 +22,11 @@ const Wrap = styled.div`
     justify-content: center;
 `;
 
+const glowPulse = keyframes`
+  0%, 100% { box-shadow: 0 0 10px rgba(163, 132, 255, 0.25), 0 0 22px rgba(94, 214, 255, 0.12); }
+  50%      { box-shadow: 0 0 18px rgba(163, 132, 255, 0.5), 0 0 38px rgba(94, 214, 255, 0.28); }
+`;
+
 const TriggerForm = styled.form`
     display: flex;
     align-items: center;
@@ -29,8 +34,9 @@ const TriggerForm = styled.form`
     width: clamp(150px, 34vw, 400px);
     padding: 3px 3px 3px 12px;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(163, 132, 255, 0.3);
     background: rgba(255, 255, 255, 0.05);
+    animation: ${glowPulse} 3.5s ease-in-out infinite;
     transition:
         border-color 0.25s ease,
         background 0.25s ease;
@@ -38,6 +44,15 @@ const TriggerForm = styled.form`
     &:focus-within {
         border-color: rgba(163, 132, 255, 0.7);
         background: rgba(255, 255, 255, 0.08);
+        animation: none;
+        box-shadow:
+            0 0 20px rgba(163, 132, 255, 0.55),
+            0 0 44px rgba(94, 214, 255, 0.3);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+        box-shadow: 0 0 14px rgba(163, 132, 255, 0.35);
     }
 `;
 
