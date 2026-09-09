@@ -33,8 +33,8 @@ const Container = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    background: #0d0d0d;
-    color: white;
+    background: var(--bg);
+    color: var(--text);
     justify-content: center;
 `;
 
@@ -104,7 +104,7 @@ const Card = styled.div<{ $active: boolean; $flipped: boolean }>`
         cubic-bezier(0.22, 1, 0.36, 1);
 
     &:focus-visible {
-        outline: 2px solid #8ad4ff;
+        outline: 2px solid var(--focus);
         outline-offset: 12px;
         border-radius: 24px;
     }
@@ -318,7 +318,7 @@ const FlipHint = styled.p<{ $hidden: boolean }>`
     font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgb(186, 214, 0);
+    color: var(--hint-alt);
     opacity: ${(props) => (props.$hidden ? 0 : 1)};
     transition: opacity 0.5s ease;
 `;
@@ -329,8 +329,8 @@ const InfoContainer = styled.div`
     padding-right: 30px;
     display: flex;
     align-items: center;
-    background: #0d0d0d;
-    color: white;
+    background: var(--bg);
+    color: var(--text);
 `;
 
 const ContentWrapper = styled.div`
@@ -347,11 +347,11 @@ const typing = keyframes`
 const SectionTitle = styled.h1<{ $isVisible: boolean }>`
     font-size: 2rem;
     font-weight: bold;
-    color: white;
+    color: var(--text);
     text-align: center; // Always keep centered
     white-space: nowrap;
     overflow: hidden;
-    background: #0d0d0d;
+    background: var(--bg);
 
     span {
         display: inline-block;
@@ -370,11 +370,11 @@ const SectionTitle = styled.h1<{ $isVisible: boolean }>`
 const SubTitle = styled.h2`
     font-size: 1rem;
     margin-bottom: 10px;
-    color: #f4f4f4; /* Slightly lighter color for subtitles */
+    color: rgba(var(--fg), 0.96); /* Slightly lighter color for subtitles */
 `;
 
 const Divider = styled.hr`
-    border: 1px solid #fff;
+    border: 1px solid var(--text);
     width: 50%;
     margin: 10px auto;
 `;
@@ -386,7 +386,7 @@ const SkillsContainer = styled(motion.div)`
     gap: 40px;
     padding: 20px 90px 130px 90px;
     width: 100%;
-    background: #0d0d0d;
+    background: var(--bg);
 `;
 
 /* The two layers stack on top of each other and cross-fade, while SwapArea
@@ -395,7 +395,7 @@ const SkillsContainer = styled(motion.div)`
 /* The whole section is opaque so nothing behind it (the fixed Intro) can show
    through any translucent child. */
 const Page = styled.div`
-    background: #0d0d0d;
+    background: var(--bg);
 `;
 
 const SwapArea = styled.div`
@@ -404,7 +404,7 @@ const SwapArea = styled.div`
     overflow: hidden;
     /* Opaque: mid-cross-fade both layers are translucent, and without this the
        fixed Intro behind the page shows through them. */
-    background: #0d0d0d;
+    background: var(--bg);
     transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
     @media (prefers-reduced-motion: reduce) {
@@ -439,6 +439,7 @@ const iconVariants = {
 
 const SkillItem = styled(motion.div)<{ $glow: string; $outlined: boolean }>`
     --glow: ${(props) => props.$glow};
+    --glow-ink: color-mix(in srgb, #000 var(--ink-mix), rgb(var(--glow)));
     /* So the dragged icon's z-index actually takes effect. */
     position: relative;
     display: flex;
@@ -547,7 +548,7 @@ const SkillIcon = styled.img`
 `;
 
 const SkillLabel = styled.span`
-    color: #fff;
+    color: var(--text);
     font-size: 0.9rem;
     margin-top: 5px;
     transition:
@@ -556,7 +557,7 @@ const SkillLabel = styled.span`
 
     ${SkillItem}:hover &,
     ${SkillItem}:focus-visible & {
-        color: rgb(var(--glow));
+        color: var(--glow-ink);
         text-shadow: 0 0 12px rgba(var(--glow), 0.6);
     }
 `;

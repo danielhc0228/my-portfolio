@@ -5,6 +5,14 @@
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daniel's Portfolio</title>
+    <!-- Applies the saved theme before first paint, so a returning dark-mode
+         visitor never sees a flash of the light default. -->
+    <script>
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "dark") document.documentElement.dataset.theme = "dark";
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

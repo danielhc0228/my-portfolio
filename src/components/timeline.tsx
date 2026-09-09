@@ -38,15 +38,15 @@ const HeadTitle = styled.h3`
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--fg), 0.45);
 `;
 
 const Count = styled.span`
     font-size: 0.75rem;
     padding: 3px 9px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.07);
-    color: rgba(255, 255, 255, 0.55);
+    background: rgba(var(--fg), 0.07);
+    color: rgba(var(--fg), 0.55);
 `;
 
 const blink = keyframes`
@@ -63,14 +63,14 @@ const LiveTag = styled.span`
     font-size: 0.7rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(120, 230, 170, 0.8);
+    color: var(--ok);
 
     &::before {
         content: "";
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: rgb(90, 225, 150);
+        background: var(--ok);
         animation: ${blink} 2s ease-in-out infinite;
     }
 
@@ -103,7 +103,7 @@ const Posts = styled.div`
         width: 6px;
     }
     &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.16);
+        background: rgba(var(--fg), 0.16);
         border-radius: 3px;
     }
     &::-webkit-scrollbar-track {
@@ -121,9 +121,9 @@ const Skeleton = styled.div`
     border-radius: 18px;
     background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.03) 25%,
-        rgba(255, 255, 255, 0.08) 50%,
-        rgba(255, 255, 255, 0.03) 75%
+        rgba(var(--fg), 0.03) 25%,
+        rgba(var(--fg), 0.08) 50%,
+        rgba(var(--fg), 0.03) 75%
     );
     background-size: 200% 100%;
     animation: ${shimmer} 1.6s linear infinite;
@@ -133,8 +133,8 @@ const Empty = styled.div`
     padding: 40px 20px;
     text-align: center;
     border-radius: 18px;
-    border: 1px dashed rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.4);
+    border: 1px dashed rgba(var(--fg), 0.12);
+    color: rgba(var(--fg), 0.4);
     font-size: 0.9rem;
     line-height: 1.6;
 `;

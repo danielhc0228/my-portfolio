@@ -45,8 +45,8 @@ const SCROLL_PACE = 0.7;
 
 const Wrapper = styled.section`
     width: 100%;
-    background: #0d0d0d;
-    color: white;
+    background: var(--bg);
+    color: var(--text);
 `;
 
 /* Tall spacer: its height is what the pinned pane consumes while the track
@@ -90,7 +90,7 @@ const Hint = styled.span`
     font-size: 0.8rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: rgb(255, 234, 0);
+    color: var(--hint);
 `;
 
 const Track = styled(motion.div)`
@@ -108,14 +108,14 @@ const ProgressRail = styled.div`
     right: 6vw;
     bottom: clamp(28px, 6vh, 56px);
     height: 2px;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(var(--fg), 0.12);
     border-radius: 2px;
     overflow: hidden;
 `;
 
 const ProgressBar = styled(motion.div)`
     height: 100%;
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(var(--fg), 0.75);
     transform-origin: 0% 50%;
 `;
 
@@ -125,6 +125,7 @@ const ProgressBar = styled(motion.div)`
    clips the content — hence the two elements rather than one. */
 const CardShell = styled.article<{ $accent: string }>`
     --accent: ${(props) => props.$accent};
+    --accent-ink: color-mix(in srgb, #000 var(--ink-mix), rgb(var(--accent)));
     position: relative;
     flex: 0 0 auto;
     /* Two per screen at most: 44vw + gap leaves a sliver of the third. */
@@ -177,8 +178,8 @@ const CardInner = styled.div`
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background: #121218;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--surface);
+    border: 1px solid rgba(var(--fg), 0.08);
     transition:
         border-color 0.45s ease,
         box-shadow 0.45s ease;
@@ -223,7 +224,7 @@ const Media = styled.div`
         background: linear-gradient(
             to bottom,
             transparent 55%,
-            rgba(18, 18, 24, 0.9)
+            var(--surface)
         );
     }
 `;
@@ -236,7 +237,7 @@ const MediaFallback = styled.div`
     justify-content: center;
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 800;
-    color: rgba(var(--accent), 0.85);
+    color: var(--accent-ink);
     letter-spacing: -0.04em;
 `;
 
@@ -261,7 +262,7 @@ const Summary = styled.p`
     margin: 0;
     font-size: clamp(0.82rem, 1vw, 0.95rem);
     line-height: 1.55;
-    color: rgba(255, 255, 255, 0.62);
+    color: rgba(var(--fg), 0.62);
     /* Keeps every card's text block the same height regardless of copy length. */
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -280,7 +281,7 @@ const Tag = styled.span`
     font-size: 0.68rem;
     padding: 4px 10px;
     border-radius: 999px;
-    color: rgba(var(--accent), 0.95);
+    color: var(--accent-ink);
     background: rgba(var(--accent), 0.12);
     border: 1px solid rgba(var(--accent), 0.28);
     white-space: nowrap;
@@ -293,7 +294,7 @@ const OpenCue = styled.span`
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(var(--accent), 0.9);
+    color: var(--accent-ink);
     opacity: 0.55;
     transition: opacity 0.35s ease;
 
@@ -327,10 +328,10 @@ const SubCell = styled.button`
     padding: 0;
     overflow: hidden;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(var(--fg), 0.65);
     border-radius: 10px;
-    background: #121218;
-    color: white;
+    background: var(--surface);
+    color: white; /* label sits on SubLabel's black scrim */
     text-align: left;
     transition:
         border-color 0.3s ease,
@@ -338,7 +339,7 @@ const SubCell = styled.button`
 
     &:hover,
     &:focus-visible {
-        border-color: white;
+        border-color: var(--text);
         transform: translateY(-4px);
     }
 
@@ -403,18 +404,19 @@ const Backdrop = styled(motion.div)`
 
 const Modal = styled(motion.div)<{ $accent: string }>`
     --accent: ${(props) => props.$accent};
+    --accent-ink: color-mix(in srgb, #000 var(--ink-mix), rgb(var(--accent)));
     position: relative;
     width: min(1040px, 100%);
     max-height: 90vh;
     overflow-y: auto;
     overscroll-behavior: contain;
     border-radius: 24px;
-    background: #131319;
+    background: var(--surface);
     border: 1px solid rgba(var(--accent), 0.4);
     box-shadow:
         0 0 40px rgba(var(--accent), 0.25),
         0 30px 80px rgba(0, 0, 0, 0.6);
-    color: white;
+    color: var(--text);
 `;
 
 const ModalImage = styled.img`
@@ -438,19 +440,19 @@ const ModalTitle = styled.h2`
 
 const Notes = styled.p`
     margin: 0;
-    color: rgba(var(--accent), 0.9);
+    color: var(--accent-ink);
     font-size: 0.85rem;
 `;
 
 const Description = styled.div`
     font-size: 0.95rem;
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(var(--fg), 0.8);
 
     b,
     strong {
         font-weight: 700;
-        color: white;
+        color: var(--text);
     }
 `;
 
@@ -469,7 +471,7 @@ const LinkButton = styled.a`
     border-radius: 999px;
     font-size: 0.9rem;
     font-weight: 600;
-    color: white;
+    color: var(--text);
     border: 1px solid rgba(var(--accent), 0.5);
     background: rgba(var(--accent), 0.12);
     transition:
@@ -495,7 +497,7 @@ const CloseButton = styled.button`
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(var(--fg), 0.2);
     color: white;
     cursor: pointer;
     backdrop-filter: blur(4px);

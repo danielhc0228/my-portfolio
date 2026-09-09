@@ -14,7 +14,7 @@ const Screen = styled(motion.div)`
     align-items: center;
     justify-content: center;
     gap: 36px;
-    background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+    background: linear-gradient(to bottom, var(--bg-grad-top), var(--bg));
 `;
 
 const Row = styled(motion.div)`
@@ -33,7 +33,7 @@ const Cell = styled.div`
 const Square = styled(motion.div)`
     width: min(42px, 8vw);
     height: min(42px, 8vw);
-    border: 3px solid white;
+    border: 3px solid var(--text);
     background: transparent;
 `;
 
@@ -41,14 +41,14 @@ const Letter = styled(motion.span)`
     font-size: min(3.4rem, 9vw);
     font-weight: 700;
     letter-spacing: 2px;
-    color: white;
+    color: var(--text);
 `;
 
 const Loaded = styled(motion.h1)`
     font-size: min(2.6rem, 7vw);
     font-weight: 700;
     letter-spacing: min(8px, 2vw);
-    color: white;
+    color: var(--text);
     height: 72px;
     display: flex;
     align-items: center;

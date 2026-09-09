@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import AskAI from "./AskAI";
+import ThemeToggle from "./ThemeToggle";
 import styled, { css } from "styled-components";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
@@ -30,9 +31,9 @@ const Bar = styled.header<{ $scrolled: boolean }>`
     ${(props) =>
         props.$scrolled &&
         css`
-            background: rgba(13, 13, 13, 0.72);
+            background: var(--header-bg);
             backdrop-filter: blur(14px);
-            border-bottom-color: rgba(255, 255, 255, 0.08);
+            border-bottom-color: rgba(var(--fg), 0.08);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
         `}
 `;
@@ -42,7 +43,7 @@ const Brand = styled(Link)`
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    color: white;
+    color: var(--text);
 `;
 
 const BrandName = styled.span`
@@ -63,8 +64,8 @@ const Nav = styled.nav`
     gap: 4px;
     padding: 4px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--fg), 0.04);
+    border: 1px solid rgba(var(--fg), 0.08);
 `;
 
 /* Shared by the router link and the external anchor. Active state rides on a
@@ -78,18 +79,18 @@ const navItem = css`
     border-radius: 999px;
     font-size: 0.88rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.62);
+    color: rgba(var(--fg), 0.62);
     transition:
         color 0.25s ease,
         background 0.25s ease;
 
     &:hover,
     &[data-active="true"] {
-        color: #fff;
+        color: var(--text);
     }
 
     &:hover {
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(var(--fg), 0.07);
     }
 
     /* Gradient underline that wipes out from the centre. */
@@ -162,6 +163,7 @@ export default function Header() {
             <AskAI />
 
             <Nav>
+                <ThemeToggle />
                 <NavAnchor
                     href='https://github.com/danielhc0228/my-portfolio'
                     target='_blank'

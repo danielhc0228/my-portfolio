@@ -6,8 +6,8 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #0d0d0d;
-    color: white;
+    background: var(--bg);
+    color: var(--text);
 `;
 function NotFound() {
     return (

@@ -30,7 +30,7 @@ const allProjects: FlatProject[] = [
    block — animating height here too would fight it. */
 const Wrapper = styled.div`
     width: 100%;
-    background: #0d0d0d;
+    background: var(--bg);
 `;
 
 /* Generous padding gives the panel's outer glow room to fade before SwapArea's
@@ -44,6 +44,7 @@ const Inner = styled.div`
 /* The container the skill's own colour outlines. */
 const Panel = styled(motion.section)<{ $glow: string }>`
     --glow: ${(props) => props.$glow};
+    --glow-ink: color-mix(in srgb, #000 var(--ink-mix), rgb(var(--glow)));
     position: relative;
     display: grid;
     grid-template-columns: minmax(190px, 230px) minmax(0, 1fr);
@@ -57,7 +58,7 @@ const Panel = styled(motion.section)<{ $glow: string }>`
             rgba(var(--glow), 0.1),
             transparent 60%
         ),
-        #101015;
+        var(--surface);
     box-shadow:
         0 0 60px rgba(var(--glow), 0.14),
         inset 0 0 60px rgba(var(--glow), 0.05);
@@ -118,7 +119,7 @@ const SkillName = styled.h2`
     margin: 0;
     font-size: 1.35rem;
     font-weight: 700;
-    color: white;
+    color: var(--text);
     line-height: 1.2;
 `;
 
@@ -128,7 +129,7 @@ const CountBadge = styled.span`
     text-transform: uppercase;
     padding: 5px 12px;
     border-radius: 999px;
-    color: rgb(var(--glow));
+    color: var(--glow-ink);
     background: rgba(var(--glow), 0.12);
     border: 1px solid rgba(var(--glow), 0.3);
 `;
@@ -151,8 +152,8 @@ const ProjectCard = styled(motion.article)`
     flex-direction: column;
     border-radius: 16px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--fg), 0.03);
+    border: 1px solid rgba(var(--fg), 0.08);
     transition:
         transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
         border-color 0.3s ease,
@@ -202,7 +203,7 @@ const ThumbFallback = styled.div`
     place-items: center;
     font-size: 2.4rem;
     font-weight: 800;
-    color: rgba(var(--glow), 0.8);
+    color: var(--glow-ink);
 `;
 
 const CardBody = styled.div`
@@ -217,7 +218,7 @@ const CardTitle = styled.h3`
     margin: 0;
     font-size: 0.93rem;
     font-weight: 600;
-    color: white;
+    color: var(--text);
     line-height: 1.3;
 `;
 
@@ -225,7 +226,7 @@ const CardText = styled.p`
     margin: 0;
     font-size: 0.76rem;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--fg), 0.55);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -249,14 +250,14 @@ const Tag = styled.span<{ $match: boolean }>`
     ${(props) =>
         props.$match
             ? `
-        color: rgb(var(--glow));
+        color: var(--glow-ink);
         background: rgba(var(--glow), 0.15);
         border: 1px solid rgba(var(--glow), 0.4);
     `
             : `
-        color: rgba(255, 255, 255, 0.45);
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(var(--fg), 0.45);
+        background: rgba(var(--fg), 0.05);
+        border: 1px solid rgba(var(--fg), 0.08);
     `}
 `;
 
@@ -274,8 +275,8 @@ const LinkButton = styled.a`
     font-weight: 600;
     padding: 6px 11px;
     border-radius: 999px;
-    color: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(var(--fg), 0.75);
+    border: 1px solid rgba(var(--fg), 0.12);
     transition:
         background 0.25s ease,
         color 0.25s ease,
@@ -302,9 +303,9 @@ const BackButton = styled.button`
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.08em;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.7);
+    background: rgba(var(--fg), 0.05);
+    border: 1px solid rgba(var(--fg), 0.14);
+    color: rgba(var(--fg), 0.7);
     cursor: pointer;
     transition:
         background 0.25s ease,
@@ -324,7 +325,7 @@ const EmptyMessage = styled.p`
     text-align: center;
     border-radius: 16px;
     border: 1px dashed rgba(var(--glow), 0.3);
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--fg), 0.45);
     font-size: 0.9rem;
 `;
 

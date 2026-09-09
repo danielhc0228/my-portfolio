@@ -8,8 +8,8 @@ const FooterContainer = styled.footer`
     flex-direction: column;
     min-height: 50vh;
     gap: 20px;
-    background: #0d0d0d;
-    color: #fff;
+    background: var(--bg);
+    color: var(--text);
     padding: 130px 0;
     position: relative;
 
@@ -47,7 +47,7 @@ const SocialIcons = styled.div`
 /* Each link hovers to its own brand colour. Instagram's identity is a
    gradient, so it takes the pink its logo resolves to at one stop. */
 const Social = styled.a<{ $brand: string }>`
-    color: white;
+    color: var(--text);
     display: inline-flex;
     transition: color 0.3s ease-in-out;
 
@@ -62,7 +62,7 @@ const FooterLinks = styled.div`
     margin-bottom: 10px;
 
     a {
-        color: white;
+        color: var(--text);
         text-decoration: none;
         font-size: 14px;
         transition: opacity 0.3s ease-in-out;
@@ -88,7 +88,7 @@ const typing = keyframes`
 
 const blink = keyframes`
   0%, 100% { border-color: transparent }
-  50% { border-color: white }
+  50% { border-color: var(--text) }
 `;
 
 const TypingText = styled.h1`
@@ -96,7 +96,7 @@ const TypingText = styled.h1`
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 3px solid white;
+    border-right: 3px solid var(--text);
     width: 0%;
     animation: ${typing} 1s steps(22, end) forwards,
         ${blink} 0.75s step-end infinite;

@@ -17,16 +17,16 @@ const TopBtn = styled.button`
     width: 50px;
     background-color: transparent;
     border-radius: 100%;
-    color: white;
-    border: 3px solid white;
+    color: var(--text);
+    border: 3px solid var(--text);
     position: fixed;
     text-align: center;
     padding-top: 7px;
     z-index: 1;
     cursor: pointer;
     &:hover {
-        background-color: white;
-        color: black;
+        background-color: var(--text);
+        color: var(--bg);
     }
 `;
 

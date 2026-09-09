@@ -35,8 +35,8 @@ const Wrapper = styled(motion.article)<{ $hue: number }>`
     gap: 14px;
     padding: 16px 18px;
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(var(--fg), 0.03);
+    border: 1px solid rgba(var(--fg), 0.07);
     transition:
         border-color 0.3s ease,
         background 0.3s ease,
@@ -45,7 +45,7 @@ const Wrapper = styled(motion.article)<{ $hue: number }>`
     &:hover {
         transform: translateX(3px);
         border-color: hsla(var(--hue), 80%, 65%, 0.4);
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(var(--fg), 0.05);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -63,7 +63,7 @@ const Avatar = styled.div`
     place-items: center;
     font-size: 15px;
     font-weight: 700;
-    color: hsl(var(--hue), 85%, 80%);
+    color: hsl(var(--hue), 85%, var(--avatar-l));
     background: hsla(var(--hue), 70%, 55%, 0.18);
     border: 1px solid hsla(var(--hue), 75%, 65%, 0.45);
     user-select: none;
@@ -79,11 +79,11 @@ const Head = styled.div`
 const Username = styled.span`
     font-weight: 600;
     font-size: 14px;
-    color: #fff;
+    color: var(--text);
 `;
 
 const PostDate = styled.time`
-    color: rgba(255, 255, 255, 0.38);
+    color: rgba(var(--fg), 0.38);
     font-size: 12px;
 `;
 
@@ -91,7 +91,7 @@ const Payload = styled.p`
     margin: 6px 0 0;
     font-size: 14px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.78);
+    color: rgba(var(--fg), 0.78);
     /* Keeps the author's line breaks and stops one long unbroken string from
        blowing out the column width. */
     white-space: pre-wrap;

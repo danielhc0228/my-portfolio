@@ -11,8 +11,8 @@ const NAME_MAX_LENGTH = 20;
 const ACCENT = "77, 163, 255";
 
 const Section = styled.section`
-    background: #0d0d0d;
-    color: white;
+    background: var(--bg);
+    color: var(--text);
     padding: clamp(60px, 10vh, 120px) 0 clamp(80px, 12vh, 140px);
 `;
 
@@ -32,7 +32,7 @@ const Lede = styled.p`
     max-width: 52ch;
     font-size: 0.95rem;
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--fg), 0.45);
 `;
 
 const Layout = styled.div`
@@ -54,8 +54,8 @@ const ComposeCard = styled.form`
     gap: 14px;
     padding: clamp(20px, 2.6vw, 30px);
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(var(--fg), 0.03);
+    border: 1px solid rgba(var(--fg), 0.08);
     transition:
         border-color 0.35s ease,
         box-shadow 0.35s ease;
@@ -76,7 +76,7 @@ const Label = styled.label`
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--fg), 0.4);
 `;
 
 const fieldStyles = css`
@@ -85,21 +85,21 @@ const fieldStyles = css`
     border-radius: 14px;
     font-size: 15px;
     font-family: inherit;
-    color: white;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    background: var(--field-bg);
+    border: 1px solid rgba(var(--fg), 0.1);
     transition:
         border-color 0.25s ease,
         background 0.25s ease;
 
     &::placeholder {
-        color: rgba(255, 255, 255, 0.28);
+        color: rgba(var(--fg), 0.28);
     }
 
     &:focus {
         outline: none;
         border-color: rgba(var(--accent), 0.7);
-        background: rgba(0, 0, 0, 0.5);
+        background: var(--field-bg-focus);
     }
 `;
 
@@ -135,10 +135,10 @@ const Counter = styled.span<{ $state: "ok" | "warn" | "over" }>`
     font-variant-numeric: tabular-nums;
     color: ${(props) =>
         props.$state === "over"
-            ? "rgb(255, 107, 107)"
+            ? "var(--danger)"
             : props.$state === "warn"
-              ? "rgb(255, 196, 88)"
-              : "rgba(255, 255, 255, 0.35)"};
+              ? "var(--warn)"
+              : "rgba(var(--fg), 0.35)"};
 `;
 
 const spin = keyframes`
@@ -149,8 +149,8 @@ const Spinner = styled.span`
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.35);
-    border-top-color: white;
+    border: 2px solid rgba(var(--fg), 0.35);
+    border-top-color: var(--text);
     animation: ${spin} 0.7s linear infinite;
 `;
 
@@ -162,7 +162,7 @@ const SubmitBtn = styled.button`
     border-radius: 999px;
     border: 1px solid rgba(var(--accent), 0.6);
     background: rgba(var(--accent), 0.16);
-    color: white;
+    color: var(--text);
     font-size: 0.92rem;
     font-weight: 600;
     cursor: pointer;
@@ -193,8 +193,8 @@ const Status = styled.p<{ $tone: "error" | "success" }>`
     font-size: 0.82rem;
     color: ${(props) =>
         props.$tone === "error"
-            ? "rgb(255, 107, 107)"
-            : "rgb(120, 230, 170)"};
+            ? "var(--danger)"
+            : "var(--ok)"};
 `;
 
 export default function Board() {

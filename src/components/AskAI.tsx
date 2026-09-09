@@ -35,7 +35,7 @@ const TriggerForm = styled.form`
     padding: 3px 3px 3px 12px;
     border-radius: 999px;
     border: 1px solid rgba(163, 132, 255, 0.3);
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(var(--fg), 0.05);
     animation: ${glowPulse} 3.5s ease-in-out infinite;
     transition:
         border-color 0.25s ease,
@@ -43,7 +43,7 @@ const TriggerForm = styled.form`
 
     &:focus-within {
         border-color: rgba(163, 132, 255, 0.7);
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(var(--fg), 0.08);
         animation: none;
         box-shadow:
             0 0 20px rgba(163, 132, 255, 0.55),
@@ -68,13 +68,13 @@ const Input = styled.input`
     min-width: 0;
     border: none;
     background: transparent;
-    color: #fff;
+    color: var(--text);
     font: inherit;
     font-size: clamp(0.72rem, 2.4vw, 0.86rem);
     outline: none;
 
     &::placeholder {
-        color: rgba(255, 255, 255, 0.35);
+        color: rgba(var(--fg), 0.35);
     }
 `;
 
@@ -114,8 +114,8 @@ const Panel = styled(motion.div)`
     overflow: hidden;
     transform-origin: top center;
     border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(13, 13, 13, 0.92);
+    border: 1px solid rgba(var(--fg), 0.1);
+    background: var(--panel-bg);
     backdrop-filter: blur(18px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 `;
@@ -125,7 +125,7 @@ const PanelHead = styled.div`
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(var(--fg), 0.08);
 `;
 
 const HeadMark = styled.span`
@@ -150,7 +150,7 @@ const HeadTitle = styled.span`
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #fff;
+    color: var(--text);
 `;
 
 const CloseBtn = styled.button`
@@ -160,15 +160,15 @@ const CloseBtn = styled.button`
     border: none;
     border-radius: 8px;
     background: transparent;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--fg), 0.55);
     cursor: pointer;
     transition:
         color 0.25s ease,
         background 0.25s ease;
 
     &:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        background: rgba(var(--fg), 0.08);
     }
 `;
 
@@ -186,7 +186,7 @@ const Hint = styled.p`
     text-align: center;
     font-size: 0.85rem;
     line-height: 1.5;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--fg), 0.4);
 `;
 
 const Bubbles = styled.div<{ $role: "user" | "model" }>`
@@ -199,14 +199,14 @@ const Bubbles = styled.div<{ $role: "user" | "model" }>`
     line-height: 1.55;
     white-space: pre-wrap;
     color: ${(props) =>
-        props.$role === "user" ? "#0d0d0d" : "rgba(255,255,255,0.88)"};
+        props.$role === "user" ? "#0d0d0d" : "rgba(var(--fg), 0.88)"};
     background: ${(props) =>
         props.$role === "user"
             ? "linear-gradient(110deg, #5ed6ff, #a384ff)"
-            : "rgba(255,255,255,0.06)"};
+            : "rgba(var(--fg), 0.06)"};
     border: 1px solid
         ${(props) =>
-            props.$role === "user" ? "transparent" : "rgba(255,255,255,0.08)"};
+            props.$role === "user" ? "transparent" : "rgba(var(--fg), 0.08)"};
 `;
 
 type Message = { role: "user" | "model"; text: string };

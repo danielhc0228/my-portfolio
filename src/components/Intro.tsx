@@ -18,9 +18,9 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to bottom, #1a1a1a, #0d0d0d);
+    background: linear-gradient(to bottom, var(--bg-grad-top), var(--bg));
 
-    color: white;
+    color: var(--text);
     gap: 40px;
     z-index: 0;
 `;
@@ -36,7 +36,7 @@ const typing = keyframes`
 
 const blink = keyframes`
   0%, 100% { border-color: transparent }
-  50% { border-color: white }
+  50% { border-color: var(--text) }
 `;
 
 const TypingText = styled.h1`
@@ -44,7 +44,7 @@ const TypingText = styled.h1`
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
-    border-right: 3px solid white;
+    border-right: 3px solid var(--text);
     width: 0;
     animation: ${typing} 1s steps(22, end) forwards,
         ${blink} 0.75s step-end infinite;
@@ -72,8 +72,8 @@ const Track = styled.div`
     height: ${KNOB + PAD * 2}px;
     padding: ${PAD}px;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--fg), 0.18);
+    background: rgba(var(--fg), 0.06);
     overflow: hidden;
 `;
 
@@ -95,9 +95,9 @@ const TrackLabel = styled(motion.span)`
     pointer-events: none;
     background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.25) 25%,
-        rgba(255, 255, 255, 0.9) 50%,
-        rgba(255, 255, 255, 0.25) 75%
+        rgba(var(--fg), 0.25) 25%,
+        rgba(var(--fg), 0.9) 50%,
+        rgba(var(--fg), 0.25) 75%
     );
     background-size: 200% 100%;
     -webkit-background-clip: text;
